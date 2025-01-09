@@ -1,0 +1,14 @@
+
+- hosts: lab
+  tasks:
+    - name: "{{ power_title }} Virtual Machines"
+      become: true
+      shell: |
+        virsh {{ power_state }} {{ item.node }}
+      loop:
+        - { node: "rk9-node01" }
+        - { node: "rk9-node02" }
+        - { node: "rk9-node03" }
+        - { node: "rk9-node04" }
+        - { node: "rk9-node05" }
+

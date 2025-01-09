@@ -1,0 +1,16 @@
+[all:vars]
+ssh_key_filename="id_rsa"
+remote_machine_username="jomoon"
+remote_machine_password="changeme"
+ansible_python_interpreter=/usr/bin/python3
+
+[gw]
+lab         ansible_ssh_host=192.168.0.101 ansible_user=jomoon ansible_password=changeme ansible_sudo_pass=changeme
+
+[incus]
+rk9-node01  ansible_ssh_host=192.168.0.191
+rk9-node02  ansible_ssh_host=192.168.0.192
+rk9-node03  ansible_ssh_host=192.168.0.193
+rk9-node04  ansible_ssh_host=192.168.0.194
+rk9-node05  ansible_ssh_host=192.168.0.195
+
