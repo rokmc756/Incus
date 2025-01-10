@@ -5,6 +5,15 @@
 ~~~!yaml
 $ make hosts r=install s=incus
 ~~~
+### Install and Configure Incus Packages
+~~~!yaml
+$ make incus r=install s=incus
+~~~
+### Install and Configure Incus Web UI Packages
+~~~!yaml
+$ make incus r=install s=ui
+~~~
+
 
 ## Progress
 - [x] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange ssh keys
