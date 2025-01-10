@@ -47,6 +47,22 @@ temp:
 		else\
 			echo "No Actions to configure temp";\
 		fi;\
+	elif [ "${r}" = "clean" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='clean';\
+			else\
+				echo "No actions to configure temp";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='clean';\
+			else\
+				echo "No actions to configure temp";\
+			fi\
+		else\
+			echo "No Actions to configure temp";\
+		fi;\
 	elif [ "${r}" = "install" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\

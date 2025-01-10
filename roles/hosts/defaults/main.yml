@@ -1,28 +1,31 @@
 rh_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr"
 rh_common_devel_pkgs: "git"
-# libxml2-python,s3cmd
+
 
 rh7_common_devel_pkgs: "make,perl,tcl,tk,libnl"
 rh8_common_devel_pkgs: "make,perl,tcl,tk,libnl3"
-rh9_common_devel_pkgs: "make,perl,tcl,tk,libnl3,incus,incus-tools"
+rh9_common_devel_pkgs: "make,perl,tcl,tk,libnl3"
+
 
 suse_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr"
 suse_common_devel_pkgs: "git"
-suse15_common_devel_pkgs: "make,tcl,tk,helm,incus,incus-tools"
-# libnl, glibc-headers, elfutils-libelf-devel - No provider
+suse15_common_devel_pkgs: "make,tcl,tk,helm"
 
-# libnl,elfutils-libelf-devel,kernel-devel
+
 ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr"
 ubt_common_devel_pkgs: "git,make,tcl,tk"
+
 
 ubt20_common_devel_pkgs: "perl"
 ubt22_common_devel_pkgs: "perl"
 ubt23_common_devel_pkgs: "perl"
-ubt24_common_devel_pkgs: "perl,incus,qemu-system,incus-tools"
+ubt24_common_devel_pkgs: "perl,qemu-system-*"
+
 
 official_rh_pkgs: "pdsh"
 official_ubt_pkgs: "pdsh"
 official_suse_pkgs: "pdsh"
+
 
 update_cache: false
 upgrade_packages: false

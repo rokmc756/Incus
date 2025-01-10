@@ -11,11 +11,13 @@ _incus:
   repo:
     zabbly:
       link: "https://pkgs.zabbly.com/incus"
+      version: "lts-6.0"
       # lts-6.0
       # stable
       # daily
   download_url: ""
   download: false
+  local_download_dir: "/mnt/c/Users/USER/Downloads"
   base_path: /root
   host_num: "{{ groups['workers'] | length }}"
   net:
@@ -32,8 +34,8 @@ _incus:
       ipaddr0: "192.168.0."
       ipaddr1: "192.168.1."
   vms:
-    rk9: [ "rk9-node01", "rk9-node02", "rk9-node03", "rk9-node04", "rk9-node05" ]
-    ubt24: [ "ubt24-node01", "ubt24-node02", "ubt24-node03", "ubt24-node04", "ubt24-node05" ]
+    rk9: [ "rk9-freeipa", "rk9-node01", "rk9-node02", "rk9-node03", "rk9-node04", "rk9-node05" ]
+    ubt24: [ "rk9-freeipa", "ubt24-node01", "ubt24-node02", "ubt24-node03", "ubt24-node04", "ubt24-node05" ]
 
 
 vmware:

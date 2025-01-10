@@ -21,7 +21,6 @@
     - "devel"
     - "crb"
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-  # yum-config-manager --enable {{ item }}
 
 
 - name: Install Prerequest Software Packages

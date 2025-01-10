@@ -9,32 +9,51 @@
   tags:
     - install
     - uninstall
+    - prepare
+    - cleanup
   when: inventory_hostname in groups['workers']
+
+
+- name: Prepare Incus Environment as Setup Repository and Install Packages
+  import_tasks: install-incus.yml
+  tags: install
+  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
+
+
+- name: Install Incus Web UI
+  import_tasks: install-incus-ui.yml
+  tags: install
+  when: ( ui is defined and ui == true ) and inventory_hostname in groups['control']
+
+
+- name: Add Incus Cluster
+  import_tasks: enable-cluster.yml
+  tags: install
+  when: ( add is defined and add == true ) and inventory_hostname in groups['workers']
+
+
+- name: Uninstall Incus Web UI
+  import_tasks: uninstall-incus-ui.yml
+  tags: uninstall
+  when: ( ui is defined and ui == true ) and inventory_hostname in groups['control']
+
+
+- name: Prepare Incus Environment as Uninstall Packages and Removing Repository
+  import_tasks: uninstall-incus.yml
+  tags: uninstall
+  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
+
+
 
 
 #- name: Disable SELinux and Stop Firewalld
 #  import_tasks: disable-selinux.yml
 #  tags:
 #    - install
-#
-#
-#- name: Install Kubernetes Packages
-#  import_tasks: install-kube-pkgs.yml
-#  tags: install
-#
-#
-#- name: Configure Kubernetes Packages
-#  import_tasks: config-kube-pkgs.yml
-#  tags: install
-#
-#
-#- name: Initialize Native Kubernetes Cluster
-#  import_tasks: init-k8s.yml
-#  tags: install
-#
-#
-#- name: Add Additional Slave Master Nodes
-#  import_tasks: add-masters.yml
+
+
+#- name: Enable SELinux and Stop Firewalld
+#  import_tasks: disable-selinux.yml
 #  tags:
-#    - install
+#    - uninstall
 

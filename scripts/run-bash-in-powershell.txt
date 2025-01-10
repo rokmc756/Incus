@@ -1,0 +1,27 @@
+# https://superuser.com/questions/1090141/does-powershell-have-any-sort-of-bashrc-equivalent
+
+The article mentioned in jehad's comment explains that there are several places from which PowerShell can load a profile, which is what you want. You probably want the per-user one for the normal PowerShell console. The path at which PowerShell will check for that file is given in the $profile variable. You can create that file and its containing directory with this command:
+
+New-Item $profile -Type File -Force
+It creates a file called Microsoft.PowerShell_profile.ps1 in a folder called WindowsPowerShell under your Documents folder. Then you can open it with a text editor:
+
+notepad $profile
+Everything in it will be run whenever you launch the PowerShell console, no matter whether you're elevated or not. I used this other article to produce a function (which you can use as a cmdlet) to check whether the current PowerShell instance is elevated. Put this in your new profile file:
+
+Function Test-Elevated {
+  $wid = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+  $prp = New-Object System.Security.Principal.WindowsPrincipal($wid)
+  $adm = [System.Security.Principal.WindowsBuiltInRole]::Administrator
+  $prp.IsInRole($adm)
+}
+
+That function can be used in your normal PowerShell experience, but you can also use it to only run stuff in your profile script when you're running elevated:
+
+If (Test-Elevated) {
+  echo "Be careful!"
+} Else {
+  bash 
+}
+
+Since this file contains code that will be automatically run even under an administrative PowerShell instance, you don't want programs running unelevated to have write access to it. I suggest changing its ACL to only give your user account read access while still allowing administrators full control. (Inheritance will have to be disabled first.) You'll then only be able to edit the script from elevated programs.
+
