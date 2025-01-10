@@ -1,0 +1,29 @@
+
+Create qcow2
+$ qemu-img create -f qcow2 image01.img 5G
+
+Installing
+$ qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda image01.img -cdrom ./Rocky-9.2-x86_64-minimal.iso
+qemu-system-x86_64: warning: Machine type 'pc-i440fx-rhel7.6.0' is deprecated: machine types for previous major releases are deprecated
+VNC server running on ::1:5900
+
+
+
+Run with window
+$ qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda Image.img
+
+Run headless(after u set up ssh you can do so)
+$ qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda Image.img -nic user,hostfwd=tcp:127.0.0.1:2222-:22 -nographic &
+
+connect with ssh
+$ ssh -p 2222 user@localhost
+
+
+[root@rk9-node01 ~]# qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda Image.img -cdrom
+qemu-system-x86_64: -cdrom: requires an argument
+[root@rk9-node01 ~]# qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda Image.img -cdrom ./Rocky-9.2-x86_64-minimal.iso
+qemu-system-x86_64: -hda Image.img: Could not open 'Image.img': No such file or directory
+[root@rk9-node01 ~]# qemu-system-x86_64 -cpu host -accel kvm -m 4G -hda image01.img -cdrom ./Rocky-9.2-x86_64-minimal.iso
+
+lscpu
+

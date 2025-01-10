@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: workers
   become: yes
   vars:
     print_debug: true

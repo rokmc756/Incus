@@ -1,0 +1,135 @@
+
+
+
+# vi /etc/sysctl.d/98-incus.conf
+net.ipv4.ip_forward = 1
+net.ipv4.ip_forward_update_priority = 1
+net.ipv4.ip_forward_use_pmtu = 0
+
+
+
+
+ sudo systemctl enable incus
+
+ sudo systemctl start incus
+
+ incus admin init
+
+# Would you like to use clustering? (yes/no) [default=no]: no
+# Do you want to configure a new storage pool? (yes/no) [default=yes]:
+# Name of the new storage pool [default=default]:
+# Name of the storage backend to use (dir, lvm, lvmcluster) [default=dir]:
+# Where should this storage pool store its data? [default=/var/lib/incus/storage-pools/default]:
+# Would you like to create a new local network bridge? (yes/no) [default=yes]:
+# What should the new bridge be called? [default=incusbr0]:
+# What IPv4 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]:
+# What IPv6 address should be used? (CIDR subnet notation, “auto” or “none”) [default=auto]:
+# Would you like the server to be available over the network? (yes/no) [default=no]:
+# Would you like stale cached images to be updated automatically? (yes/no) [default=yes]:
+# Would you like a YAML "init" preseed to be printed? (yes/no) [default=no]:
+
+
+incus image list images:
+
+
+
+
+
+[incus@rk9-node01 ~]$ incus launch images:ubuntu/22.04 first
+Launching first
+Error: Failed instance creation: Failed creating instance record: Failed initializing instance: Invalid config: No uid/gid allocation configured. In this mode, only privileged containers are supported
+
+
+
+[root@rk9-node01 ~]# cat /etc/subuid
+jmoon:100000:65536
+jomoon:165536:65536
+incus:231072:65536
+root:1000000:1000000000
+
+[root@rk9-node01 ~]# cat /etc/subgid
+jmoon:100000:65536
+jomoon:165536:65536
+incus:231072:65536
+root:1000000:1000000000
+
+
+systemctl restart incus
+
+
+incus launch images:ubuntu/22.04 first
+
+
+sudo ln -sf /usr/libexec/qemu-kvm /usr/bin/qemu-system-x86_64
+
+
+sudo systemctl restart incus
+
+
+incus launch images:debian/12 debian --vm
+Launching debian
+
+# Error: Failed instance creation: Failed creating instance record: Instance type "virtual-machine" is not supported on this server: QEMU failed to run feature checks
+
+
+
+# https://github.com/ganto/copr-lxc4/wiki/Getting-Started-with-Incus-on-Fedora
+
+
+
+
+
+# incus admin init --help
+#Description:
+#  Configure the daemon
+#
+#Usage:
+#  incus admin init [flags]
+#
+#Examples:
+#  init --minimal
+#  init --auto [--network-address=IP] [--network-port=8443] [--storage-backend=dir]
+#              [--storage-create-device=DEVICE] [--storage-create-loop=SIZE]
+#              [--storage-pool=POOL]
+#  init --preseed
+#  init --dump
+#
+#
+#Flags:
+#      --auto                    Automatic (non-interactive) mode
+#      --dump                    Dump YAML config to stdout
+#      --minimal                 Minimal configuration (non-interactive)
+#      --network-address         Address to bind to (default: none)
+#      --network-port            Port to bind to (default: 8443) (default -1)
+#      --preseed                 Pre-seed mode, expects YAML config from stdin
+#      --storage-backend         Storage backend to use (btrfs, dir, lvm or zfs, default: dir)
+#      --storage-create-device   Setup device based storage using DEVICE
+#      --storage-create-loop     Setup loop based storage with SIZE in GiB (default -1)
+#      --storage-pool            Storage pool to use or create
+#
+#Global Flags:
+#      --debug          Show all debug messages
+#      --force-local    Force using the local unix socket
+#  -h, --help           Print help
+#      --project        Override the source project
+#  -q, --quiet          Don't show progress information
+#      --sub-commands   Use with help or --help to view sub-commands
+#  -v, --verbose        Show all information messages
+#      --version        Print version number
+#
+
+
+
+
+
+https://www.server-world.info/en/note?os=Fedora_39&p=kvm&f=8
+
+
+https://docs.kernel.org/virt/kvm/x86/running-nested-guests.html
+
+
+qemu-system-x86_64 -enable-kvm -cpu help
+
+https://patchwork.kernel.org/project/kvm/cover/20180926162358.10741-1-sean.j.christopherson@intel.com/
+
+

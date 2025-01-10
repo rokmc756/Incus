@@ -1,0 +1,40 @@
+---
+- name: Check OS ( Incus )
+  fail: msg="Not a Debian or Ubuntu based system!"
+  when: inventory_hostname in groups['workers'] and ( ansible_os_family != 'Ubuntu' or ansible_os_family != 'Debian' )
+
+
+- name: Set Facts For Network and Packages Informations and other Versions
+  import_tasks: set-facts.yml
+  tags:
+    - install
+    - uninstall
+  when: inventory_hostname in groups['workers']
+
+
+#- name: Disable SELinux and Stop Firewalld
+#  import_tasks: disable-selinux.yml
+#  tags:
+#    - install
+#
+#
+#- name: Install Kubernetes Packages
+#  import_tasks: install-kube-pkgs.yml
+#  tags: install
+#
+#
+#- name: Configure Kubernetes Packages
+#  import_tasks: config-kube-pkgs.yml
+#  tags: install
+#
+#
+#- name: Initialize Native Kubernetes Cluster
+#  import_tasks: init-k8s.yml
+#  tags: install
+#
+#
+#- name: Add Additional Slave Master Nodes
+#  import_tasks: add-masters.yml
+#  tags:
+#    - install
+

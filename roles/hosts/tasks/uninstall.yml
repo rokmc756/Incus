@@ -1,14 +1,13 @@
 ---
-#
-- name: Rollback defatul group to /etc/sudoers file
+- name: Rollback Default Group to /etc/sudoers File
   lineinfile:
     dest: /etc/sudoers
     state: absent
     regexp: '^%{{ sudo_user }}'
     line: '%{{ sudo_user }}  ALL=(ALL)        ALL'
 
-#
-- name: Remove bash_history and .ssh directory
+
+- name: Remove Bash_History and .ssh Directory
   file:
     path: "{{ item }}"
     state: absent
@@ -18,8 +17,8 @@
     - "/root/.ssh"
     - "/home/{{ sudo_user }}/.ssh"
 
-#
-- name: Remove hostname entries in /etc/hosts file
+
+- name: Remove Hostname Entries in /etc/hosts File
   lineinfile:
     dest: /etc/hosts
     regexp: "{{ domain_name }}"
@@ -28,16 +27,16 @@
     backup: yes
   register: hosts_deleted
   when: hostvars[ item ][ 'ansible_'~netdev0 ]['ipv4']['address'] is defined
-  with_items: "{{ groups['all'] }}"
+  with_items: "{{ groups['workers'] }}"
 
-#
-- name: Delete "{{ sudo_user }}" user and group
+
+- name: Delete "{{ sudo_user }}" User and Group
   user:
     name: "{{ sudo_user }}"
-    group: "{{ sudo_group }}"
     state: absent
+  #  group: "{{ sudo_group }}"
 
-#
+
 - name: Uninstall Prerequest Software Packages
   package:
     name: "{{ item }}"
@@ -45,10 +44,27 @@
   with_items: "{{ install_pkgs }}"
   when: uninstall_deps_pkgs == true
 
-#
-- name: Disable Development Package Repository for RedHat Based Linux Distribution
+
+- name: Disable Development Package Repository
   shell: |
-    yum-config-manager --disable {{ item }}
+    dnf config-manager --set-disabled {{ item }}
   with_items:
+    - "crb"
     - "devel"
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
+- name: Disable Incus Package Repositories
+  shell: |
+    dnf copr disable neil/incus -y
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
+- name: Uninstall YUM or DNF Config Manager and EPEL
+  package: name={{ item }} state=absent
+  with_items:
+    - "epel-release"
+    - "dnf-utils"
+  ignore_errors: true
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+

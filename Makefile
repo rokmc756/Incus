@@ -3,9 +3,10 @@ COMMON="yes"
 ANSIBLE_HOST_PASS="changeme"
 ANSIBLE_TARGET_PASS="changeme"
 
+
+# Control VMs in KVM For Power On or Off
 boot:
 	@ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} control-vms.yml --extra-vars "power_state=start power_title=Power-On VMs"
-
 shutdown:
 	@ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} control-vms.yml --extra-vars "power_state=shutdown power_title=Shutdown VMs"
 
