@@ -5,6 +5,6 @@
       become: true
       shell: |
         virsh {{ power_state }} {{ item }}
-      loop: "{{ incus.vms.ubt24 }}"
+      loop: "{{ _incus.vms.ubt24 }}"
         # - "{{ _incus.vms.rk9 }}"
 
