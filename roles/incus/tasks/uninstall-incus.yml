@@ -94,6 +94,16 @@
   notify:
     - Waiting for Server to Come Back After Reboot
 
-# rm -rf /var/lib/incus/storage-pools/
+
+- name: Delete Default Storage Pool
+  file:
+    path: "/var/lib/incus/storage-pools"
+    state: absent
+  register: delete_default_storage_pool
+  ignore_errors: true
+- debug: msg={{ delete_default_storage_pool }}
+  when: print_debug == true
+
 
 - meta: flush_handlers
+

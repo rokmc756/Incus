@@ -8,6 +8,7 @@ _incus:
   minor_version: ""
   patch_version: ""
   build_version: ""
+  base_dir: "/root"
   repo:
     zabbly:
       link: "https://pkgs.zabbly.com/incus"

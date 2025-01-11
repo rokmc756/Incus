@@ -14,22 +14,34 @@
   when: inventory_hostname in groups['workers']
 
 
+- name: Prepare Incus Environment with Repository
+  import_tasks: prepare-incus.yml
+  tags: prepare
+  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
+
+
 - name: Prepare Incus Environment as Setup Repository and Install Packages
   import_tasks: install-incus.yml
   tags: install
   when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
 
 
-- name: Install Incus Web UI
+- name: Install Web UI
   import_tasks: install-incus-ui.yml
   tags: install
   when: ( ui is defined and ui == true ) and inventory_hostname in groups['control']
 
 
-- name: Add Incus Cluster
-  import_tasks: enable-cluster.yml
+- name: Initialize Host and Enable Cluster
+  import_tasks: init-incus-host.yml
   tags: install
-  when: ( add is defined and add == true ) and inventory_hostname in groups['workers']
+  when: ( init is defined and init == true ) and inventory_hostname in groups['control']
+
+
+- name: Add Incus Hosts into Cluster
+  import_tasks: add-hosts.yml
+  tags: install
+  when: ( add is defined and add == true ) and inventory_hostname in groups['cluster']
 
 
 - name: Uninstall Incus Web UI
@@ -44,7 +56,7 @@
   when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
 
 
-
+-
 
 #- name: Disable SELinux and Stop Firewalld
 #  import_tasks: disable-selinux.yml
