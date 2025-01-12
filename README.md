@@ -33,7 +33,7 @@ $ make hosts r=install(or uninstall) s=incus
 ~~~
 #### Enable/Disable Zabbly Repository
 ~~~!yaml
-$ make incus r=install(or uninstall) s=repo
+$ make incus r=enable(or disable) s=repo
 ~~~
 ##### Install/Uninstall Incus Packages
 ~~~!yaml
@@ -41,7 +41,7 @@ $ make incus r=install(or uninstall) s=pkgs
 ~~~
 ##### Initialize Incus Cluster
 ~~~!yaml
-$ make incus r=install s=init
+$ make incus r=init s=host
 ~~~
 ##### Install/Uninstall Incus Web UI
 ~~~!yaml
@@ -49,7 +49,19 @@ $ make incus r=install(or uninstall) s=ui
 ~~~
 ##### Add/Remove Hosts to/at Incus Cluster
 ~~~!yaml
-$ make incus r=install(or uninstall) s=add/remove
+$ make incus r=add(or remove) s=host
+~~~
+##### Deploy Incus Cluster at once
+~~~!yaml
+$ make incus r=install s=all
+~~~
+##### Deploy/Destroy Incus Cluster at once
+~~~!yaml
+$ make incus r=deploy(or destroy) s=all
+~~~
+##### Force Destroy Incus Cluster
+~~~!yaml
+$ make incus r=destroy s=force
 ~~~
 
 
