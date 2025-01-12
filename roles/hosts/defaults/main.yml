@@ -1,4 +1,4 @@
-rh_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr"
+rh_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr,lsof"
 rh_common_devel_pkgs: "git"
 
 
@@ -7,12 +7,12 @@ rh8_common_devel_pkgs: "make,perl,tcl,tk,libnl3"
 rh9_common_devel_pkgs: "make,perl,tcl,tk,libnl3"
 
 
-suse_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr"
+suse_common_pkgs: "sshpass,cifs-utils,nfs-utils,lsof,rpcbind,xfsprogs,jq,expect,net-tools,ipvsadm,lvm2,bind-utils,frr,lsof"
 suse_common_devel_pkgs: "git"
 suse15_common_devel_pkgs: "make,tcl,tk,helm"
 
 
-ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr"
+ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr,lsof"
 ubt_common_devel_pkgs: "git,make,tcl,tk"
 
 

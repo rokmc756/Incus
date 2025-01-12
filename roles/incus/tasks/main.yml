@@ -14,58 +14,80 @@
   when: inventory_hostname in groups['workers']
 
 
-- name: Prepare Incus Environment with Repository
-  import_tasks: prepare-incus.yml
-  tags: prepare
-  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
-
-
-- name: Prepare Incus Environment as Setup Repository and Install Packages
-  import_tasks: install-incus.yml
+- name: Enable Zabbly Package Repository
+  import_tasks: enable-incus-repo.yml
   tags: install
-  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
+  when: ( repo is defined and repo == true ) and inventory_hostname in groups['workers']
 
 
-- name: Install Web UI
-  import_tasks: install-incus-ui.yml
+- name: Install Incus Packages
+  import_tasks: install-incus-pkgs.yml
   tags: install
-  when: ( ui is defined and ui == true ) and inventory_hostname in groups['control']
+  when: ( pkgs is defined and pkgs == true ) and inventory_hostname in groups['workers']
 
 
-- name: Initialize Host and Enable Cluster
+- name: Initialize Incus Host and Enable Cluster
   import_tasks: init-incus-host.yml
   tags: install
   when: ( init is defined and init == true ) and inventory_hostname in groups['control']
 
 
+- name: Install Web UI
+  import_tasks: install-incus-ui.yml
+  tags: install
+  when: ( ui is defined and ui == true ) and inventory_hostname in groups['workers']
+
+
+- name: Attach Incus CA Key
+  import_tasks: attach-incus-ca-key.yml
+  tags: install
+  when: ( key is defined and key == true ) and inventory_hostname in groups['control']
+
+
 - name: Add Incus Hosts into Cluster
-  import_tasks: add-hosts.yml
+  import_tasks: add-incus-hosts.yml
   tags: install
   when: ( add is defined and add == true ) and inventory_hostname in groups['cluster']
+
+
+- name: Remove Incus Hosts at Cluster
+  import_tasks: remove-incus-hosts.yml
+  tags: uninstall
+  when: ( remove is defined and remove == true ) and inventory_hostname in groups['control']
+
+
+- name: Force Clean Incus Control
+  import_tasks: force-cleanup-incus.yml
+  tags: uninstall
+  when: ( force is defined and force == true ) and inventory_hostname in groups['workers']
 
 
 - name: Uninstall Incus Web UI
   import_tasks: uninstall-incus-ui.yml
   tags: uninstall
-  when: ( ui is defined and ui == true ) and inventory_hostname in groups['control']
+  when: ( ui is defined and ui == true ) and inventory_hostname in groups['workers']
 
 
-- name: Prepare Incus Environment as Uninstall Packages and Removing Repository
-  import_tasks: uninstall-incus.yml
+- name: Uninstall Incus Packages
+  import_tasks: uninstall-incus-pkgs.yml
   tags: uninstall
-  when: ( incus is defined and incus == true ) and inventory_hostname in groups['workers']
+  when: ( pkgs is defined and pkgs == true ) and inventory_hostname in groups['workers']
 
 
--
-
-#- name: Disable SELinux and Stop Firewalld
-#  import_tasks: disable-selinux.yml
-#  tags:
-#    - install
+- name: Cleanup Remaining Gabages
+  import_tasks: cleanup-remaining-garbages.yml
+  tags: uninstall
+  when: ( clean is defined and clean == true ) and inventory_hostname in groups['workers']
 
 
-#- name: Enable SELinux and Stop Firewalld
-#  import_tasks: disable-selinux.yml
-#  tags:
-#    - uninstall
+- name: Disable Zabbly Package Repository
+  import_tasks: disable-incus-repo.yml
+  tags: uninstall
+  when: ( repo is defined and repo == true ) and inventory_hostname in groups['workers']
+
+
+- name: Reboot Incus Hosts
+  import_tasks: reboot-incus-hosts.yml
+  tags: uninstall
+  when: ( reboot is defined and reboot == true ) and inventory_hostname in groups['cluster']
 

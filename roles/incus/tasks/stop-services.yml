@@ -1,8 +1,0 @@
-
-
-systemctl stop incus-lxcfs
-
-systemctl stop incus-agent
-
-
-

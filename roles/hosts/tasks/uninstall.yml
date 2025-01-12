@@ -24,7 +24,7 @@
   lineinfile:
     dest: /etc/hosts
     regexp: "{{ domain_name }}"
-    line: "{{ hostvars[ item ][ 'ansible_'~_netdev ][ 'ipv4' ][ 'address' ] }} {{ item }}"
+    line: "{{ hostvars[ item ][ _netdev ][ 'ipv4' ][ 'address' ] }} {{ item }}"
     state: absent
     backup: yes
   register: hosts_deleted

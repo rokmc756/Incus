@@ -1,10 +1,9 @@
----
 config:
   core.https_address: {{ ipaddr2 }}:8443
 networks: []
 storage_pools:
 - config:
-    size: 20GiB
+    size: 9GiB
   description: ""
   name: local
   driver: btrfs
@@ -20,7 +19,7 @@ profiles:
 projects: []
 cluster:
   server_name: ubt24-node01
-  enabled: true
+  enabled: false
   member_config: []
   cluster_address: ""
   cluster_certificate: ""

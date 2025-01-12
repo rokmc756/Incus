@@ -1,4 +1,4 @@
-for i in `seq 1 3`
+for i in `seq 1 5`
 do
 
     nc -vz 192.168.2.18$i 22

@@ -1,0 +1,43 @@
+---
+- name: Install Incus Software Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_incus_pkgs
+  until: install_incus_pkgs is succeeded
+  retries: 10
+  delay: 20
+  with_items:
+    - incus
+- debug: msg={{ install_incus_pkgs }}
+  when: print_debug == true
+
+
+- name: Enable and Start Incus Service
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    daemon-reload: yes
+  register: start_incus
+  until: start_incus is succeeded
+  retries: 10
+  delay: 5
+  with_items:
+    - incus
+- debug: msg={{ start_incus }}
+  when: print_debug == true
+
+
+- name: Add Root Privileges
+  lineinfile:
+    dest: "{{ item.path }}"
+    line: "{{ item.line }}"
+    state: present
+  register: add_root_privileges
+  with_items:
+    - { path: "/etc/subuid", line: "root:1000000:1000000000" }
+    - { path: "/etc/subgid", line: "root:1000000:1000000000" }
+- debug: msg={{ add_root_privileges }}
+  when: print_debug == true
+

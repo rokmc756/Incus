@@ -1,0 +1,31 @@
+---
+- name: Remove Incus Hosts
+  shell: |
+    incus cluster remove {{ item }} {{ _incus.debug_opt }}
+  async: 360
+  poll: 5
+  register: remove_hosts
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  delegate_facts: True
+  with_items:
+    - "{{ groups['cluster'] }}"
+  notify:
+    - Sync Incus DB
+- debug: msg={{ remove_hosts }}
+
+
+- name: Remove Trust Store
+  shell: |
+    incus config trust remove $(incus config trust list | grep {{ item }} | cut -d '|' -f 5 | xargs)
+  async: 360
+  poll: 5
+  register: remove_trust_store
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  delegate_facts: True
+  with_items:
+    - "{{ groups['cluster'] }}"
+  notify:
+    - Sync Incus DB
+    - Restart Incus
+- debug: msg={{ remove_trust_store }}
+

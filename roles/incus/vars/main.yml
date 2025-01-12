@@ -23,6 +23,5 @@ incus_kernel_parameters:
   - { state: "present",  param" : "net.ipv6.neigh.default.gc_thresh3",  "value" : "8192" }
   - { state: "present",  param" : "vm.max_map_count",                   "value" : "262144" }
 
-
 # https://linuxcontainers.org/incus/docs/main/reference/server_settings/
 

@@ -34,22 +34,6 @@
   when: inventory_hostname in groups['control']
 
 
-#- name: Define Facts for All Worker's Hostname
-#  set_fact:
-#    all_ext1_hostnames: "{{ groups['all'] | map('extract', hostvars, ['ansible_hostname']) | join(' ') }}"
-#- debug: msg={{ all_ext1_hostnames }}
-#- name: Define Fact for All Worker's First IP Address
-#  set_fact:
-#    all_net0_ipaddrs: "{{ groups['all'] | map('extract', hostvars, ['ansible_'~netdev0, 'ipv4', 'address']) | join(',') }}"
-#- debug: msg={{ all_net0_ipaddrs }}
-
-
-# - debug: msg="{{ ansible_distribution }}"
-# - debug: msg="{{ ansible_distribution_version}}"
-# - debug: msg="{{ ansible_distribution_major_version }}"
-# - debug: msg="{{ ansible_architecture }}"
-
-
 - name: Get VERSION CODENAME
   shell: . /etc/os-release && echo ${VERSION_CODENAME}
   register: get_version_codename
