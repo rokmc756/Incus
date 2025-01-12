@@ -53,7 +53,7 @@ $ make incus r=install(or uninstall) s=add/remove
 ~~~
 
 
-# Progress
+## Progress
 - [O] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange ssh keys
 - [O] Configure host build system, including installing dependencies and patching host system quirks
 - [O] Install/Configure and Uninstall Incus & Web UI Packages
