@@ -1,113 +1,99 @@
 temp:
-	@if [ "${r}" = "uninit" ]; then\
+	@if [ "${r}" = "init" ] || [ "${r}" = "uninit" ] || [ "${r}" = "reinit" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='uninit';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to init/uninit/reinit temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='uninit';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to init/uninit/reinit temp";\
 			fi\
 		else\
-			echo "No Actions to configure temp";\
+			echo "No actions to init/uninit/reinit temp";\
 		fi;\
-	elif [ "${r}" = "reinit" ]; then\
+	elif [ "${r}" = "prepare" ] || [ "${r}" = "clean" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='reinit';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to prepare/clean temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='reinit';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to prepare/clean temp";\
 			fi\
 		else\
-			echo "No Actions to configure temp";\
+			echo "No actions to prepare/clean temp";\
 		fi;\
-	elif [ "${r}" = "prepare" ]; then\
+	elif [ "${r}" = "enable" ] || [ "${r}" = "disable" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='prepare';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to ennable/disable temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='prepare';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to ennable/disable temp";\
 			fi\
 		else\
-			echo "No Actions to configure temp";\
+			echo "No actions to ennable/disable temp";\
 		fi;\
-	elif [ "${r}" = "clean" ]; then\
+	elif [ "${r}" = "install" ] || [ "${r}" = "uninstall" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='clean';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to install/uninstall temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='clean';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to configure temp";\
+				echo "No actions to install/uninstall temp";\
 			fi\
 		else\
-			echo "No Actions to configure temp";\
+			echo "No actions to install/uninstall temp";\
 		fi;\
-	elif [ "${r}" = "install" ]; then\
+	elif [ "${r}" = "add" ] || [ "${r}" = "remove" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='install';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to install temp";\
+				echo "No actions to add/remove temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='install';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to install temp";\
+				echo "No actions to add/remove temp";\
 			fi\
 		else\
-			echo "No actions to install temp";\
+			echo "No actions to add/remove temp";\
 		fi;\
-	elif [ "${r}" = "uninstall" ]; then\
+	elif [ "${r}" = "upgrade" ] || [ "${r}" = "downgrade" ]; then\
 		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='uninstall';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='${r}';\
 			else\
-				echo "No actions to uninstall temp";\
+				echo "No actions to upgrade/downgrade temp";\
 			fi\
 		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
 			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='uninstall';\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='${r}';\
 			else\
-				echo "No actions to uninstall temp";\
-			fi\
-		fi;\
-	elif [ "${r}" = "upgrade" ]; then\
-		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
-			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{"${s}": True}' --tags='upgrade';\
-			else\
-				echo "No actions to uninstall temp";\
-			fi\
-		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
-			if [ -z ${c} ];  then\
-				ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-temp.yml -e '{temp_all: True}' --tags='upgrade';\
-			else\
-				echo "No actions to uninstall temp";\
+				echo "No actions to upgrade/downgrade temp";\
 			fi\
 		else\
-			echo "No actions to uninstall temp";\
+			echo "No actions to upgrade/downgrade temp";\
 		fi;\
 	else\
 		echo "No actions to temp role";\

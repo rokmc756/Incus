@@ -34,4 +34,3 @@ shutdown:
 
 # Need to check what it should be needed
 .PHONY:	all init install update ssh common clean no_targets__ role-update
-

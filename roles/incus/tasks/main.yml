@@ -6,17 +6,13 @@
 
 - name: Set Facts For Network and Packages Informations and other Versions
   import_tasks: set-facts.yml
-  tags:
-    - install
-    - uninstall
-    - prepare
-    - cleanup
+  tags: init,uninit,reinit,prepare,clean,enable,disable,install,uninstall,add,remove,upgrade,downgrade
   when: inventory_hostname in groups['workers']
 
 
 - name: Enable Zabbly Package Repository
   import_tasks: enable-incus-repo.yml
-  tags: install
+  tags: enable
   when: ( repo is defined and repo == true ) and inventory_hostname in groups['workers']
 
 
@@ -28,8 +24,8 @@
 
 - name: Initialize Incus Host and Enable Cluster
   import_tasks: init-incus-host.yml
-  tags: install
-  when: ( init is defined and init == true ) and inventory_hostname in groups['control']
+  tags: init
+  when: ( host is defined and host == true ) and inventory_hostname in groups['control']
 
 
 - name: Install Web UI
@@ -38,27 +34,27 @@
   when: ( ui is defined and ui == true ) and inventory_hostname in groups['workers']
 
 
-- name: Attach Incus CA Key
+- name: Attach and Enable Incus CA Key
   import_tasks: attach-incus-ca-key.yml
-  tags: install
+  tags: enable
   when: ( key is defined and key == true ) and inventory_hostname in groups['control']
 
 
 - name: Add Incus Hosts into Cluster
   import_tasks: add-incus-hosts.yml
-  tags: install
-  when: ( add is defined and add == true ) and inventory_hostname in groups['cluster']
+  tags: add
+  when: ( host is defined and host == true ) and inventory_hostname in groups['cluster']
 
 
 - name: Remove Incus Hosts at Cluster
   import_tasks: remove-incus-hosts.yml
-  tags: uninstall
-  when: ( remove is defined and remove == true ) and inventory_hostname in groups['control']
+  tags: remove
+  when: ( host is defined and host == true ) and inventory_hostname in groups['control']
 
 
 - name: Force Clean Incus Control
   import_tasks: force-cleanup-incus.yml
-  tags: uninstall
+  tags: clean
   when: ( force is defined and force == true ) and inventory_hostname in groups['workers']
 
 
@@ -76,13 +72,13 @@
 
 - name: Cleanup Remaining Gabages
   import_tasks: cleanup-remaining-garbages.yml
-  tags: uninstall
-  when: ( clean is defined and clean == true ) and inventory_hostname in groups['workers']
+  tags: clean
+  when: ( garbage is defined and garbage == true ) and inventory_hostname in groups['workers']
 
 
 - name: Disable Zabbly Package Repository
   import_tasks: disable-incus-repo.yml
-  tags: uninstall
+  tags: disable
   when: ( repo is defined and repo == true ) and inventory_hostname in groups['workers']
 
 
