@@ -1,0 +1,5 @@
+# Edit a network forward
+# Use the following command to edit a network forward:
+$ incus network forward edit <network_name> <listen_address>
+
+# This command opens the network forward in YAML format for editing. You can edit both the general configuration and the port specifications.

@@ -1,0 +1,19 @@
+# To configure a project, you can either set a specific configuration option or edit the full project.
+#
+# Some configuration options can only be set for projects that do not contain any instances.
+#
+# Set specific configuration options
+# To set a specific configuration option, use the incus project set command.
+#
+# For example, to limit the number of containers that can be created in my-project to five, enter the following command:
+$ incus project set my-project limits.containers=5
+
+# To unset a specific configuration option, use the incus project unset command.
+#
+# [ Note ]
+# If you unset a configuration option, it is set to its default value. This default value might differ from the initial value that is set when the project is created.
+#
+# Edit the project
+# To edit the full project configuration, use the incus project edit command. For example:
+$ incus project edit my-project
+

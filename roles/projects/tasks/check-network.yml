@@ -1,0 +1,21 @@
+
+# Use the default network bridge that you set up during the Incus initialization. Check the default profile to see the default configuration
+# incus profile show default
+
+
+# Use an existing network interface by adding it as a network device to your instance. This network interface is outside of Incus control.
+# Therefore, you must specify all information that Incus needs to use the network interface.
+#
+# shell: incus config device add <instance_name> <device_name> nic nictype=<nic_type> ...
+
+
+# See Type: nic for a list of available NIC types and their configuration properties.
+# For example, you could add a pre-existing Linux bridge (br0) with the following command:
+#
+# shell: incus config device add <instance_name> eth0 nic nictype=bridged parent=br0
+
+
+# Create a managed network and add it as a network device to your instance.
+# With this method, Incus has all required information about the configured network, and you can directly attach it to your instance as a device:
+# shell: incus network attach <network_name> <instance_name> <device_name>
+

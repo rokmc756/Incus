@@ -1,0 +1,16 @@
+# Create and configure a network zone
+# Use the following command to create a network zone:
+$ incus network zone create <network_zone> [configuration_options...]
+
+# The following examples show how to configure a zone for forward DNS records, one for IPv4 reverse DNS records and one for IPv6 reverse DNS records, respectively:
+$ incus network zone create incus.example.net
+$ incus network zone create 2.0.192.in-addr.arpa
+$ incus network zone create 1.0.0.0.1.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa
+
+# [ Note ]
+# Zones must be globally unique, even across projects. If you get a creation error, it might be due to the zone already existing in another project.
+# You can either specify the configuration options when you create the network or configure them afterwards with the following command:
+$ incus network zone set <network_zone> <key>=<value>
+
+# Use the following command to edit a network zone in YAML format:
+$ incus network zone edit <network_zone>

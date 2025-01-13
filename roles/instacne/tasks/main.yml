@@ -67,13 +67,13 @@
 - name: Cleanup Remaining Gabages
   import_tasks: cleanup-remaining-garbages.yml
   tags: clean, destroy
-  when: (( garbage is defined and garbage == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+  when: (( garbage is defined and garbage == true ) and ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
 
 - name: Disable Zabbly Package Repository
   import_tasks: disable-incus-repo.yml
   tags: disable, destroy
-  when: ( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+  when: ( repo is defined and repo == true ) ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
 
 - name: Force Clean Incus Control
@@ -85,5 +85,5 @@
 - name: Reboot Incus Hosts
   import_tasks: reboot-incus-hosts.yml
   tags: clean, uninstall, destroy
-  when: ( reboot is defined and reboot == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
+  when: ( reboot is defined and reboot == true ) ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
 

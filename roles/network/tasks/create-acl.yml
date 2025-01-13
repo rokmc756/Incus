@@ -1,0 +1,18 @@
+# Network ACLs define traffic rules that allow controlling network access between different instances connected to the same network, and access to and from other networks.
+#
+# Network ACLs can be assigned directly to the NIC of an instance or to a network. When assigned to a network, the ACL applies to all NICs connected to the network.
+#
+# The instance NICs that have a particular ACL applied (either explicitly or implicitly through a network) make up a logical group, which can be referenced from other rules as a source or destination. See ACL groups for more information.
+#
+# Create an ACL
+# Use the following command to create an ACL:
+$ incus network acl create <ACL_name> [configuration_options...]
+
+# This command creates an ACL without rules. As a next step, add rules to the ACL.
+# Valid network ACL names must adhere to the following rules:
+
+# Names must be between 1 and 63 characters long.
+# Names must be made up exclusively of letters, numbers and dashes from the ASCII table.
+# Names must not start with a digit or a dash.
+# Names must not end with a dash.
+

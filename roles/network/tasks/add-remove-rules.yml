@@ -1,0 +1,16 @@
+# Add or remove rules
+# Each ACL contains two lists of rules:
+#
+# Ingress rules apply to inbound traffic going towards the NIC.
+# Egress rules apply to outbound traffic leaving the NIC.
+#
+# To add a rule to an ACL, use the following command, where <direction> can be either ingress or egress:
+$ incus network acl rule add <ACL_name> <direction> [properties...]
+
+# This command adds a rule to the list for the specified direction.
+#
+# You cannot edit a rule (except if you edit the full ACL), but you can delete rules with the following command:
+$ incus network acl rule remove <ACL_name> <direction> [properties...]
+
+# You must either specify all properties needed to uniquely identify a rule or add --force to the command to delete all matching rules.
+

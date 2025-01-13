@@ -1,0 +1,13 @@
+# List configured remotes
+# To see all configured remote servers, enter the following command:
+$ incus remote list
+
+# Remote servers that use the simple streams format are pure image servers. Servers that use the incus format are Incus servers, which either serve solely as image servers or might provide some images in addition to serving as regular Incus servers. See Image server types for more information.
+#
+# List available images on a remote
+# To list all remote images on a server, enter the following command:
+
+$ incus image list <remote>:
+
+# You can filter the results. See Filter available images for instructions.
+

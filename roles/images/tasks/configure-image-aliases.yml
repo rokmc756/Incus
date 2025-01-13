@@ -1,0 +1,19 @@
+# Configuring an alias for an image can be useful to make it easier to refer to an image, since remembering an alias is usually easier than remembering a fingerprint.
+# Most importantly, however, you can change an alias to point to a different image, which allows creating an alias that always provides a current image 
+# (for example, the latest version of a release).
+#
+# You can see some of the existing aliases in the image list. To see the full list, enter the following command:
+$ incus image alias list
+
+# You can directly assign an alias to an image when you copy or import or publish it. Alternatively, enter the following command:
+$ incus image alias create <alias_name> <image_fingerprint>
+
+# You can also delete an alias:
+$ incus image alias delete <alias_name>
+
+# To rename an alias, enter the following command:
+$ incus image alias rename <alias_name> <new_alias_name>
+
+# If you want to keep the alias name, but point the alias to a different image (for example, a newer version),
+# you must delete the existing alias and then create a new one.
+

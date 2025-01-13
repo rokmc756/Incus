@@ -1,0 +1,16 @@
+# View image information
+# To view information about an image, enter the following command:
+$ incus image info <image_ID>
+
+# As the image ID, you can specify either the image’s alias or its fingerprint. For a remote image, remember to include the remote server (for example, images:ubuntu/22.04).
+
+# To display only the image properties, enter the following command:
+$ incus image show <image_ID>
+
+# You can also display a specific image property (located under the properties key) with the following command:
+$ incus image get-property <image_ID> <key>
+
+# For example, to show the release name of the official Ubuntu 22.04 image, enter the following command:
+$ incus image get-property images:ubuntu/22.04 release
+
+

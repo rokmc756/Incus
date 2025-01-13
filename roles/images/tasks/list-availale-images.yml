@@ -1,0 +1,17 @@
+# List available images
+# To list all images on a server, enter the following command:
+$ incus image list [<remote>:]
+
+# If you do not specify a remote, the default remote is used.
+
+
+# Filter available images
+# To filter the results that are displayed, specify a part of the alias or fingerprint after the command. For example, to show all Ubuntu 22.04 images, enter the following command:
+$ incus image list images: 22.04
+
+# You can specify several filters as well. For example, to show all Arm 64-bit Ubuntu 22.04 images, enter the following command:
+$ incus image list images: 22.04 arm64
+
+# To filter for properties other than alias or fingerprint, specify the filter in <key>=<value> format. For example:
+$ incus image list images: 22.04 architecture=x86_64
+

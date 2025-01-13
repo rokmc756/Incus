@@ -1,0 +1,14 @@
+# Configure the BGP server
+# To configure Incus as a BGP server, set the following server configuration options on all cluster members:
+#
+# core.bgp_address - the IP address for the BGP server
+# core.bgp_asn - the ASN for the local server
+# core.bgp_routerid - the unique identifier for the BGP server
+#
+# For example, set the following values:
+$ incus config set core.bgp_address=192.0.2.50:179
+$ incus config set core.bgp_asn=65536
+$ incus config set core.bgp_routerid=192.0.2.50
+
+# Once these configuration options are set, Incus starts listening for BGP session
+

@@ -1,0 +1,21 @@
+# Create a network in a cluster
+# If you are running an Incus cluster and want to create a network, you must create the network for each cluster member separately.
+# The reason for this is that the network configuration, for example, the name of the parent network interface, might be different between cluster members.
+#
+# Therefore, you must first create a pending network on each member with the --target=<cluster_member> flag and the appropriate configuration for the member. Make sure to use the same network name for all members. Then create the network without specifying the --target flag to actually set it up.
+#
+# For example, the following series of commands sets up a physical network with the name UPLINK on three cluster members:
+$incus network create UPLINK --type=physical parent=br0 --target=vm01
+Network UPLINK pending on member vm01
+
+$ incus network create UPLINK --type=physical parent=br0 --target=vm02
+Network UPLINK pending on member vm02
+
+$ incus network create UPLINK --type=physical parent=br0 --target=vm03
+Network UPLINK pending on member vm03
+
+$ incus network create UPLINK --type=physical
+Network UPLINK created
+
+# Also see How to configure networks for a cluster.
+

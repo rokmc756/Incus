@@ -1,0 +1,51 @@
+---
+_pools:
+  dir:
+    loopback:
+      - { name: 'dir-pool01' }
+    directory:
+      - { name: 'dir-pool02', source: '/mnt/j-dir02' }
+  lvm:
+    loopback:
+      - { name: 'lvm-loop-pool01' }
+    vg:
+      - { name: 'lvm-vg-pool01', source: 'j-vg01' }
+    thin:
+      - { name: 'lvm-thin-pool01', vg: 'j-vg02', source: 'j-thin-lv01', size: '50G' }
+    block:
+      - { name: 'lvm-block-poo01', source: '/dev/vdb /dev/vdc' }
+      - { name: 'lvm-block-poo02', source: 'j-vg02', thinpool: 'j-thin-pool01', size: '50' }
+      - { name: 'lvm-block-poo03', source: '/dev/vdb' }
+      - { name: 'lvm-block-poo04', source: '/dev/vdb', vg: 'j-vg03' }
+  btrfs:
+    loopback:
+      - { name: 'btrfs-loop-pool01', source: '/dev/vdd', size: '' }
+    dir:
+      - { name: 'btrfs-dir-pool01', source: '/data/j-btrfs01', size: '' }
+    block:
+      - { name: 'btrfs-block-pool01', source: '/dev/vde', size: '' }
+  zfs:
+    loopback:
+      - { name: 'zfs-loop-pool01', zpool: 'j-zpool01' }
+    zpool:
+      - { name: 'zfs-zpool-pool01', source: 'j-zpool01', slice: 'custom'  }
+    dataset:
+      - { name: 'zfs-dataseet-pool01', source: 'z-pool01', slice: 'custom', block_mode: 'yes' }
+    block:
+      - { name: 'zfs-block-pool01', source: '/dev/vdb', size: '50G' }
+    zblock:
+      - { name: 'zfs-zblock-pool01', source: '/dev/vdc', zpool: 'j-zpool01' }
+  ceph_rbd:
+      - { name: 'rbd-pool01' }
+      - { name: 'rbd-pool02', cluster: 'ceph-jclu01' }
+      - { name: 'rbd-pool03', osd_pool: 'j-osd-pool01' }
+      - { name: 'rbd-pool04', source: 'j-osd-pool02' }
+      - { name: 'rbd-pool05', source: 'j-replca-pool01', osd_data_pool: 'j-ec-pool01' }
+  cephfs:
+      - { name: 'cephfs-pool01', source: 'j-cephfs01' }
+      - { name: 'cephfs-pool02', source: 'j-cephfs02/j-dir01' }
+      - { name: 'cephfs-pool03', source: 'j-cephfs03', create_missing: true, data_pool: 'j-data-pool01', meta_pool: 'j-metadata-pool01' }
+  ceph_obj:
+    - { name: 'ojb-pool01', endpoint: 'cephobject.radosgw.endpoint=https://lab.jtest.futurfusion.io/radosgw' }
+  lvmcluster:
+

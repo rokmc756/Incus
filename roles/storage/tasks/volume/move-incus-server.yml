@@ -1,0 +1,17 @@
+# Copy or move between Incus servers
+# You can copy or move custom storage volumes between different Incus servers by specifying the remote for each pool:
+#
+# incus storage volume copy <source_remote>:<source_pool_name>/<source_volume_name> <target_remote>:<target_pool_name>/<target_volume_name>
+# incus storage volume move <source_remote>:<source_pool_name>/<source_volume_name> <target_remote>:<target_pool_name>/<target_volume_name>
+# You can add the --mode flag to choose a transfer mode, depending on your network setup:
+#
+# pull (default)
+# Instruct the target server to pull the respective storage volume.
+#
+# push
+# Push the storage volume from the source server to the target server.
+#
+# relay
+# Pull the storage volume from the source server to the local client, and then push it to the target server.
+
+

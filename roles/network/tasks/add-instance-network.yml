@@ -1,0 +1,21 @@
+# To grant direct network access to an instance, you must assign it at least one network device, also called NIC.
+# You can configure the network device in one of the following ways:
+# 
+# Use the default network bridge that you set up during the Incus initialization. Check the default profile to see the default configuration:
+$ incus profile show default
+
+# This method is used if you do not specify a network device for your instance.
+#
+# Use an existing network interface by adding it as a network device to your instance. This network interface is outside of Incus control. Therefore, you must specify all information that Incus needs to use the network interface.
+#
+# Use a command similar to the following:
+$ incus config device add <instance_name> <device_name> nic nictype=<nic_type> ...
+
+# See Type: nic for a list of available NIC types and their configuration properties.
+# For example, you could add a pre-existing Linux bridge (br0) with the following command:
+$ incus config device add <instance_name> eth0 nic nictype=bridged parent=br0
+
+# Create a managed network and add it as a network device to your instance. With this method, Incus has all required information about the configured network, and you can directly attach it to your instance as a device:
+$ incus network attach <network_name> <instance_name> <device_name>
+
+# See Attach a network to an instance for more information.

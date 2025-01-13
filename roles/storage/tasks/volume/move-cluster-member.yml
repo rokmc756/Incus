@@ -1,0 +1,6 @@
+# Copy or move between cluster members
+# For most storage drivers (except for ceph and ceph-fs), storage volumes exist only on the cluster member for which they were created.
+#
+#To copy or move a custom storage volume from one cluster member to another, add the --target and --destination-target flags
+# to specify the source cluster member and the target cluster member, respectively.
+
