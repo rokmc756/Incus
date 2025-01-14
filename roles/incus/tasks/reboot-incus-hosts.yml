@@ -10,3 +10,16 @@
 
 
 - meta: flush_handlers
+
+
+- name: Delete Remaining TmpFS
+  file:
+    path: "/var/lib/incus/{{ item }}"
+    state: absent
+  register: delete_remaining_tmpfs
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/storage-pools"
+- debug: msg={{ delete_remaining_tmpfs }}
+  when: print_debug == true
+

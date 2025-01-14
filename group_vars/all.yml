@@ -22,18 +22,21 @@ _incus:
   base_path: /root
   host_num: "{{ groups['workers'] | length }}"
   net:
-    ipaddr0: "192.168.0.18"
-    ipaddr2: "192.168.2.18"
+    ipaddr0: "192.168.0.8"
+    ipaddr1: "192.168.1.8"
+    ipaddr2: "192.168.2.8"
   client:
     net:
       type: "virtual"              # Or Physical
       cores: 1
-      ipaddr0: "192.168.0.18"
-      ipaddr2: "192.168.2.18"
+      ipaddr0: "192.168.0.8"
+      ipaddr1: "192.168.1.8"
+      ipaddr2: "192.168.2.8"
   ext_storage:
     net:
       ipaddr0: "192.168.0."
       ipaddr1: "192.168.1."
+      ipaddr2: "192.168.2."
   vms:
     rk9: [ "rk9-freeipa", "rk9-node01", "rk9-node02", "rk9-node03", "rk9-node04", "rk9-node05" ]
     ubt24: [ "rk9-freeipa", "ubt24-node01", "ubt24-node02", "ubt24-node03", "ubt24-node04", "ubt24-node05" ]

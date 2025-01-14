@@ -122,3 +122,16 @@
 
 
 - meta: flush_handlers
+
+
+- name: Delete Remaining Storage Pools
+  file:
+    path: "{{ item }}"
+    state: absent
+  register: delete_remaining_storage_pools
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/storage-pools"
+- debug: msg={{ delete_remaining_storage_pools }}
+  when: print_debug == true
+

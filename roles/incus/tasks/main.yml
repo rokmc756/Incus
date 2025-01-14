@@ -85,5 +85,5 @@
 - name: Reboot Incus Hosts
   import_tasks: reboot-incus-hosts.yml
   tags: clean, uninstall, destroy
-  when: ( reboot is defined and reboot == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
+  when: (( reboot is defined and reboot == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
 

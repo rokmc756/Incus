@@ -19,7 +19,7 @@ ubt_common_devel_pkgs: "git,make,tcl,tk"
 ubt20_common_devel_pkgs: "perl"
 ubt22_common_devel_pkgs: "perl"
 ubt23_common_devel_pkgs: "perl"
-ubt24_common_devel_pkgs: "perl,qemu-system-*,zfsutils-linux"
+ubt24_common_devel_pkgs: "perl,qemu-system-x86_64,zfsutils-linux"
 
 
 official_rh_pkgs: "pdsh"

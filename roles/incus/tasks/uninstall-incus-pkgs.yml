@@ -21,7 +21,7 @@
   register: stop_incus
   ignore_errors: true
   until: stop_incus is succeeded
-  retries: 5
+  retries: 3
   delay: 10
   with_items:
     - "incus-user.socket"

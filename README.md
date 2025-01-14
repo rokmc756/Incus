@@ -16,6 +16,8 @@ It's originated by Jack Moon.
 ## Prerequisite
 MacOS or Linux should have installed ansible as ansible host.
 Supported OS for ansible target host should be prepared with package repository configured such as yum, dnf and apt
+At least a Normal User which has Sudo Privileges
+Root User should have Password ans Allow access with Password login via SSH
 
 ## Prepare ansible host to run GPFarmer
 * MacOS
@@ -29,7 +31,7 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 ## How to run this Ansible Playbook
 #### Initialize/Uninstall Linux Hosts
 ~~~!yaml
-$ make hosts r=install(or uninstall) s=incus
+$ make hosts r=init(or uninit) s=all
 ~~~
 #### Enable/Disable Zabbly Repository
 ~~~!yaml
