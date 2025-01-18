@@ -11,6 +11,9 @@ boot:
 shutdown:
 	@ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} control-vms.yml --extra-vars "power_state=shutdown-guest power_title=Shutdown VMs"
 
+ceph:
+	@ansible-playbook -i ansible-hosts --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-ceph.yml --extra-vars '{"${s}": True}' --tags='${r}';
+
 
 # For All Roles
 %:

@@ -76,4 +76,8 @@ $ make incus r=destroy s=force
 - [O] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
 - [O] Add Nodes
 - [O] Remove Nodes
+- [0] Tested CephRBD and CephFS
+- [ ] LVM Cluster Setting
+- [ ] Ceph Storage Pool - CephRBD, CephFS, Radosgw
+- [ ] Network Settings - OVN
 
