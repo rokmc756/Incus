@@ -1,0 +1,10 @@
+---
+- name: Delete Btrfs Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_btrfs_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.btrfs }}"
+- debug: msg={{ delete_btrfs_pools }}
+

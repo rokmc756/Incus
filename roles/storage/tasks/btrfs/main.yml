@@ -1,0 +1,42 @@
+---
+- name: Delete Btrfs Devices
+  import_tasks: btrfs/clean-devices.yml
+  tags: create, install
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+#- name: Format Btrfs Devices
+#  import_tasks: btrfs/format-devices.yml
+#  tags: create, install
+#  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Pools
+  import_tasks: btrfs/create-btrfs-pools.yml
+  tags: create, install
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Volumes
+  import_tasks: btrfs/create-btrfs-volumes.yml
+  tags: create, install
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Volumes
+  import_tasks: btrfs/delete-btrfs-volumes.yml
+  tags: delete, uninstall
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Pools
+  import_tasks: btrfs/delete-btrfs-pools.yml
+  tags: delete, uninstall
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Devices
+  import_tasks: btrfs/clean-devices.yml
+  tags: clean, delete, uninstall
+  when: (( btrfs is defined and btrfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+

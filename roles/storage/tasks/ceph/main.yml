@@ -1,0 +1,36 @@
+---
+- name: Enable Ceph Clients
+  import_tasks: ceph/enable-ceph-clients.yml
+  tags: enable
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create Ceph Pools
+  import_tasks: ceph/create-ceph-pools.yml
+  tags: create, install
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create Ceph Volumes
+  import_tasks: ceph/create-ceph-volumes.yml
+  tags: create, install
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Volumes
+  import_tasks: ceph/delete-ceph-volumes.yml
+  tags: delete, uninstall
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Pools
+  import_tasks: ceph/delete-ceph-pools.yml
+  tags: delete, uninstall
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Disable Ceph Clients
+  import_tasks: ceph/disable-ceph-clients.yml
+  tags: disable
+  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+

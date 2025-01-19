@@ -1,0 +1,10 @@
+---
+- name: Delete LVM Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_lvm_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm }}"
+- debug: msg={{ delete_lvm_pools }}
+

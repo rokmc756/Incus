@@ -1,0 +1,12 @@
+---
+- name: Create Btrfs Volumes
+  shell: |
+    incus storage volume create {{ item.pool }} {{ item.name }}
+  register: create_btrfs_volumes
+  with_items:
+    - "{{ volumes.btrfs }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_btrfs_volumes }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+

@@ -1,0 +1,37 @@
+---
+- name: Create Volume Groups
+  import_tasks: lvm/create-vg.yml
+  tags: create, install
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create LVM Pools
+  import_tasks: lvm/create-lvm-pools.yml
+  tags: create, install
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create LVM Volumes
+  import_tasks: lvm/create-lvm-volumes.yml
+  tags: create, install
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete LVM Volumes
+  import_tasks: lvm/delete-lvm-volumes.yml
+  tags: delete, uninstall
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete LVM Pools
+  import_tasks: lvm/delete-lvm-pools.yml
+  tags: delete, uninstall
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete LVM Devices
+  import_tasks: lvm/clean-devices.yml
+  tags: delete, uninstall
+  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+

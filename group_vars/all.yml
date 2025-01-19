@@ -13,9 +13,6 @@ _incus:
     zabbly:
       link: "https://pkgs.zabbly.com/incus"
       version: "lts-6.0"
-      # lts-6.0
-      # stable
-      # daily
   download_url: ""
   download: false
   local_download_dir: "/mnt/c/Users/USER/Downloads"
@@ -29,6 +26,14 @@ _incus:
     net:
       type: "virtual"              # Or Physical
       cores: 1
+      ipaddr0: "192.168.0.8"
+      ipaddr1: "192.168.1.8"
+      ipaddr2: "192.168.2.8"
+  ceph:
+    control_ip_addr: "192.168.1.71"
+    user: "root"
+    passwd: "changeme"
+    net:
       ipaddr0: "192.168.0.8"
       ipaddr1: "192.168.1.8"
       ipaddr2: "192.168.2.8"

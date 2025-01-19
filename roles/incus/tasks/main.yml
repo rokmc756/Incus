@@ -29,7 +29,7 @@
 
 
 - name: Install Web UI
-  import_tasks: install-incus-ui.yml
+  import_tasks: ui/install-incus-ui.yml
   tags: install
   when: (( ui is defined and ui == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
@@ -53,7 +53,7 @@
 
 
 - name: Uninstall Incus Web UI
-  import_tasks: uninstall-incus-ui.yml
+  import_tasks: ui/uninstall-incus-ui.yml
   tags: uninstall, destroy
   when: (( ui is defined and ui == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
@@ -73,7 +73,7 @@
 - name: Disable Zabbly Package Repository
   import_tasks: disable-incus-repo.yml
   tags: disable, destroy
-  when: ( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+  when: (( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
 
 - name: Force Clean Incus Control
