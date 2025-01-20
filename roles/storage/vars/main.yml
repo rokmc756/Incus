@@ -8,12 +8,28 @@ pools:
     obj:
   btrfs:
     - { name: "btrfs-pool01", source: "/dev/sdc" }
+  zfs:
+    pool:
+      - { name: "zfs-pool02", pool: "zfs-pool01" }
+    slice:
+      - { name: "zfs-pool03", pool: "zfs-pool02", slice: "custom" }
+    block:
+      - { name: "zfs-pool04", source: "/dev/sdc" }
+    zpool:
+      - { name: "zfs-pool05", source: "/dev/sdc", pool: "zfs-pool04" }
   dir:
     - { name: "dir-pool01", source: "/mnt/dir-pool01" }
   lvm:
-    - { name: "lvm-pool01", source: "/dev/sdb /dev/sdc", vg: "lvm-vg01" }
+    none:
+      - { name: "lvm-pool01" }
+    vgs:
+      - { name: "lvm-pool02", source: "/dev/sdb /dev/sdc", vg: "lvm-vg02" }
     thin:
-      - { name: "lvm-pool01", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
+      - { name: "lvm-pool03", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg03", vg_pool: "lvm-vg-pool03" }
+    block:
+      - { name: "lvm-pool04", source: "/dev/sdc", vg: "lvm-vg04" }
+    vg:
+      - { name: "lvm-pool05", source: "/dev/sdc", vg: "lvm-vg02" }
 
 
 volumes:
@@ -25,8 +41,23 @@ volumes:
     obj:
   btrfs:
     - { name: "btrfs-volume01", size: "1GiB", pool: "btrfs-pool01" }
+  zfs:
+    pool:
+      - { name: "zfs-pool02", pool: "zfs-pool01" }
+    slice:
+      - { name: "zfs-pool03", pool: "zfs-pool02", slice: "custom" }
+    block:
+      - { name: "zfs-pool04", source: "/dev/sdc" }
+    zpool:
+      - { name: "zfs-pool05", source: "/dev/sdc", pool: "zfs-pool04" }
   dir:
     - { name: "dir-volume01", size: "1GiB", pool: "dir-pool01" }
   lvm:
-    - { name: "lvm-volume01", size: "1GiB", pool: "lvm-pool01" }
+    vg:
+      - { name: "lvm-vg-volume01", size: "1GiB", pool: "lvm-pool01" }
+    thin:
+      - { name: "lvm-thin-volume01", size: "1GiB", pool: "lvm-thin-pool01" }
+
+
+# source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
 

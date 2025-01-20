@@ -19,6 +19,11 @@
   when: ( btrfs is defined and btrfs == true )
 
 
+- name: Import ZFS Storage Pools
+  import_tasks: zfs/main.yml
+  when: ( zfs is defined and zfs == true )
+
+
 - name: Import Directory Storage Pools
   import_tasks: dir/main.yml
   when: ( dir is defined and dir == true )

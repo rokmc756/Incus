@@ -1,0 +1,30 @@
+---
+- name: Prepare ZFS Pools
+  import_tasks: zfs/prepare-zfs.yml
+  tags: create, install
+  when: (( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create ZFS Pools
+  import_tasks: zfs/create-zfs-pools.yml
+  tags: create, install
+  when: (( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Create ZFS Volumes
+  import_tasks: zfs/create-zfs-volumes.yml
+  tags: create, install
+  when: (( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Volumes
+  import_tasks: zfs/delete-zfs-volumes.yml
+  tags: delete, uninstall
+  when: (( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Pools
+  import_tasks: zfs/delete-zfs-pools.yml
+  tags: delete, uninstall
+  when: (( zfs is defined and zfs == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+
