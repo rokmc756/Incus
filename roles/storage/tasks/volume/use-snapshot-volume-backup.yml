@@ -6,35 +6,35 @@
 # Create a snapshot of a custom storage volume
 # Use the following command to create a snapshot for a custom storage volume:
 #
-$ incus storage volume snapshot create <pool_name> <volume_name> [<snapshot_name>]
+# $ incus storage volume snapshot create <pool_name> <volume_name> [<snapshot_name>]
 # Add the --reuse flag in combination with a snapshot name to replace an existing snapshot.
 
 # By default, snapshots are kept forever, unless the snapshots.expiry configuration option is set. To retain a specific snapshot even if a general expiry time is set, use the --no-expiry flag.
 
 # View, edit or delete snapshots
 # Use the following command to display the snapshots for a storage volume:
-$ incus storage volume info <pool_name> <volume_name>
+# $ incus storage volume info <pool_name> <volume_name>
 
 # You can view or modify snapshots in a similar way to custom storage volumes, by referring to the snapshot with <volume_name>/<snapshot_name>.
 
 # To show information about a snapshot, use the following command:
-$ incus storage volume show <pool_name> <volume_name>/<snapshot_name>
+# $ incus storage volume show <pool_name> <volume_name>/<snapshot_name>
 
 # To edit a snapshot (for example, to add a description or change the expiry date), use the following command:
-$ incus storage volume edit <pool_name> <volume_name>/<snapshot_name>
+# $ incus storage volume edit <pool_name> <volume_name>/<snapshot_name>
 
 # To delete a snapshot, use the following command:
-$ incus storage volume delete <pool_name> <volume_name>/<snapshot_name>
+# $ incus storage volume delete <pool_name> <volume_name>/<snapshot_name>
 
 # Schedule snapshots of a custom storage volume
 # You can configure a custom storage volume to automatically create snapshots at specific times.
 # To do so, set the snapshots.schedule configuration option for the storage volume (see Configure storage volume settings).
 
 # For example, to configure daily snapshots, use the following command:
-$ incus storage volume set <pool_name> <volume_name> snapshots.schedule @daily
+# $ incus storage volume set <pool_name> <volume_name> snapshots.schedule @daily
 
 # To configure taking a snapshot every day at 6 am, use the following command:
-incus storage volume set <pool_name> <volume_name> snapshots.schedule "0 6 * * *"
+# $ incus storage volume set <pool_name> <volume_name> snapshots.schedule "0 6 * * *"
 
 # When scheduling regular snapshots, consider setting an automatic expiry (snapshots.expiry) 
 # and a naming pattern for snapshots (snapshots.pattern). 
@@ -43,9 +43,8 @@ incus storage volume set <pool_name> <volume_name> snapshots.schedule "0 6 * * *
 # Restore a snapshot of a custom storage volume
 # You can restore a custom storage volume to the state of any of its snapshots.
 # To do so, you must first stop all instances that use the storage volume. Then use the following command:
-$ incus storage volume snapshot restore <pool_name> <volume_name> <snapshot_name>
+# $ incus storage volume snapshot restore <pool_name> <volume_name> <snapshot_name>
 
 # You can also restore a snapshot into a new custom storage volume, either in the same storage pool or in a different one (even a remote storage pool). To do so, use the following command:
-$ incus storage volume copy <source_pool_name>/<source_volume_name>/<source_snapshot_name> <target_pool_n
-
+# $ incus storage volume copy <source_pool_name>/<source_volume_name>/<source_snapshot_name> <target_pool_n
 

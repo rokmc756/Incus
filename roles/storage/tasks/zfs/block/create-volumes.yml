@@ -1,0 +1,10 @@
+---
+- name: Create ZFS Block Volumes
+  shell: |
+    incus storage volume create {{ item.pool }} {{ item.name }}
+  register: create_zfs_volumes
+  with_items:
+    - "{{ volumes.zfs.block }}"
+- debug: msg={{ create_zfs_volumes }}
+  when: print_debug == true
+

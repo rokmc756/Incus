@@ -31,7 +31,7 @@
 
 - name: Import LVM Storage Pools
   import_tasks: lvm/main.yml
-  when: ( lvm is defined and lvm == true ) and ( vg is defined and vg == true )
+  when: ( lvm is defined and lvm == true )
 
 
 #- name: Import LVM Thin Storage Pools

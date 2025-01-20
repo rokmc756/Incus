@@ -1,6 +1,6 @@
 # If you need more storage in a volume, you can increase the size of your storage volume. In some cases, it is also possible to reduce the size of a storage volume.
 # To resize a storage volume, set its size configuration:
-$ incus storage volume set <pool_name> <volume_name> size <new_size>
+# $ incus storage volume set <pool_name> <volume_name> size <new_size>
 
 # [ Important ]
 # Growing a storage volume usually works (if the storage pool has sufficient storage).

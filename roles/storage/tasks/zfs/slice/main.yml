@@ -1,0 +1,36 @@
+---
+- name: Prepare ZFS ZPool Slice Storage Pools
+  import_tasks: zfs/slice/prepare-zfs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS ZPool Slice Storage Pools
+  import_tasks: zfs/slice/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS ZPool Slice Storage Volumes
+  import_tasks: zfs/slice/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS ZPool Slice Storage Volumes
+  import_tasks: zfs/slice/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS ZPool Slice Storage Pools
+  import_tasks: zfs/slice/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Storage Devices
+  import_tasks: zfs/slice/clean-devices.yml
+  tags: clean, delete, uninstall
+  when: inventory_hostname in groups['workers']
+

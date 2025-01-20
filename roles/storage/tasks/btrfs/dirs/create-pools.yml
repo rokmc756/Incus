@@ -1,0 +1,34 @@
+---
+- name: Create Directory for Btrfs Directory Pools
+  file:
+    path: "{{ item.source }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  register: create_directory
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ create_directory }}
+
+
+- name: Prepare Btrfs Directory Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} btrfs source={{ item.source }} --target={{ inventory_hostname }}
+  register: prepare_cluster_btrfs_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ prepare_cluster_btrfs_pools }}
+
+
+- name: Create Btrfs Directory Pools
+  shell: |
+    incus storage create {{ item.name }} btrfs
+  register: create_pools
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

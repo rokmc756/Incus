@@ -1,0 +1,11 @@
+---
+- name: Delete Directory for Directory Pools
+  file:
+    path: "{{ item.source }}"
+    state: absent
+  register: delete_directory
+  ignore_errors: true
+  with_items:
+    - "{{ pools.dir.dirs }}"
+- debug: msg={{ delete_directory }}
+

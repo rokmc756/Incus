@@ -1,0 +1,10 @@
+---
+- name: Delete Directory Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.dir.dirs }}"
+- debug: msg={{ delete_pools }}
+

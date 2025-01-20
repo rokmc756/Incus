@@ -1,0 +1,20 @@
+---
+- name: Create Volume Group
+  shell: |
+    vgcreate {{ item.vg }} {{ item.source }}
+  register: create_vg
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.thin }}"
+- debug: msg={{ create_vg }}
+
+
+- name: Create ThinPool LVs
+  shell: |
+    lvcreate -L {{ item.size }} -T {{ item.vg }}/{{ item.thinpool }}
+  register: create_thin_pool
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.thin }}"
+- debug: msg={{ create_thin_pool }}
+

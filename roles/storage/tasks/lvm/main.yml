@@ -1,37 +1,30 @@
 ---
-- name: Create Volume Groups
-  import_tasks: lvm/create-vg.yml
-  tags: create, install
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+- name: Import LVM Local Storage Pools
+  import_tasks: lvm/local/main.yml
+  when: ( local is defined and local == true )
 
 
-- name: Create LVM Pools
-  import_tasks: lvm/create-lvm-pools.yml
-  tags: create, install
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
+- name: Import LVM Block Storage Pools
+  import_tasks: lvm/block/main.yml
+  when: ( blk is defined and blk == true )
 
 
-- name: Create LVM Volumes
-  import_tasks: lvm/create-lvm-volumes.yml
-  tags: create, install
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+- name: Import LVM VGs Storage Pools
+  import_tasks: lvm/vgs/main.yml
+  when: ( vgs is defined and vgs == true )
 
 
-- name: Delete LVM Volumes
-  import_tasks: lvm/delete-lvm-volumes.yml
-  tags: delete, uninstall
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+- name: Import LVM VG Storage Pools
+  import_tasks: lvm/vg/main.yml
+  when: ( vg is defined and vg == true )
 
 
-- name: Delete LVM Pools
-  import_tasks: lvm/delete-lvm-pools.yml
-  tags: delete, uninstall
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['control']
+- name: Import LVM Thin Storage Pools
+  import_tasks: lvm/thin/main.yml
+  when: ( thin is defined and thin == true )
 
 
-- name: Delete LVM Devices
-  import_tasks: lvm/clean-devices.yml
-  tags: delete, uninstall
-  when: (( lvm is defined and lvm == true ) or ( storage_all is defined and storage_all == true )) and inventory_hostname in groups['workers']
-
+#- name: Import LVM Block Storage Pools
+#  import_tasks: lvm/block/main.yml
+#  when: ( lvm is defined and lvm == true ) and ( block is defined and block == true )
 

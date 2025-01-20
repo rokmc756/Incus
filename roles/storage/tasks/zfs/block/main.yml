@@ -1,0 +1,36 @@
+---
+- name: Prepare ZFS Block Pools
+  import_tasks: zfs/block/prepare-zfs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS Block Pools
+  import_tasks: zfs/block/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS Block Volumes
+  import_tasks: zfs/block/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Block Volumes
+  import_tasks: zfs/block/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Block Pools
+  import_tasks: zfs/block/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Storage Devices
+  import_tasks: zfs/block/clean-devices.yml
+  tags: clean, delete, uninstall
+  when: inventory_hostname in groups['workers']
+

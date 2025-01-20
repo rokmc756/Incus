@@ -67,6 +67,44 @@ $ make incus r=destroy s=force
 ~~~
 
 
+## Create Storage Pools
+### Btrfs
+```yaml
+$ make storage r=create s=btrfs
+$ make storage r=uninstall s=btrfs
+```
+### ZFS
+### LVM
+#### 1) Local Directory
+```yaml
+$ make storage r=create s=lvm c=local
+$ make storage r=create s=lvm c=dirs
+$ make storage r=uninstall s=lvm c=local
+$ make storage r=uninstall s=lvm c=dirs
+```
+#### 2) Block Deivce
+```yaml
+$ make storage r=create s=lvm c=block
+$ make storage r=uninstall s=lvm c=block
+```
+#### 1) Volume Groups
+```yaml
+$ make storage r=create s=lvm c=vgs
+$ make storage r=uninstall s=lvm c=vgs
+```
+#### 1) Volume Group
+```yaml
+$ make storage r=create s=lvm c=vg
+$ make storage r=uninstall s=lvm c=vg
+```
+
+
+
+### Directory
+### Ceph
+
+
+
 ## Progress
 - [O] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange ssh keys
 - [O] Configure host build system, including installing dependencies and patching host system quirks
