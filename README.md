@@ -112,8 +112,12 @@ $ make storage r=create s=ceph c=rgw
 - [O] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
 - [O] Add Nodes
 - [O] Remove Nodes
-- [0] Tested CephRBD and CephFS
+- [0] Local Storage Pool
+- [0] ZFS Storage Pool
+- [0] Btrfs Storage Pool
+- [0] LVM Storage Pool
+- [0] Ceph Storage Pool - CephRBD, CephFS
+- [ ] Ceph Rados Gateway Storage Pool
 - [ ] LVM Cluster Setting
-- [ ] Ceph Storage Pool - CephRBD, CephFS, Radosgw
-- [ ] Network Settings - OVN
+- [ ] Network Settings - OVN and so on
 
