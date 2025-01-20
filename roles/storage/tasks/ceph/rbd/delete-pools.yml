@@ -1,0 +1,28 @@
+---
+- name: Allow to Delete Pools
+  shell: |
+    ceph tell mon.\* injectargs '--mon-allow-pool-delete=true'
+  register: allow_delete_pools
+  ignore_errors: true
+- debug: msg={{ allow_delete_pools }}
+
+
+- name: Delete Ceph RBD Pools
+  shell: |
+    ceph --name client.admin --cluster ceph osd pool delete {{ item.name }} {{ item.name }} --yes-i-really-really-mean-it
+  register: delete_ceph_rbd_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.ceph.rbd }}"
+- debug: msg={{ delete_ceph_rbd_pools }}
+
+
+- name: Delete Incus Ceph RBD Storage Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_incus_ceph_rbd_storge_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.ceph.rbd }}"
+- debug: msg={{ delete_incus_ceph_rbd_storge_pools }}
+

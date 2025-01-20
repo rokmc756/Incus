@@ -5,12 +5,6 @@ pools:
       - { name: "dir-local-pool01", source: "/mnt/dir-pool01" }
     dirs:
       - { name: "dir-dirs-pool01", source: "/mnt/dir-pool02" }
-  ceph:
-    rbd:
-      - { name: "rbd-pool01" }
-    fs:
-      - { name: "fs-pool01", source: "cephfs-p01-fs01" }
-    obj:
   btrfs:
     local:
       - { name: "btrfs-local-pool01" }
@@ -42,6 +36,13 @@ pools:
       - { name: "zfs-block-pool01", source: "/dev/sdc", zpool: "zfs-block-zpool01" }
     pool:
       - { name: "zfs-pool02", pool: "zfs-pool01" }
+  ceph:
+    rbd:
+      - { name: "rbd-pool01" }
+    fs:
+      - { name: "fs-pool01", source: "cephfs-p01-fs01" }
+    obj:
+      - { name: "obj-pool01", source: "cephfs-p01-fs01", endpoint: "https://rk9-node03.jtest.futurfusion.io" }
 
 
 volumes:
@@ -50,12 +51,6 @@ volumes:
       - { name: "dir-local-volume01", size: "1GiB", pool: "dir-local-pool01" }
     dirs:
       - { name: "dir-dirs-volume01", size: "1GiB", pool: "dir-dirs-pool01" }
-  ceph:
-    rbd:
-      - { name: "rbd-volume01", size: "1GiB", pool: "rbd-pool01" }
-    fs:
-      - { name: "fs-volume01", size: "1GiB", pool: "fs-pool01" }
-    obj:
   btrfs:
     local:
       - { name: "btrfs-local-volume01", pool: "btrfs-local-pool01" }
@@ -87,6 +82,13 @@ volumes:
       - { name: "zfs-pool02", pool: "zfs-pool01" }
     block:
       - { name: "zfs-block-volume01", source: "/dev/sdc", pool: "zfs-block-pool01", zpool: "zfs-block-zpool01" }
+  ceph:
+    rbd:
+      - { name: "rbd-volume01", size: "1GiB", pool: "rbd-pool01" }
+    fs:
+      - { name: "fs-volume01", size: "1GiB", pool: "fs-pool01" }
+    obj:
+      - { name: "obj-pool01", source: "cephfs-p01-fs01", endpoint: "https://rk9-node03.jtest.futurfusion.io" }
 
 
 # source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }

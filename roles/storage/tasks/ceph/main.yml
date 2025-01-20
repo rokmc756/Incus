@@ -2,35 +2,26 @@
 - name: Enable Ceph Clients
   import_tasks: ceph/enable-ceph-clients.yml
   tags: enable
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+  when: ( client is defined and client == true )
 
 
-- name: Create Ceph Pools
-  import_tasks: ceph/create-ceph-pools.yml
-  tags: create, install
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+- name: Import Ceph RBD Storage Pools
+  import_tasks: ceph/rbd/main.yml
+  when: ( rbd is defined and rbd == true )
 
 
-- name: Create Ceph Volumes
-  import_tasks: ceph/create-ceph-volumes.yml
-  tags: create, install
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+- name: Import Ceph Filesystem Storage Pools
+  import_tasks: ceph/fs/main.yml
+  when: ( fs is defined and fs == true )
 
 
-- name: Delete Ceph Volumes
-  import_tasks: ceph/delete-ceph-volumes.yml
-  tags: delete, uninstall
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
-
-
-- name: Delete Ceph Pools
-  import_tasks: ceph/delete-ceph-pools.yml
-  tags: delete, uninstall
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+- name: Import Ceph RadosGW Storage Pools
+  import_tasks: ceph/rgw/main.yml
+  when: ( rgw is defined and rgw == true )
 
 
 - name: Disable Ceph Clients
   import_tasks: ceph/disable-ceph-clients.yml
   tags: disable
-  when: (( ceph is defined and ceph == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+  when: ( client is defined and client == true )
 
