@@ -1,0 +1,10 @@
+---
+- name: Enable OVN Service
+  import_tasks: ovn/cluster/enable-ovn-service.yml
+  tags: enable, create
+
+
+- name: Disable OVN Service
+  import_tasks: ovn/cluster/disable-ovn-service.yml
+  tags: disable, delete
+

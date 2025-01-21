@@ -1,0 +1,20 @@
+incus network create ens256 --type=physical   parent=ens256 --target=ubt24-node01
+incus network create ens256 --type=physical   parent=ens256 --target=ubt24-node02
+incus network create ens256 --type=physical   parent=ens256 --target=ubt24-node03
+incus network create ens256 --type=physical   parent=ens256 --target=ubt24-node04
+incus network create ens256 --type=physical   parent=ens256 --target=ubt24-node05
+
+
+
+# incus network create phynet01 --type=physical \
+
+incus network create ens256 --type=physical \
+ipv4.gateway=192.168.2.1/24 \
+ipv4.ovn.ranges=192.168.2.201-192.168.2.250 \
+ipv4.routes=198.52.100.0/24 \
+dns.nameservers=192.168.0.90
+
+
+* Above is added in incus network pannel. but it overwrite exsiting network adapter
+  When it's deleted previous ens256 appeared again
+

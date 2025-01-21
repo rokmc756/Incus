@@ -1,0 +1,5 @@
+---
+- name: To configure the S3 address, set the core.storage_buckets_address server configuration option. For example:
+  shell: |
+    incus config set core.storage_buckets_address :8555
+

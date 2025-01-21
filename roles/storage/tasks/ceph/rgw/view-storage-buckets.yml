@@ -1,0 +1,13 @@
+# View storage buckets
+# You can display a list of all available storage buckets in a storage pool and check their configuration.
+#
+
+- name: To list all available storage buckets in a storage pool, use the following command:
+  shell: |
+    incus storage bucket list <pool_name>
+
+
+- name: To show detailed information about a specific bucket, use the following command:
+  shell: |
+    incus storage bucket show <pool_name> <bucket_name>
+

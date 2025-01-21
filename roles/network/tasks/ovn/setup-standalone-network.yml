@@ -10,6 +10,9 @@
 - debug: msg={{ install_ovn_tools }}
 
 
+# systemctl restart ovsdb-server
+
+
 - name: Configure the OVN integration bridge
   shell: |
     ovs-vsctl set open_vswitch . \
