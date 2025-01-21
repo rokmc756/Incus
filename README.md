@@ -90,13 +90,13 @@ $ make incus r=destroy s=force
 ~~~
 
 
-## Create Storage Pools
-#### 1) Local Directory
+#### Create Storage Pools
+##### 1) Local Directory
 ```yaml
 $ make storage r=create s=lvm c=local
 $ make storage r=create s=lvm c=dirs
 ```
-#### 2) Logical Volume Groups
+##### 2) Logical Volume Groups
 ```yaml
 $ make storage r=create s=lvm c=local
 $ make storage r=create s=lvm c=block
@@ -104,13 +104,13 @@ $ make storage r=create s=lvm c=vgs
 $ make storage r=create s=lvm c=vg
 $ make storage r=create s=lvm c=thin
 ```
-#### 3) Btrfs
+##### 3) Btrfs
 ```yaml
 $ make storage r=create s=btrfs c=local
 $ make storage r=create s=btrfs c=dirs
 $ make storage r=create s=btrfs c=block
 ```
-#### 3) ZFS
+##### 3) ZFS
 ```yaml
 $ make storage r=create s=zfs c=local
 $ make storage r=create s=zfs c=loopback
@@ -118,7 +118,7 @@ $ make storage r=create s=zfs c=block
 $ make storage r=create s=zfs c=zpool
 $ make storage r=create s=zfs c=slice
 ```
-#### 3) Ceph
+##### 4) Ceph
 ```yaml
 $ make storage r=create s=ceph c=rbd
 $ make storage r=create s=ceph c=fs
