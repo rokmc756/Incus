@@ -1,0 +1,40 @@
+* Working
+[ rk9-node03 ]
+$ ceph-authtool -C -n client.radosgw.gateway --gen-key /etc/ceph/keyring.radosgw.gateway
+
+
+[ ubt24-node01 ]
+$ scp root@192.168.1.73:/etc/ceph/keyring.radosgw.gateway .
+
+* Add
+ceph -k /etc/ceph/ceph.client.admin.keyring auth add client.radosgw.gateway -i /etc/ceph/keyring.radosgw.gateway
+
+* Delete
+ceph -k /etc/ceph/ceph.client.admin.keyring auth del client.radosgw.gateway
+
+root@ubt24-node01:~/radosgw-auth#
+root@ubt24-node01:~/radosgw-auth# radosgw-admin zone list
+{
+    "default_info": "e157e738-fb6b-4e1f-a52f-4e7d6cfbca0a",
+    "zones": [
+        "default"
+    ]
+}
+root@ubt24-node01:~/radosgw-auth# radosgw-admin bucket list
+[
+    "jbucket02",
+    "jbucket03",
+    "jbucket01"
+]
+
+
+
+# incus storage create rgw-object-pool01 cephobject --target=ubt24-node01
+# incus storage create rgw-object-pool01 cephobject --target=ubt24-node02
+# incus storage create rgw-object-pool01 cephobject --target=ubt24-node03
+# incus storage create rgw-object-pool01 cephobject --target=ubt24-node04
+# incus storage create rgw-object-pool01 cephobject --target=ubt24-node05
+
+
+# incus storage create rgw-object-pool01 cephobject cephobject.radosgw.endpoint=http://rk9-node03.jtest.futurfusion.io:7480
+

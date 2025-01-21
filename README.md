@@ -127,10 +127,10 @@ $ make storage r=create s=ceph c=rgw
 
 
 ## Progress
-- [O] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange ssh keys
+- [O] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange SSH Keys
 - [O] Configure host build system, including installing dependencies and patching host system quirks
 - [O] Install/Configure and Uninstall Incus & Web UI Packages
-- [O] Add CA Key partially automated
+- [O] Add CA Key Partially Automated
 - [O] Enable Cluster with YAML
 - [O] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
 - [O] Add Nodes
@@ -140,7 +140,7 @@ $ make storage r=create s=ceph c=rgw
 - [0] Btrfs Storage Pool
 - [0] LVM Storage Pool
 - [0] Ceph Storage Pool - CephRBD, CephFS
-- [ ] Ceph Rados Gateway Storage Pool
+- [0] Ceph Rados Gateway Storage Pool with Buckets
 - [ ] LVM Cluster Setting
 - [ ] Network Settings - OVN and so on
 

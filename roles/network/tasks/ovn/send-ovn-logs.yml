@@ -1,0 +1,40 @@
+# Complete the following steps to have the OVN controller send its logs to LXD.
+
+- name: Enable the syslog socket
+  shell: |
+    incus config set core.syslog_socket=true
+
+
+# Open /etc/default/ovn-host for editing.
+- name: Paste the following configuration
+  shell: |
+    OVN_CTL_OPTS=" \
+    --ovn-controller-log='-vsyslog:info --syslog-method=unix:/var/snap/lxd/common/lxd/syslog.socket'"
+
+- name: Restart the OVN controller
+  shell: |
+    systemctl restart ovn-controller.service
+
+
+- name: You can now use lxc monitor to see logs from the OVN controller:
+  shell: |
+    incus monitor --type=ovn
+
+
+- name: You can also send the logs to Loki. To do so, add the ovn value to the loki.types configuration key, for example:
+  shell: |
+    incus config set loki.types=ovn
+
+
+# [ Tip ]
+- name: You can include logs for OVN northd, OVN north-bound ovsdb-server and OVN south-bound ovsdb-server as well. To do so, edit /etc/default/ovn-central
+  shell: |
+    OVN_CTL_OPTS=" \
+    --ovn-northd-log='-vsyslog:info --syslog-method=unix:/var/snap/lxd/common/lxd/syslog.socket' \
+    --ovn-nb-log='-vsyslog:info --syslog-method=unix:/var/snap/lxd/common/lxd/syslog.socket' \
+    --ovn-sb-log='-vsyslog:info --syslog-method=unix:/var/snap/lxd/common/lxd/syslog.socket'"
+
+
+- name: Restart OVN Central Service
+  shell: |
+    systemctl restart ovn-central.service

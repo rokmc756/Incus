@@ -41,8 +41,8 @@ pools:
       - { name: "rbd-pool01" }
     fs:
       - { name: "fs-pool01", source: "cephfs-p01-fs01" }
-    obj:
-      - { name: "obj-pool01", source: "cephfs-p01-fs01", endpoint: "https://rk9-node03.jtest.futurfusion.io" }
+    rgw:
+      - { name: "rgw-remote-pool01", source: "", endpoint: "http://rk9-node03.jtest.futurfusion.io:7480" }
 
 
 volumes:
@@ -87,9 +87,10 @@ volumes:
       - { name: "rbd-volume01", size: "1GiB", pool: "rbd-pool01" }
     fs:
       - { name: "fs-volume01", size: "1GiB", pool: "fs-pool01" }
-    obj:
-      - { name: "obj-pool01", source: "cephfs-p01-fs01", endpoint: "https://rk9-node03.jtest.futurfusion.io" }
+    rgw:
+      - { name: "rgw-remote-volume01", source: "", pool: "rgw-remote-pool01", buckets: "incus-test01 incus-test02 incus-test03" }
 
 
 # source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
+
 

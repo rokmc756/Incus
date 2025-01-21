@@ -1,0 +1,8 @@
+---
+- name: Setup Standalone OVN Network
+  import_tasks: ovn/setup-standalone-ovn-network.yml
+  when: ( standalone is defined and standalone == true )
+
+
+# https://developers.redhat.com/blog/2018/09/03/ovn-dynamic-ip-address-management#
+
