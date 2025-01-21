@@ -19,7 +19,7 @@ Supported OS for ansible target host should be prepared with package repository 
 At least a Normal User which has Sudo Privileges
 Root User should have Password ans Allow access with Password login via SSH
 
-## Prepare ansible host to run GPFarmer
+## Prepare ansible host to run this playbook
 * MacOS
 ```!yaml
 $ xcode-select --install
