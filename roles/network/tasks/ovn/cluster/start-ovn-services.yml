@@ -1,0 +1,33 @@
+---
+- name: Start OVN Central Service
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.action }}"
+    enabled: true
+    daemon_reload: true
+  register: start_ovn_central
+  until: start_ovn_central is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-central", action: "started" }
+  when: inventory_hostname in groups['control']
+- debug: msg={{ start_ovn_central }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+
+- name: Enable OVN Host Service
+  systemd:
+    name: "{{ item.svc }}"
+    enabled: true
+    daemon_reload: true
+  register: start_ovn_central
+  until: start_ovn_central is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-hostl", action: "" }
+  when: inventory_hostname in not groups['control']
+- debug: msg={{ start_ovn_central }}
+  when: print_debug == true and inventory_hostname in not groups['control']
+

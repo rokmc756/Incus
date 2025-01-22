@@ -11,31 +11,20 @@
 - debug: msg={{ install_relevant_pkgs }}
 
 
-- name: Start OVN Service to Apply Changes
+- name: Enable OVN Service
   systemd:
     name: "{{ item.svc }}"
     state: "{{ item.action }}"
     enabled: true
     daemon_reload: true
-  register: start_ovn
-  until: start_ovn is succeeded
+  register: enable_ovn
+  until: enable_ovn is succeeded
   retries: 3
   delay: 10
   with_items:
     - { svc: "ovn-central", action: "stopped" }
-    - { svc: "ovn-host", action: "started" }
-- debug: msg={{ start_ovn }}
+    - { svc: "ovn-host", action: "stopped" }
+- debug: msg={{ enable_ovn }}
   when: print_debug == true
 
-
-
-#- name: Create ZFS ZPool
-#  shell: |
-#    zpool create {{ item.zpool }} {{ item.source }}
-#  register: create_zfs_zpool
-#  ignore_errors: true
-#  with_items:
-#    - "{{ pools.zfs.zpool }}"
-#- debug: msg={{ create_zfs_zpool }}
-# dd if=/dev/zero of="{{ item.source }}1" seek=$(( $(blockdev --getsz "{{ item.source }}1") - ( ( 256 * 1024 * 2) / $(blockdev --getpbsz "{{ item.source}}1") ) ))
 

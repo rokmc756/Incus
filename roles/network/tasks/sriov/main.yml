@@ -1,0 +1,13 @@
+---
+- name: Create SR-IOV Network
+  import_tasks: sriov/create-network.yml
+  tags: enable, create, install
+
+
+- name: Delete SR-IOV Network
+  import_tasks: sriov/delete-network.yml
+  tags: disable, delete, uninstall
+
+
+# https://linuxcontainers.org/incus/docs/main/howto/network_ovn_setup/
+

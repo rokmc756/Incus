@@ -1,0 +1,10 @@
+- name: Delete SR-IOV Network
+  shell: |
+    incus network delete {{ item.name }}
+  register: delete_network
+  with_items:
+    - "{{ _sriov }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ delete_network }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

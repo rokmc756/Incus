@@ -1,0 +1,15 @@
+---
+- name: Create Physical Network
+  import_tasks: phy/create-network.yml
+  tags: enable, create, install
+  when: ( phy is defined and phy == true )
+
+
+- name: Delete Physical Network
+  import_tasks: phy/delete-network.yml
+  tags: disable, delete, uninstall
+  when: ( phy is defined and phy == true )
+
+
+# https://linuxcontainers.org/incus/docs/main/howto/network_ovn_setup/
+

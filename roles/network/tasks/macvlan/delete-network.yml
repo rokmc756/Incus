@@ -1,0 +1,10 @@
+- name: Delete MacVLAN Network
+  shell: |
+    incus network delete {{ item.name }}
+  register: delete_network
+  with_items:
+    - "{{ _macvlan }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ delete_network }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
