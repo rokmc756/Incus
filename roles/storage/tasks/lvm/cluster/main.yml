@@ -1,7 +1,42 @@
+---
+- name: Prepare LVM Cluster Environment
+  import_tasks: lvm/cluster/prepare-lvm-cluster-env.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
 
-https://www.microfocus.com/documentation/open-enterprise-server/2023/clus_admin_lx/bxvario.html
 
-https://www.server-world.info/en/note?os=Ubuntu_22.04&p=pacemaker&f=3#google_vignette
+- name: Create Volume Cluster Volume Groups
+  import_tasks: lvm/cluster/create-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
 
-https://shape.host/resources/lvm-configuration-for-high-availability-clusters
+
+- name: Create LVM Cluster VGs Pools
+  import_tasks: lvm/cluster/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Cluster VGs Volumes
+  import_tasks: lvm/cluster/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Cluster VGs Volumes
+  import_tasks: lvm/cluster/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Cluster VGs Pools
+  import_tasks: lvm/cluster/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Destroy LVM Cluster Environment
+  import_tasks: lvm/cluster/destroy-lvm-cluster-env.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
 

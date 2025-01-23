@@ -24,7 +24,7 @@
   when: ( thin is defined and thin == true )
 
 
-#- name: Import LVM Block Storage Pools
-#  import_tasks: lvm/block/main.yml
-#  when: ( lvm is defined and lvm == true ) and ( block is defined and block == true )
+- name: Import LVM Cluster LVM Storage Pools
+  import_tasks: lvm/cluster/main.yml
+  when: ( cluster is defined and cluster == true )
 

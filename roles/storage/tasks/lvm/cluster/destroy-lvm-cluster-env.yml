@@ -1,0 +1,82 @@
+---
+- name: Stop Cluster LVM
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+  register: stop_cluster_lvm
+  ignore_errors: true
+  until: stop_cluster_lvm is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - lvmlockd
+    - sanlock
+- debug: msg={{ stop_cluster_lvm }}
+  when: print_debug == true
+
+
+- name: Disable LVM Cluster Lock
+  lineinfile:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state }}"
+  register: disable_lvm_cluster_lock
+  with_items:
+    - { regexp: "^        use_lvmlockd = 1",          line: "        # use_lvmlockd = 0",    dest: "/etc/lvm/lvm.conf",       state: present }
+    - { regexp: "^        host_id = {{ host_id }}",   line: "        #  host_id = 0",        dest: "/etc/lvm/lvmlocal.conf",  state: present }
+- debug: msg={{ disable_lvm_cluster_lock }}
+  when: print_debug == true
+
+
+- name: Clean Devices
+  shell: |
+    for dn in `echo "{{ item.source }}"`
+    do
+      dd if=/dev/zero of=$dn bs=1M count=1
+      wipefs -a {{ item.source }}
+    done
+  register: clean_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+- debug: msg={{ clean_devices }}
+# dd if=/dev/zero of="{{ item.source }}1" seek=$(( $(blockdev --getsz "{{ item.source }}1") - ( ( 256 * 1024 * 2) / $(blockdev --getpbsz "{{ item.source}}1") ) ))
+
+
+- name: Uninstall Relevant Packages for Clustered-LVM Pools
+  package:
+    name: "{{ item }}"
+    state: absent
+  register: uninstall_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "lvm2-lockd"
+    - "sanlock"
+    - "parted"
+- debug: msg={{ uninstall_relevant_pkgs }}
+
+
+#- name: Delete Partition
+#  parted:
+#    device: "{{ item.source }}"
+#    number: "1"
+#    state: absent
+#  register: delete_partition
+#  ignore_errors: true
+#  with_items:
+#    - "{{ pools.zfs }}"
+#- debug: msg={{ delete_partition }}
+
+
+#- name: Uninstall Parted
+#  package:
+#    name: parted
+#    state: absent
+#  register: uninstall_parted
+#  ignore_errors: true
+#- debug: msg={{ uninstall_parted }}
+# command: cat /proc/partitions
+

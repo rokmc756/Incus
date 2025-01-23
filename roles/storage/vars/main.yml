@@ -12,17 +12,6 @@ pools:
       - { name: "btrfs-dirs-pool02", source: "/mnt/btrfs-dir-pool02", device: "/dev/sdc" }
     block:
       - { name: "btrfs-block-pool03", source: "/dev/sdc" }
-  lvm:
-    local:
-      - { name: "lvm-local-pool01" }
-    block:
-      - { name: "lvm-block-pool01", source: "/dev/sdc", vg: "lvm-block-vg01" }
-    vgs:
-      - { name: "lvm-vgs-pool01", source: "/dev/sdb /dev/sdc", vg: "lvm-vgs-vg01" }
-    vg:
-      - { name: "lvm-vg-pool01", device: "/dev/sdc", source: "lvm-vgs-vg001" }
-    thin:
-      - { name: "lvm-thin-pool05", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-thin-vg03", thinpool: "lvm-thin-vg-pool03" }
   zfs:
     local:
       - { name: "zfs-local-pool01" }
@@ -43,6 +32,20 @@ pools:
       - { name: "fs-pool01", source: "cephfs-p01-fs01" }
     rgw:
       - { name: "rgw-remote-pool01", source: "", endpoint: "http://rk9-node03.jtest.futurfusion.io:7480" }
+  lvm:
+    local:
+      - { name: "lvm-local-pool01" }
+    block:
+      - { name: "lvm-block-pool01", source: "/dev/sdc", vg: "lvm-block-vg01" }
+    vgs:
+      - { name: "lvm-vgs-pool01", source: "/dev/sdb /dev/sdc", vg: "lvm-vgs-vg01" }
+    vg:
+      - { name: "lvm-vg-pool01", device: "/dev/sdc", source: "lvm-vgs-vg001" }
+    thin:
+      - { name: "lvm-thin-pool05", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-thin-vg03", thinpool: "lvm-thin-vg-pool03" }
+    cluster:
+      - { name: "lvm-cluster-pool06", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-cluster-vg06", thinpool: "lvm-cluster-vg-pool06" }
+
 
 
 volumes:
@@ -58,17 +61,6 @@ volumes:
       - { name: "btrfs-dirs-volume02", source: "/mnt/btrfs-dir-pool02", pool: "btrfs-dirs-pool02" }
     block:
       - { name: "btrfs-block-volume03", size: "1GiB", pool: "btrfs-block-pool03" }
-  lvm:
-    local:
-      - { name: "lvm-local-volume01", size: "1GiB", pool: "lvm-local-pool01" }
-    block:
-      - { name: "lvm-block-volume01", source: "/dev/sdc", pool: "lvm-block-pool01" }
-    vgs:
-      - { name: "lvm-vgs-volume01", size: "1GiB", pool: "lvm-vgs-pool01" }
-    vg:
-      - { name: "lvm-vg-volume01", size: "1GiB", pool: "lvm-vg-pool01", vg: "lvm-vgs-vg001" }
-    thin:
-      - { name: "lvm-thin-volume01", size: "5GiB", pool: "lvm-thin-pool05" }
   zfs:
     local:
       - { name: "zfs-local-volume01", pool: "zfs-local-pool01" }
@@ -89,8 +81,20 @@ volumes:
       - { name: "fs-volume01", size: "1GiB", pool: "fs-pool01" }
     rgw:
       - { name: "rgw-remote-volume01", source: "", pool: "rgw-remote-pool01", buckets: "incus-test01 incus-test02 incus-test03" }
+  lvm:
+    local:
+      - { name: "lvm-local-volume01", size: "1GiB", pool: "lvm-local-pool01" }
+    block:
+      - { name: "lvm-block-volume01", source: "/dev/sdc", pool: "lvm-block-pool01" }
+    vgs:
+      - { name: "lvm-vgs-volume01", size: "1GiB", pool: "lvm-vgs-pool01" }
+    vg:
+      - { name: "lvm-vg-volume01", size: "1GiB", pool: "lvm-vg-pool01", vg: "lvm-vgs-vg001" }
+    thin:
+      - { name: "lvm-thin-volume01", size: "5GiB", pool: "lvm-thin-pool05" }
+    cluster:
+      - { name: "lvm-cluster-volume01", size: "5G", pool: "lvm-cluster-pool06" }
 
 
 # source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
-
 
