@@ -19,7 +19,7 @@
 - name: Activate Incus Web UI
   become_user: incus
   shell: |
-    incus config set core.https_address {{ ipaddr2 }}:8443
+    incus config set core.https_address {{ _ipaddr }}:8443
   register: activate_web_ui
 - debug: msg={{ activate_web_ui }}
   when: print_debug == true
