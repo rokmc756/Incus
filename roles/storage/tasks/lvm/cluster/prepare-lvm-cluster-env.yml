@@ -8,37 +8,35 @@
   with_items:
     - "lvm2-lockd"
     - "sanlock"
-    - "parted"
 - debug: msg={{ install_relevant_pkgs }}
 
 
-- name: Clean Devices
-  shell: |
-    for dn in `echo "{{ item.source }}"`
-    do
-      dd if=/dev/zero of=$dn bs=1M count=1
-      wipefs -a {{ item.source }}
-    done
-  register: clean_devices
-  ignore_errors: true
-  with_items:
-    - "{{ pools.lvm.cluster }}"
-- debug: msg={{ clean_devices }}
-# dd if=/dev/zero of="{{ item.source }}1" seek=$(( $(blockdev --getsz "{{ item.source }}1") - ( ( 256 * 1024 * 2) / $(blockdev --getpbsz "{{ item.source}}1") ) ))
+#- name: Enable LVM Cluster Lock
+#  lineinfile:
+#    dest: "{{ item.dest }}"
+#    regexp: "{{ item.regexp }}"
+#    line: "{{ item.line }}"
+#    state: "{{ item.state }}"
+#  register: enable_lvm_cluster_lock
+#  with_items:
+#    - { regexp: "^        # use_lvmlockd = 0",   line: "        use_lvmlockd = 1",          dest: "/etc/lvm/lvm.conf",       state: present }
+#    - { regexp: "^        # host_id = 0",        line: "        host_id = {{ host_id }}",   dest: "/etc/lvm/lvmlocal.conf",  state: present }
+#- debug: msg={{ enable_lvm_cluster_lock }}
+#  when: print_debug == true
 
 
 - name: Enable LVM Cluster Lock
-  lineinfile:
-    dest: "{{ item.dest }}"
+  replace:
+    path: "{{ item.dest }}"
     regexp: "{{ item.regexp }}"
-    line: "{{ item.line }}"
-    state: "{{ item.state }}"
+    replace: "{{ item.line }}"
   register: enable_lvm_cluster_lock
   with_items:
-    - { regexp: "^        # use_lvmlockd = 0",   line: "        use_lvmlockd = 1",          dest: "/etc/lvm/lvm.conf",       state: present }
-    - { regexp: "^        # host_id = 0",        line: "        host_id = {{ host_id }}",   dest: "/etc/lvm/lvmlocal.conf",  state: present }
+    - { regexp: "# use_lvmlockd = 0",   line: "use_lvmlockd = 1",          dest: "/etc/lvm/lvm.conf",       state: present }
+    - { regexp: "# host_id = 0",        line: "host_id = {{ host_id }}",   dest: "/etc/lvm/lvmlocal.conf",  state: present }
 - debug: msg={{ enable_lvm_cluster_lock }}
   when: print_debug == true
+
 
 
 - name: Start Cluster LVM

@@ -1,12 +1,12 @@
 ---
-- name: Prepare LVM Cluster Environment
-  import_tasks: lvm/cluster/prepare-lvm-cluster-env.yml
+- name: Create Volume Cluster Volume Groups
+  import_tasks: lvm/cluster/create-vg.yml
   tags: create, install
   when: inventory_hostname in groups['workers']
 
 
-- name: Create Volume Cluster Volume Groups
-  import_tasks: lvm/cluster/create-vg.yml
+- name: Prepare LVM Cluster Environment
+  import_tasks: lvm/cluster/prepare-lvm-cluster-env.yml
   tags: create, install
   when: inventory_hostname in groups['workers']
 
@@ -21,6 +21,12 @@
   import_tasks: lvm/cluster/create-volumes.yml
   tags: create, install
   when: inventory_hostname in groups['control']
+
+
+#- name: Stop LVM Cluster Service
+#  import_tasks: lvm/cluster/stop-cluster-lvm.yml
+#  tags: delete, uninstall
+#  when: inventory_hostname in groups['workers']
 
 
 - name: Delete LVM Cluster VGs Volumes

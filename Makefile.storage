@@ -1,0 +1,146 @@
+storage:
+	@if [ "${r}" = "init" ] || [ "${r}" = "uninit" ] || [ "${r}" = "reinit" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to init/uninit/reinit storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to init/uninit/reinit storage";\
+			fi\
+		else\
+			echo "No actions to init/uninit/reinit storage";\
+		fi;\
+	elif [ "${r}" = "prepare" ] || [ "${r}" = "clean" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to prepare/clean storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to prepare/clean storage";\
+			fi\
+		else\
+			echo "No actions to prepare/clean storage";\
+		fi;\
+	elif [ "${r}" = "enable" ] || [ "${r}" = "disable" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to ennable/disable storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to ennable/disable storage";\
+			fi\
+		else\
+			echo "No actions to ennable/disable storage";\
+		fi;\
+	elif [ "${r}" = "install" ] || [ "${r}" = "uninstall" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to install/uninstall storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to install/uninstall storage";\
+			fi\
+		else\
+			echo "No actions to install/uninstall storage";\
+		fi;\
+	elif [ "${r}" = "create" ] || [ "${r}" = "delete" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to create/delete storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to create/delete storage";\
+			fi\
+		else\
+			echo "No actions to create/delete storage";\
+		fi;\
+	elif [ "${r}" = "add" ] || [ "${r}" = "remove" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to add/remove storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to add/remove storage";\
+			fi\
+		else\
+			echo "No actions to add/remove storage";\
+		fi;\
+	elif [ "${r}" = "upgrade" ] || [ "${r}" = "downgrade" ]; then\
+		if [ ! -z ${r} ] && [ "${s}" != "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to upgrade/downgrade storage";\
+			fi\
+		elif [ ! -z ${r} ] && [ "${s}" = "all" ]; then\
+			if [ -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{storage_all: True}' --tags='${r}';\
+			elif [ ! -z ${c} ];  then\
+				ansible-playbook --ssh-common-args='-o UserKnownHostsFile=./known_hosts' -u ${USERNAME} setup-storage.yml -e '{"${s}": True}' -e '{"${c}": True}' --tags='${r}';\
+			else\
+				echo "No actions to upgrade/downgrade storage";\
+			fi\
+		else\
+			echo "No actions to upgrade/downgrade storage";\
+		fi;\
+	else\
+		echo "No actions to storage role";\
+		exit;\
+	fi
+

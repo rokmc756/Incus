@@ -9,6 +9,18 @@
 ## command: cat /proc/partitions
 
 
+- name: Install Relevant Packages for Clustered-LVM Pools
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "parted"
+- debug: msg={{ install_relevant_pkgs }}
+
+
+
 - name: Clean Devices
   shell: |
     for dn in `echo "{{ item.source }}"`

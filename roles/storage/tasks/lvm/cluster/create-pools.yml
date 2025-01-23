@@ -1,7 +1,7 @@
 ---
 - name: Prepare LVM Cluster VGs Pools with Cluster Mode
   shell: |
-    incus storage create {{ item.name }} lvm source={{ item.vg }} --target={{ inventory_hostname }}
+    incus storage create {{ item.name }} lvmcluster source={{ item.vg }} lvm.vg_name=lvm-cluster-vg06 --target={{ inventory_hostname }}
   register: prepare_cluster_pools
   delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
   with_items:
@@ -11,7 +11,7 @@
 
 - name: Create LVM Cluster VGs Pools
   shell: |
-    incus storage create {{ item.name }} lvm
+    incus storage create {{ item.name }} lvmcluster
   register: create_pools
   with_items:
     - "{{ pools.lvm.cluster }}"

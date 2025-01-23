@@ -140,6 +140,6 @@ $ make storage r=create s=ceph c=rgw
 - [0] LVM Storage Pool
 - [0] Ceph Storage Pool - CephRBD, CephFS
 - [0] Ceph Rados Gateway Storage Pool with Buckets
-- [0] LVM Cluster Setting
+- [ ] Working LVM Cluster Storage Pool Setting
 - [ ] Network Settings - OVN and so on
 
