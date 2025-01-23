@@ -1,0 +1,9 @@
+$ incus launch images:ubuntu/22.04 ubt24-jtest02 --storage=lvm-cluster-pool06
+# Launching ubt24-jtest02
+
+# The instance you are starting doesn't have any network attached to it.
+#  To create a new network, use: incus network create
+#  To attach a network to an instance, use: incus network attach
+
+$ incus launch images:ubuntu/22.04 ubt24-jtest02 --storage=lvm-cluster-pool06
+

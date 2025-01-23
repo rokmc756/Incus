@@ -7,7 +7,7 @@
   with_items:
     - "{{ pools.lvm.cluster }}"
 - debug: msg={{ prepare_cluster_pools }}
-
+  # incus storage create {{ item.name }} lvmcluster source={{ item.vg }} lvm.vg_name=lvm-cluster-vg06 --target={{ inventory_hostname }}
 
 - name: Create LVM Cluster VGs Pools
   shell: |
