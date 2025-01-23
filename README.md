@@ -127,8 +127,7 @@ $ make storage r=create s=ceph c=rgw
 
 
 ## Progress
-- [O] Initialize ubuntu 24.4 hosts in order to install required packages for incus and exchange SSH Keys
-- [O] Configure host build system, including installing dependencies and patching host system quirks
+- [O] Initialize Ubuntu 24.x Hosts in order to Install Required Packages for Incus and Exchange SSH Keys
 - [O] Install/Configure and Uninstall Incus & Web UI Packages
 - [O] Add CA Key Partially Automated
 - [O] Enable Cluster with YAML
@@ -141,6 +140,6 @@ $ make storage r=create s=ceph c=rgw
 - [0] LVM Storage Pool
 - [0] Ceph Storage Pool - CephRBD, CephFS
 - [0] Ceph Rados Gateway Storage Pool with Buckets
-- [ ] LVM Cluster Setting
+- [0] LVM Cluster Setting
 - [ ] Network Settings - OVN and so on
 
