@@ -137,20 +137,20 @@ $ make storage r=create s=ceph c=rgw
 
 
 ## Progress
-- [O] Initialize Ubuntu 24.x Hosts in order to Install Required Packages for Incus and Exchange SSH Keys
-- [O] Install/Configure and Uninstall Incus & Web UI Packages
-- [O] Add CA Key Partially Automated
-- [O] Enable Cluster with YAML
-- [O] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
-- [O] Add Nodes
-- [O] Remove Nodes
-- [O] Local Storage Pool
-- [O] ZFS Storage Pool
-- [O] Btrfs Storage Pool
-- [O] LVM Storage Pool
-- [O] Ceph Storage Pool - CephRBD, CephFS, Rados Gateway Storage Pool with Buckets
-- [O] Working LVM Cluster Storage Pool Setting with iSCSI  -  https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
-- [X] Network Settings - OVN and so on
+- [X] Initialize Ubuntu 24.x Hosts in order to Install Required Packages for Incus and Exchange SSH Keys
+- [X] Install/Configure and Uninstall Incus & Web UI Packages
+- [X] Add CA Key Partially Automated
+- [X] Enable Cluster with YAML
+- [X] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
+- [X] Add Nodes
+- [X] Remove Nodes
+- [X] Local Storage Pool
+- [X] ZFS Storage Pool
+- [X] Btrfs Storage Pool
+- [X] LVM Storage Pool
+- [X] Ceph Storage Pool - CephRBD, CephFS, Rados Gateway Storage Pool with Buckets
+- [X] Working LVM Cluster Storage Pool Setting with iSCSI  -  https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
+- [ ] Network Settings - OVN and so on
 
 
 ## References
