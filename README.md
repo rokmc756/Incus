@@ -155,10 +155,11 @@ $ make storage r=create s=ceph c=rgw
 - [X] Btrfs Storage Pool
 - [X] LVM Storage Pool
 - [X] Ceph Storage Pool - CephRBD, CephFS, Rados Gateway Storage Pool with Buckets
-- [X] Working LVM Cluster Storage Pool Setting with iSCSI  -  https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
+- [X] Working LVM Cluster Storage Pool Setting with iSCSI
 - [ ] Network Settings - OVN and so on
 
 
 ## References
 - https://www.suse.com/ko-kr/support/kb/doc/?id=000018894
+- https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
 
