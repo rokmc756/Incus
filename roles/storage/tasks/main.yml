@@ -9,6 +9,11 @@
   when: inventory_hostname in groups['workers']
 
 
+- name: Configure iSCSI Target and Initiator
+  import_tasks: iscsi/main.yml
+  when: iscsi is defined and iscsi == true
+
+
 - name: Import Directory Storage Pools
   import_tasks: dir/main.yml
   when: ( dir is defined and dir == true )
@@ -32,4 +37,5 @@
 - name: Import Ceph Storage Pools
   import_tasks: ceph/main.yml
   when: ( ceph is defined and ceph == true )
+
 

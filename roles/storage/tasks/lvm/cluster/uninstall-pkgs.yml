@@ -1,0 +1,12 @@
+---
+- name: Uninstall Relevant Packages for Clustered-LVM Pools
+  package:
+    name: "{{ item }}"
+    state: absent
+  register: uninstall_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "lvm2-lockd"
+    - "sanlock"
+- debug: msg={{ uninstall_relevant_pkgs }}
+

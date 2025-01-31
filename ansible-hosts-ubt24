@@ -5,6 +5,10 @@ remote_machine_password="changeme"
 ansible_python_interpreter=/usr/bin/python3
 
 
+[iscsi_target]
+rk9-freeipa  ansible_ssh_host=192.168.1.90
+
+
 [control]
 ubt24-node01  ansible_ssh_host=192.168.1.81
 

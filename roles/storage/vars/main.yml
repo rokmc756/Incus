@@ -1,4 +1,15 @@
 ---
+_iscsi:
+  target:
+    iqn: "iqn.2022-12.io.futurfusion.jtest"
+    user: "iscsiadm"
+    password: "changeme"
+    os_version: "rk9"
+    disks:
+      - { name: "jtest-vdisk01", base_dir: "/data/iscsi01", size: "30G" }
+      - { name: "jtest-vdisk02", base_dir: "/data/iscsi02", size: "30G" }
+      - { name: "jtest-vdisk03", base_dir: "/data/iscsi03", size: "30G" }
+
 pools:
   dir:
     local:
@@ -44,7 +55,7 @@ pools:
     thin:
       - { name: "lvm-thin-pool05", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-thin-vg03", thinpool: "lvm-thin-vg-pool03" }
     cluster:
-      - { name: "lvm-cluster-pool06", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-cluster-vg06", thinpool: "lvm-cluster-vg-pool06" }
+      - { name: "lvm-cluster-pool06", source: "", size: "5G", vg: "lvm-cluster-vg06", thinpool: "lvm-cluster-vg-pool06" }
 
 
 
@@ -97,4 +108,24 @@ volumes:
 
 
 # source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
+
+
+# https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319/6
+# I succeeded once long ago [1] by following the clusters from scratch guide. In the end though, I decided that the configuration was too complex.
+# These days I use AoE (vblade) to share out my storage and I use ZFS to manage the redundancy. What works better will vary depending on what
+# resources you have and what you are trying to do. There is no one correct way.
+#
+# P.S. Just in case anyone comes across this and decides they want to try running ZFS on AoE storage, one gotcha that took me a while to figure out
+# is that you need to increase the net buffers if you are running AoE over 10G ethernet: [2]
+#
+# cat /etc/sysctl.d/99-net_buffers.conf
+# net.core.wmem_max = 16777216
+# net.core.rmem_max = 16777216
+# net.core.rmem_default = 131072
+# net.ipv4.tcp_rmem = 4096 131072 16777216
+# net.ipv4.tcp_wmem = 4096 131072 16777216
+#
+# The above has been working on my hardware and OS for many years. I didn’t land on those numbers scientifically though,
+# I just increased them until things started working reliably. This problem was mentioned in another forum discussion somewhere long ago,
+# but I doubt I’d ever be able to find that again.
 

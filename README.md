@@ -103,6 +103,16 @@ $ make storage r=create s=lvm c=block
 $ make storage r=create s=lvm c=vgs
 $ make storage r=create s=lvm c=vg
 $ make storage r=create s=lvm c=thin
+
+# For Enable Clustered-LVM Storage Pool with iSCSI
+$ make storage r=install s=iscsi c=target
+$ make storage r=install s=iscsi c=initiator
+$ make storage r=create s=lvm c=cluster
+
+# For Disable Clustered-LVM Storage Pool with iSCSI
+$ make storage r=delete s=lvm c=cluster
+$ make storage r=uninstall s=iscsi c=initiator
+$ make storage r=uninstall s=iscsi c=target
 ```
 ##### 3) Btrfs
 ```yaml
@@ -140,6 +150,10 @@ $ make storage r=create s=ceph c=rgw
 - [0] LVM Storage Pool
 - [0] Ceph Storage Pool - CephRBD, CephFS
 - [0] Ceph Rados Gateway Storage Pool with Buckets
-- [ ] Working LVM Cluster Storage Pool Setting
+- [ ] Working LVM Cluster Storage Pool Setting      -  https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
 - [ ] Network Settings - OVN and so on
+
+
+## References
+- https://www.suse.com/ko-kr/support/kb/doc/?id=000018894
 

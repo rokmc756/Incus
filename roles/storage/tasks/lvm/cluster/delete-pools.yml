@@ -1,5 +1,5 @@
 ---
-- name: Delete Cluster LVM VGs Pools
+- name: Delete Cluster LVM Pools
   shell: |
     incus storage delete {{ item.name }}
   register: delete_pools
@@ -7,5 +7,4 @@
   with_items:
     - "{{ pools.lvm.cluster }}"
 - debug: msg={{ delete_pools }}
-
 

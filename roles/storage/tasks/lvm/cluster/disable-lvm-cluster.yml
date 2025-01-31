@@ -1,0 +1,46 @@
+---
+- name: Stop Cluster LVM
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+    daemon_reload: yes
+  register: stop_cluster_lvm
+  ignore_errors: true
+  until: stop_cluster_lvm is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - lvmlockd
+    - sanlock
+- debug: msg={{ stop_cluster_lvm }}
+  when: print_debug == true
+
+
+- name: Disable LVM Cluster Lock
+  replace:
+    path: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.line }}"
+  register: disable_lvm_cluster_lock
+  with_items:
+    - { regexp: "use_lvmlockd = 1",          line: "# use_lvmlockd = 0",    dest: "/etc/lvm/lvm.conf",       state: present }
+    - { regexp: "host_id = {{ host_id }}",   line: "# host_id = 0",        dest: "/etc/lvm/lvmlocal.conf",  state: present }
+- debug: msg={{ disable_lvm_cluster_lock }}
+  when: print_debug == true
+
+
+#- name: Restart Incus to Release Disks Holded
+#  systemd:
+#    name: "{{ item }}"
+#    state: restart
+#  register: restart_incus
+#  ignore_errors: true
+#  until: restart_incus is succeeded
+#  retries: 5
+#  delay: 10
+#  with_items:
+#    - incus
+#- debug: msg={{ restart_incus }}
+#  when: print_debug == true
+

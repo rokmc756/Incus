@@ -44,13 +44,19 @@
 - name: Get VERSION CODENAME
   shell: . /etc/os-release && echo ${VERSION_CODENAME}
   register: get_version_codename
-- debug: msg="{{ get_version_codename }}"
+- debug: msg={{ get_version_codename }}
 
 
 - name: Get Architecture
   shell: dpkg --print-architecture
   register: get_architecture
-- debug: msg="{{ get_architecture }}"
+- debug: msg={{ get_architecture }}
+
+
+#- name: Get iSCSI Devices
+#  shell: iscsiadm -m session -P 3 | grep 'Target\|disk' | grep Attached | awk '{print $4}' | sed -e 's/^/\/dev\//g' | tr '\n' ' ' | sed -e 's/ $//g'
+#  register: get_iscsi_devices
+#- debug: msg={{ get_iscsi_devices }}
 
 
 - name: Set Version CodeName and Architecture

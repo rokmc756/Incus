@@ -1,14 +1,37 @@
 ---
-- name: Create Volume Cluster Volume Groups
-  import_tasks: lvm/cluster/create-vg.yml
+- name: Get iSCSI Devices
+  shell: |
+    iscsiadm -m session -P 3 | grep 'Target\|disk' | grep Attached | awk '{print $4}' | sed -e 's/^/\/dev\//g' | tr '\n' ' ' | sed -e 's/ $//g'
+  register: get_iscsi_devices
+  tags: create, install, delete, uninstall
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ get_iscsi_devices }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Set iSCSI Devices
+  set_fact:
+    _iscsi_devices: "{{ get_iscsi_devices.stdout }}"
+  tags: create, install, delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Install LVM Cluster Packages
+  import_tasks: lvm/cluster/install-pkgs.yml
   tags: create, install
   when: inventory_hostname in groups['workers']
 
 
-- name: Prepare LVM Cluster Environment
-  import_tasks: lvm/cluster/prepare-lvm-cluster-env.yml
+- name: Enable LVM Cluster Environment
+  import_tasks: lvm/cluster/enable-lvm-cluster.yml
   tags: create, install
   when: inventory_hostname in groups['workers']
+
+
+- name: Create Shared Cluster Volume Groups
+  import_tasks: lvm/cluster/create-shared-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
 
 
 - name: Create LVM Cluster VGs Pools
@@ -23,12 +46,6 @@
   when: inventory_hostname in groups['control']
 
 
-#- name: Stop LVM Cluster Service
-#  import_tasks: lvm/cluster/stop-cluster-lvm.yml
-#  tags: delete, uninstall
-#  when: inventory_hostname in groups['workers']
-
-
 - name: Delete LVM Cluster VGs Volumes
   import_tasks: lvm/cluster/delete-volumes.yml
   tags: delete, uninstall
@@ -41,8 +58,20 @@
   when: inventory_hostname in groups['control']
 
 
-- name: Destroy LVM Cluster Environment
-  import_tasks: lvm/cluster/destroy-lvm-cluster-env.yml
+- name: Disable LVM Cluster Environment
+  import_tasks: lvm/cluster/disable-lvm-cluster.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Uninstall LVM Cluster Packages
+  import_tasks: lvm/cluster/uninstall-pkgs.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Clean Devices
+  import_tasks: lvm/cluster/clean-devices.yml
   tags: delete, uninstall
   when: inventory_hostname in groups['workers']
 

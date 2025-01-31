@@ -1,7 +1,0 @@
----
-- hosts: workers
-  become: yes
-  vars:
-    print_debug: true
-  roles:
-    - storage

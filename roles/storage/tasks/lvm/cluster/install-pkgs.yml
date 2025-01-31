@@ -1,0 +1,36 @@
+---
+- name: Install Parted Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_parted_pkgs
+  ignore_errors: true
+  with_items:
+    - "parted"
+- debug: msg={{ install_parted_pkgs }}
+# command: cat /proc/partitions
+
+
+- name: Install Relevant Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "lvm2-lockd"
+    - "sanlock"
+- debug: msg={{ install_relevant_pkgs }}
+
+
+#- name: Clean Devices
+#  shell: |
+#    for dn in `echo "{{ _iscsi_devices }}"`
+#    do
+#      dd if=/dev/zero of=$dn bs=1M count=1
+#      partprobe $dn
+#    done
+#  register: clean_devices
+#  ignore_errors: true
+#- debug: msg={{ clean_devices }}
+
