@@ -141,7 +141,7 @@ $ make storage r=create s=ceph c=rgw
 - [X] Install/Configure and Uninstall Incus & Web UI Packages
 - [X] Add CA Key Partially Automated
 - [X] Enable Cluster with YAML
-- [X] Resolve Hosts got hung when adding or removeing several times - It's due to not removing Trust Store
+- [X] Resolve Hosts got hung when adding or removing several times - It's due to not removing Trust Store
 - [X] Add Nodes
 - [X] Remove Nodes
 - [X] Local Storage Pool
