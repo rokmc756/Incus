@@ -1,0 +1,23 @@
+
+[ Issues ]
+
+When removing a new host the following error appears
+incus cluster remove ubt24-node04 \n", "delta": "0:00:00.036199", "end": "2025-02-01 04:23:18.503939", "finished": 1, "item": "ubt24-node04", "msg": "non-zero return code", "rc": 1, "results_file": "/root/.ansible_async/j146730932877.6041", "start": "2025-02-01 04:23:18.467740", "started": 1, "stderr": "Error: Cluster member not found", "stderr_lines": ["Error: Cluster member not found"], "stdout": "", "stdout_lines": []}
+
+
+
+[ Commands ]
+
+$ incus admin cluster list-database
+
+$ incus list -v --debug
+
+
+$ less /var/log/incus/incusd.log
+
+$ ps fauxww | grep incusd
+
+$ netstat -lnp | grep 8443
+
+# https://discuss.linuxcontainers.org/t/incus-cluster-non-responsive/20990/6
+$ echo "UPDATE config SET value=':8443' WHERE key='core.https_address'" | sqlite3 /var/lib/incus/database/local.db

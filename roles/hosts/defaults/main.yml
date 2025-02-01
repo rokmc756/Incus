@@ -12,7 +12,7 @@ suse_common_devel_pkgs: "git"
 suse15_common_devel_pkgs: "make,tcl,tk,zfsutils-linux"
 
 
-ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr,lsof"
+ubt_common_pkgs: "sshpass,s3cmd,cifs-utils,nfs-client,libnl-*,elfutils*,lsof,rpcbind,xfsprogs,jq,expect,ipvsadm,lvm2,python3-passlib,frr,lsof,sqlite3"
 ubt_common_devel_pkgs: "git,make,tcl,tk"
 
 

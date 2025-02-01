@@ -65,6 +65,8 @@
   shell: |
     cat {{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml | incus admin init --preseed {{ _incus.debug_opt }}
   register: add_hosts
+  async: 180
+  poll: 10
   notify:
     - Sync Incus DB
     - Restart Incus

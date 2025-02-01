@@ -1,27 +1,27 @@
 ---
 - name: Enable OVN Service
   import_tasks: ovn/cluster/01-enable-ovn-service.yml
-  tags: enable, create, install
+  tags: enable, install
 
 
 - name: Config OVN Service
   import_tasks: ovn/cluster/02-config-ovn-service.yml
-  tags: enable, create, install
+  tags: config, install
 
 
 - name: Start OVN Service
   import_tasks: ovn/cluster/03-start-ovn-services.yml
-  tags: enable, create, install
+  tags: start, install
 
 
 - name: Configure Open Vsiwtch
   import_tasks: ovn/cluster/04-config-open-vswitch.yml
-  tags: enable, create, install
+  tags: config, install
 
 
 - name: Create OVN Network
   import_tasks: ovn/cluster/05-create-ovn-network.yml
-  tags: enable, create, install
+  tags: create
 
 
 - name: Remove OVN Service

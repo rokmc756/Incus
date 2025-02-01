@@ -1,21 +1,22 @@
 ---
-- name: Configure Uplink Network
+- name: Configure OVN Network
   shell: |
-    incus network create UPLINK --type=physical parent=ens193 --target={{ inventory_hostname }}
+    incus network create ens256 --type=physical parent=256 --target={{ inventory_hostname }}
   register: config_uplink_network
   delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  when: inventory_hostname in groups['workers']
 - debug: msg={{ config_uplink_network }}
-  when: print_debug == true
+  when: print_debug == true and inventory_hostname in groups['workers']
 
 
 - name: Create Uplink Network
   shell: |
-    incus network create UPLINK --type=physical \
+    incus network create ens256 --type=physical \
     ipv4.ovn.ranges=192.168.2.221-192.168.2.250 \
-    ipv4.gateway=192.168.2.1 \
     dns.nameservers=192.168.0.90
   register: create_uplink_network
   when: inventory_hostname in groups['control']
 - debug: msg={{ create_uplink_network }}
   when: print_debug == true and inventory_hostname in groups['control']
+  # ipv4.gateway=192.168.2.1 --> Failed since it may be due to known gateway
 

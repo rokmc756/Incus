@@ -2,6 +2,6 @@
 - hosts: all
   become: yes
   vars:
-    print_debug: true
+    print_debug: false
   roles:
     - temp
