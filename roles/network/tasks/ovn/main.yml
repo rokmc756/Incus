@@ -1,5 +1,5 @@
 ---
-- name: Setup LXD Cluster on OVN
+- name: Setup Incus Cluster on OVN
   import_tasks: ovn/cluster/main.yml
   when: ( cluster is defined and cluster == true )
 

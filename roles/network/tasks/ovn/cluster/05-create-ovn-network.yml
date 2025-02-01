@@ -1,10 +1,11 @@
 ---
 - name: Configure Uplink Network
   shell: |
-    incus network create UPLINK --type=physical parent=ens256 --target={{ inventory_hostname }}
+    incus network create UPLINK --type=physical parent=ens193 --target={{ inventory_hostname }}
   register: config_uplink_network
   delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
 - debug: msg={{ config_uplink_network }}
+  when: print_debug == true
 
 
 - name: Create Uplink Network

@@ -9,6 +9,7 @@
     - "ovn-central"
     - "ovn-host"
 - debug: msg={{ install_relevant_pkgs }}
+  when: print_debug == true
 
 
 - name: Enable OVN Service
@@ -26,5 +27,4 @@
     - { svc: "ovn-host", action: "stopped" }
 - debug: msg={{ enable_ovn }}
   when: print_debug == true
-
 

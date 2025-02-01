@@ -5,8 +5,11 @@
     external_ids:ovn-encap-type=geneve \
     external_ids:ovn-encap-ip={{ _ipaddr2 }}
   register: config_open_vswitch
-  until: config_open_vswitch is succeeded
-  retries: 3
-  delay: 10
+  async: 180
+  poll: 10
+  # until: config_open_vswitch is succeeded
+  # retries: 3
+  # delay: 10
+  when: inventory_hostname in groups['cluster']
 - debug: msg={{ config_open_vswitch }}
-
+  when: print_debug == true and inventory_hostname in groups['cluster']
