@@ -16,13 +16,15 @@ When running a system container, Incus simulates a virtual version of a full ope
 When running an application container, Incus runs isolated applications within the host's operating system using container images, similar to how Docker operates.
 ![alt text](https://github.com/rokmc756/Incus/blob/main/roles/incus/images/application-vs-system-containers.svg)
 
-When running a virtual machine, Incus uses the hardware of the host system, but the kernel is provided by the virtual machine.
+When running a virtual machine, Incus uses the hardware of the host system, but the kernel is provided by the virtual machine.\
 ![alt text](https://github.com/rokmc756/Incus/blob/main/roles/incus/images/virtual-machines-vs-system-containers.svg)
 
 Therefore, virtual machines can be used to run, for example, a different operating system.
 
 ## Architecture
+### Internal
 ![alt text](https://github.com/rokmc756/Incus/blob/main/roles/incus/images/incus-architecture-example01.png)
+### External
 ![alt text](https://raw.githubusercontent.com/rokmc756/Incus/refs/heads/main/roles/incus/images/incus-architecture-examples02.webp)
 
 ## What is this Incus Github Repostory?
