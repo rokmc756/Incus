@@ -12,12 +12,13 @@ Today, it's led and maintained by many of the same people that once created LXD.
 
 ## Containers and Virtual Machines
 Incus provides support for system containers, application containers, and virtual machines.
-When running a system container, Incus simulates a virtual version of a full operating system.
-To do this, it uses the functionality provided by the kernel running on the host system.
+
+When running a system container, Incus simulates a virtual version of a full operating system. To do this, it uses the functionality provided by the kernel running on the host system.
 When running an application container, Incus runs isolated applications within the host's operating system using container images, similar to how Docker operates.
 When running a virtual machine, Incus uses the hardware of the host system, but the kernel is provided by the virtual machine.
+
 Therefore, virtual machines can be used to run, for example, a different operating system.
-You can learn more about the differences between application containers, system containers and virtual machines in our documentation.
+
 
 ## Where is it?
 It's originated by Jack Moon.
