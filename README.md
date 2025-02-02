@@ -136,9 +136,15 @@ $ make storage r=create s=zfs c=slice
 ```
 ##### 4) Ceph
 ```yaml
+# For Create Ceph Storage Pool
 $ make storage r=create s=ceph c=rbd
 $ make storage r=create s=ceph c=fs
 $ make storage r=create s=ceph c=rgw
+
+# For Delete Ceph Storage Pool
+$ make storage r=delete s=ceph c=rgw
+$ make storage r=delete s=ceph c=fs
+$ make storage r=delete s=ceph c=rbd
 ```
 
 #### Create Network
