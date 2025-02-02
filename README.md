@@ -28,7 +28,7 @@ Therefore, virtual machines can be used to run, for example, a different operati
 ![alt text](https://raw.githubusercontent.com/rokmc756/Incus/refs/heads/main/roles/incus/images/incus-architecture-examples02.webp)
 
 ## What is this Incus Github Repostory?
-It is ansible playbook to deploy Incus Cluster on Baremetal, Virtual Machines. The main purposes of this project are simple to deploy Incus Cluster quickly and learn knowleges abot it.
+It is ansible playbook to deploy Incus Cluster on Baremetal, Virtual Machines. The main purposes of this project are simple to deploy Incus Cluster quickly and learn knowleges about it.
 
 ## Where is it originated?
 It's originated by Jack Moon.
