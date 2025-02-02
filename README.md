@@ -85,15 +85,18 @@ ubt24-node05 ansible_ssh_host=192.168.1.85
 ~~~
 #### 2) Initialize/Uninstall Linux Hosts
 ~~~!yaml
-$ make hosts r=init(or uninit) s=all
+$ make hosts r=init s=all
+$ make hosts r=uninit s=all
 ~~~
 #### 3) Enable/Disable Zabbly Repository
 ~~~!yaml
-$ make incus r=enable(or disable) s=repo
+$ make incus r=enable s=repo
+$ make incus r=disable s=repo
 ~~~
 ##### 4) Install/Uninstall Incus Packages
 ~~~!yaml
-$ make incus r=install(or uninstall) s=pkgs
+$ make incus r=install s=pkgs
+$ make incus r=uninstall s=pkgs
 ~~~
 ##### 5) Initialize Incus Cluster
 ~~~!yaml
@@ -101,11 +104,13 @@ $ make incus r=init s=host
 ~~~
 ##### 6) Install/Uninstall Incus Web UI
 ~~~!yaml
-$ make incus r=install(or uninstall) s=ui
+$ make incus r=install s=ui
+$ make incus r=uninstall s=ui
 ~~~
 ##### 7) Add/Remove Hosts to/at Incus Cluster
 ~~~!yaml
-$ make incus r=add(or remove) s=host
+$ make incus r=add s=host
+$ make incus r=remove s=host
 ~~~
 ##### 8) Deploy Incus Cluster at once
 ~~~!yaml
@@ -113,7 +118,8 @@ $ make incus r=install s=all
 ~~~
 ##### 9) Deploy/Destroy Incus Cluster at once
 ~~~!yaml
-$ make incus r=deploy(or destroy) s=all
+$ make incus r=deploy s=all
+$ make incus r=destroy s=all
 ~~~
 ##### 10) Force Destroy Incus Cluster
 ~~~!yaml
@@ -121,43 +127,71 @@ $ make incus r=destroy s=force
 ~~~
 
 
-#### Create Storage Pools
+#### Create and Delete Various Storage Pools
 ##### 1) Local Directory
 ```yaml
 $ make storage r=create s=lvm c=local
+$ make storage r=delete s=lvm c=local
+
 $ make storage r=create s=lvm c=dirs
+$ make storage r=delete s=lvm c=dirs
 ```
 ##### 2) Logical Volume Groups
 ```yaml
 $ make storage r=create s=lvm c=local
+$ make storage r=delete s=lvm c=local
+
 $ make storage r=create s=lvm c=block
+$ make storage r=delete s=lvm c=block
+
 $ make storage r=create s=lvm c=vgs
+$ make storage r=delete s=lvm c=vgs
+
 $ make storage r=create s=lvm c=vg
+$ make storage r=delete s=lvm c=vg
+
 $ make storage r=create s=lvm c=thin
+$ make storage r=delete s=lvm c=thin
 
-# For Enable Clustered-LVM Storage Pool with iSCSI
+
+# For Enable and Disable Clustered-LVM Storage Pool with iSCSI
 $ make storage r=install s=iscsi c=target
-$ make storage r=install s=iscsi c=initiator
-$ make storage r=create s=lvm c=cluster
-
-# For Disable Clustered-LVM Storage Pool with iSCSI
-$ make storage r=delete s=lvm c=cluster
-$ make storage r=uninstall s=iscsi c=initiator
 $ make storage r=uninstall s=iscsi c=target
+
+$ make storage r=install s=iscsi c=initiator
+$ make storage r=uninstall s=iscsi c=initiator
+
+$ make storage r=create s=lvm c=cluster
+$ make storage r=delete s=lvm c=cluster
+
 ```
 ##### 3) Btrfs
 ```yaml
 $ make storage r=create s=btrfs c=local
+$ make storage r=delete s=btrfs c=local
+
 $ make storage r=create s=btrfs c=dirs
+$ make storage r=delete s=btrfs c=dirs
+
 $ make storage r=create s=btrfs c=block
+$ make storage r=delete s=btrfs c=block
 ```
 ##### 3) ZFS
 ```yaml
 $ make storage r=create s=zfs c=local
+$ make storage r=delete s=zfs c=local
+
 $ make storage r=create s=zfs c=loopback
+$ make storage r=delete s=zfs c=loopback
+
 $ make storage r=create s=zfs c=block
+$ make storage r=delete s=zfs c=block
+
 $ make storage r=create s=zfs c=zpool
+$ make storage r=delete s=zfs c=zpool
+
 $ make storage r=create s=zfs c=slice
+$ make storage r=delete s=zfs c=slice
 ```
 ##### 4) Ceph
 ```yaml
@@ -165,15 +199,15 @@ $ make storage r=create s=zfs c=slice
 $ make storage r=enable s=ceph c=client
 $ make storage r=disable s=ceph c=client
 
-# Create Ceph Storage Pool
+# Create and Delete Ceph Storage Pool
 $ make storage r=create s=ceph c=rbd
-$ make storage r=create s=ceph c=fs
-$ make storage r=create s=ceph c=rgw
-
-# Delete Ceph Storage Pool
-$ make storage r=delete s=ceph c=rgw
-$ make storage r=delete s=ceph c=fs
 $ make storage r=delete s=ceph c=rbd
+
+$ make storage r=create s=ceph c=fs
+$ make storage r=delete s=ceph c=fs
+
+$ make storage r=create s=ceph c=rgw
+$ make storage r=delete s=ceph c=rgw
 ```
 
 #### Create Network
