@@ -4,6 +4,7 @@ It is ansible playbook to deploy Incus Cluster on Baremetal, Virtual Machines. T
 ## What is Incus?
 Incus is a next-generation system container, application container, and virtual machine manager. It provides a user experience similar to that of a public cloud. With it, you can easily mix and match both containers and virtual machines, sharing the same underlying storage and network.
 Incus is image based and provides images for a wide number of Linux distributions. It provides flexibility and scalability for various use cases, with support for different storage backends and network types and the option to install on hardware ranging from an individual laptop or cloud instance to a full server rack.
+
 When using Incus, you can manage your instances (containers and VMs) with a simple command line tool, directly through the REST API or by using third-party tools and integrations. Incus implements a single REST API for both local and remote access.
 
 The Incus project was created by Aleksa Sarai as a community driven alternative to Canonical's LXD.
@@ -11,9 +12,11 @@ Today, it's led and maintained by many of the same people that once created LXD.
 
 ## Containers and Virtual Machines
 Incus provides support for system containers, application containers, and virtual machines.
-When running a system container, Incus simulates a virtual version of a full operating system. To do this, it uses the functionality provided by the kernel running on the host system.
+When running a system container, Incus simulates a virtual version of a full operating system.
+To do this, it uses the functionality provided by the kernel running on the host system.
 When running an application container, Incus runs isolated applications within the host's operating system using container images, similar to how Docker operates.
-When running a virtual machine, Incus uses the hardware of the host system, but the kernel is provided by the virtual machine. Therefore, virtual machines can be used to run, for example, a different operating system.
+When running a virtual machine, Incus uses the hardware of the host system, but the kernel is provided by the virtual machine.
+Therefore, virtual machines can be used to run, for example, a different operating system.
 You can learn more about the differences between application containers, system containers and virtual machines in our documentation.
 
 ## Where is it?
