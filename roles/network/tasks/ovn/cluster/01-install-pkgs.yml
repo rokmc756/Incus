@@ -1,30 +1,29 @@
 ---
-- name: Uninstall Unattended Upgrade Packages
-  package:
-    name: "{{ item.pkg }}"
-    state: "{{ item.state }}"
-  register: uninstall_unattended_upgrads_pkgs
-  with_items:
-    - { pkg: "unattended-upgrades", state: "absent" }
-- debug: msg={{ uninstall_unattended_upgrads_pkgs }}
-  when: print_debug == true
-
-
-- name: Stop PackageKit
-  systemd:
-    name: "{{ item.svc }}"
-    state: "{{ item.state }}"
-    enabled: "{{ item.action }}"
-    daemon_reload: true
-  register: stop_packagekit
-  until: stop_packagekit is succeeded
-  retries: 3
-  delay: 10
-  with_items:
-    - { svc: "packagekit", state: "stopped", action: "false" }
-- debug: msg={{ stop_packagekit }}
-  when: print_debug == true
-
+#- name: Uninstall Unattended Upgrade Packages
+#  package:
+#    name: "{{ item.pkg }}"
+#    state: "{{ item.state }}"
+#  register: uninstall_unattended_upgrads_pkgs
+#  with_items:
+#    - { pkg: "unattended-upgrades", state: "absent" }
+#- debug: msg={{ uninstall_unattended_upgrads_pkgs }}
+#  when: print_debug == true
+#
+#
+#- name: Stop PackageKit
+#  systemd:
+#    name: "{{ item.svc }}"
+#    state: "{{ item.state }}"
+#    enabled: "{{ item.action }}"
+#    daemon_reload: true
+#  register: stop_packagekit
+#  until: stop_packagekit is succeeded
+#  retries: 3
+#  delay: 10
+#  with_items:
+#    - { svc: "packagekit", state: "stopped", action: "false" }
+#- debug: msg={{ stop_packagekit }}
+#  when: print_debug == true
 
 
 - name: Update Caches for APT Packages
