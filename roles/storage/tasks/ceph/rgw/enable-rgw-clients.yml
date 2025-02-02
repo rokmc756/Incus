@@ -1,6 +1,5 @@
 ---
 - name: Generate RadosGW Auth Key
-  become_user: root
   shell: |
     /usr/bin/sshpass -p {{ _incus.ceph.passwd }} ssh -o StrictHostKeyChecking=no root@{{ _incus.ceph.radosgw_ip_addr }} \
     "ceph-authtool -C -n client.radosgw.gateway --gen-key /etc/ceph/keyring.radosgw.gateway"
@@ -10,14 +9,13 @@
 
 
 #- name: Copy RadosGW Auth Key
-#  become_user: root
 #  synchronize:
-#    mode: pull
+#    mode: push
 #    src: "/etc/ceph/keyring.radosgw.gateway"
 #    dest: "/etc/ceph/keyring.radosgw.gateway"
-#    set_remote_user: false
+#    set_remote_user: true
 #    rsync_opts:
-#      - "-e ssh"                               # "-e ssh -i ~/.ssh/id_rsa.pub"
+#      - "-e ssh"          # "-e ssh -i ~/.ssh/id_rsa.pub"
 #    ssh_args:
 #      - "-p {{ _incus.ceph.passwd }} -o StrictHostKeyChecking=no"
 #  delegate_to: "{{ _incus.ceph.radosgw_ip_addr }}"
@@ -28,14 +26,15 @@
 
 
 - name: Copy RadosGW Auth Key
-  become_user: root
   shell: |
     rsync -a --rsh='/usr/bin/sshpass -p {{ _incus.ceph.passwd }} ssh -o StrictHostKeyChecking=no' \
     {{ _incus.ceph.radosgw_ip_addr }}:/etc/ceph/keyring.radosgw.gateway /etc/ceph/keyring.radosgw.gateway
+  register: copy_radosgw_auth_key
+- debug: msg={{ copy_radosgw_auth_key }}
+  when: print_debug == true
 
 
 - name: Add RadosGW Auth Key
-  become_user: root
   shell: |
     ceph -k /etc/ceph/ceph.client.admin.keyring auth add client.radosgw.gateway -i /etc/ceph/keyring.radosgw.gateway
   register: add_radosgw_auth_key
@@ -58,7 +57,6 @@
 
 
 - name: Print RadosGW Zone List
-  become_user: root
   shell: |
     radosgw-admin zone list
   register: print_radosgw_zone_list
@@ -67,7 +65,6 @@
 
 
 - name: Print RadosGW Bucket List
-  become_user: root
   shell: |
     radosgw-admin bucket list
   register: print_radosgw_bucket_list

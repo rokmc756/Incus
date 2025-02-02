@@ -1,6 +1,5 @@
 ---
 - name: Delete RadosGW Auth Key
-  become_user: root
   shell: |
     ceph -k /etc/ceph/ceph.client.admin.keyring auth del client.radosgw.gateway
   register: delete_radosgw_auth_key
@@ -10,7 +9,6 @@
 
 
 - name: Delete RadosGW Auth Key File
-  become_user: root
   file:
     path: "/etc/ceph/keyring.radosgw.gateway"
     state: absent
@@ -21,7 +19,6 @@
 
 
 - name: Delete RadosGW Auth Key File in Ceph Cluster
-  become_user: root
   shell: |
     /usr/bin/sshpass -p {{ _incus.ceph.passwd }} ssh -o StrictHostKeyChecking=no root@{{ _incus.ceph.radosgw_ip_addr }} \
     "rm -f /etc/ceph/keyring.radosgw.gateway"
@@ -31,7 +28,6 @@
 
 
 - name: Restart Incus Service to Apply Changes
-  become_user: root
   systemd:
     name: "{{ item }}"
     state: restarted

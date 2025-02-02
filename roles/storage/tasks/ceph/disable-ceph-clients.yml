@@ -1,7 +1,10 @@
 ---
 - name: Uninstall CephFS Client Packages
-  package: name={{ item }} state=present
+  package: name={{ item }} state=absent
   register: uninstall_ceph_clients
+  until: uninstall_ceph_clients is succeeded
+  retries: 5
+  delay: 10
   with_items:
     - "ceph-common"
 - debug: msg={{ uninstall_ceph_clients }}
