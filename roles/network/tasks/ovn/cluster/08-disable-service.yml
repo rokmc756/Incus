@@ -5,6 +5,7 @@
     enabled: "{{ item.action }}"
     daemon_reload: true
   register: disable_ovn_central
+  ignore_errors: true
   until: disable_ovn_central is succeeded
   retries: 3
   delay: 10
@@ -22,6 +23,7 @@
     enabled: "{{ item.action }}"
     daemon_reload: true
   register: stop_ovn_central
+  ignore_errors: true
   until: stop_ovn_central is succeeded
   retries: 3
   delay: 10

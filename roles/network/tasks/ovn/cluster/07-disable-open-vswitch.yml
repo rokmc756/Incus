@@ -18,13 +18,24 @@
     enabled: "{{ item.action }}"
     daemon_reload: true
   register: stop_openvswitch
+  ignore_errors: true
   until: stop_openvswitch is succeeded
-  retries: 3
+  retries: 5
   delay: 10
   with_items:
-    - { svc: "openvswitch-switch", state: "stopped", action: "true" }
     - { svc: "ovsdb-server", state: "stopped", action: "true" }
+    - { svc: "openvswitch-switch", state: "stopped", action: "true" }
   when: inventory_hostname in groups['workers']
 - debug: msg={{ stop_openvswitch }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Killall OVSDB Server
+  shell: |
+    killall ovsdb-server
+  register: killall_ovsdb_server
+  ignore_errors: true
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ killall_ovsdb_server }}
   when: print_debug == true and inventory_hostname in groups['workers']
 

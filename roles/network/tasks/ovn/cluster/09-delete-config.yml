@@ -4,6 +4,7 @@
     path: "/etc/default/ovn-central"
     state: absent
   register: delete_central_config
+  ignore_errors: true
   when: inventory_hostname in groups['workers']
 - debug: msg={{ delete_central_config }}
   when: print_debug == true and inventory_hostname in groups['workers']
