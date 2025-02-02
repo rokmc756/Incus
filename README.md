@@ -57,7 +57,7 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 
 
 ## How to Run Incus Ansible Playbook
-#### 1) Configure Ansible Hosts
+### 1) Configure Ansible Hosts
 ~~~!yaml
 $ vi ansible-hosts
 [all:vars]
@@ -127,7 +127,7 @@ $ make incus r=destroy s=force
 ~~~
 
 
-#### Create and Delete Various Storage Pools
+### Create and Delete Various Storage Pools
 ##### 1) Local Directory
 ```yaml
 $ make storage r=create s=lvm c=local
@@ -210,7 +210,7 @@ $ make storage r=create s=ceph c=rgw
 $ make storage r=delete s=ceph c=rgw
 ```
 
-#### Create Network
+### Create Network
 ##### 1) OVN
 ```yaml
 # For Configure and Install OVN Network
