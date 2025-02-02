@@ -1,0 +1,106 @@
+# Create OVS Bridge
+ovs-vsctl add-br br-int
+
+
+# List OVS Bridge
+ovs-vsctl list-br
+
+
+# List OVS Bridge Info
+ovs-vsctl list bridge br-int
+
+
+# Add Network Interface into OVS Bridge
+ovs-vsctl add-port br-int eth0
+ovs-vsctl add-port br-lbaas bonds1.204 -- set interface bonds1.204 ofport=1
+
+
+# List Ports connected to OVS Bridge
+ovs-vsctl list-ports br-int
+
+
+# Connect OVS Controller
+ovs-vsctl set-controller br-int tcp:127.0.0.1:6633
+
+
+# Configure OVS VXLAN
+ovs–vsctl add–port br1 vx1 — set interface vx1 type=vxlan options:remote_ip=192.168.1.10
+ovs–vsctl add–port br1 vx1 — set interface vx1 type=vxlan options:remote_ip=192.168.1.11
+
+
+# Check OpenvSwitch Version
+ovs-vsctl --version
+ovs-vswitchd -V
+
+
+# List All OVS Bridges
+ovs-vsctl list bridge
+
+
+# List All OVS Ports
+ovs-vsctl list port
+
+
+# Check OVS Config
+ovs-vsctl show
+
+
+# Check OVS DPDK Bond Config
+ovs-appctl bond/show
+
+
+# Check the Name of OVS DPDK Bond
+ovs-appctl bond/list
+
+
+# Chanage MTU for br-int at Nova Compute Node
+ovs-vsctl set int br-int mtu_request=1500
+
+
+# Check MTU for br-int at Nova Compute Node
+ovs-vsctl list Interface | grep mtu
+
+
+# Check Link Speed for dpdk at Nova Compute Node
+ovs-vsctl list interface dpdk0 | grep link_speed
+
+
+# Check DPDK Socket Memory of Nova Compute Node
+ovs-vsctl list Open_vSwitch | grep mem
+
+
+# Collect OVS TCP Dump
+ovs-tcpdump -i <interface_name> <other parameters>
+
+
+# Check PMD Thread Current stats
+ovs-appctl dpif-netdev/pmd-stats-show
+
+
+# Check Port/Rx Queue Assigment to PMD Threads
+ovs-appctl dpif-netdev/pmd-rxq-show
+
+
+# Check VM Network Intereface Using DPDK
+ovs-vsctl find interface external_ids:vm-uuid="868ab0b9-d0cb-46e8-9b38-a8ed00775f12" | grep name
+
+
+# CHECK vfio Device
+vfio device <Check>
+
+
+# Check Network Interface Using DPDK
+dpdk-devbind -s
+
+
+# Unbind PCI Address after Check PCI Address of DPDK Network Interface
+dpdk-devbind -u [pci_address]
+
+
+# Show Flows on OVS
+ovs-appctl fdb/show <Virtual Bridge Name>
+
+
+# Flows to Forward Packets Between DPDK Devices and VM Ports
+ovs-ofctl dump-flows <Virtual Bridge Name>
+

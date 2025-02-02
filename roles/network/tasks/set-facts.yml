@@ -33,13 +33,14 @@
   delegate_to: "{{ item }}"
   delegate_facts: True
   with_items: "{{ groups['workers'] }}"
-  when: inventory_hostname in groups['cluster'][0]
+  when: inventory_hostname in groups['control']
+  # when: inventory_hostname in groups['cluster'][0]
 
 
 - name: Set All OVN NB TCP Addresses
   set_fact:
     all_ovn_nb_tcp_ipaddrs: |
-      {%- for h in groups['cluster'] %}
+      {%- for h in groups['workers'] %}
       {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6641{% if not loop.last %},{% endif %}
       {% endfor %}
 
@@ -47,7 +48,7 @@
 - name: Set All OVN SB TCP Addresses
   set_fact:
     all_ovn_sb_tcp_ipaddrs: |
-      {%- for h in groups['cluster'] %}
+      {%- for h in groups['workers'] %}
       {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6642{% if not loop.last %},{% endif %}
       {% endfor %}
 
@@ -55,7 +56,7 @@
 - name: Set Remaining OVN NB TCP Addresses
   set_fact:
     second_ovn_nb_tcp_ipaddrs: |
-      {%- for h in groups['cluster'] %}
+      {%- for h in groups['workers'] %}
       {% if _h not in h %}
       {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6641{% if not loop.last %},{% endif %}
       {% endif %}
@@ -65,7 +66,7 @@
 - name: Set Remaining OVN SB TCP Addresses
   set_fact:
     second_ovn_sb_tcp_ipaddrs: |
-      {%- for h in groups['cluster'] %}
+      {%- for h in groups['workers'] %}
       {% if _h not in h %}
       {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6642{% if not loop.last %},{% endif %}
       {% endif %}

@@ -144,10 +144,14 @@ $ make storage r=create s=ceph c=rgw
 #### Create Network
 ##### 1) OVN
 ```yaml
+# For Configure and Install OVN Network
 $ make network r=install s=ovn c=cluster
 $ make network r=create s=ovn c=cluster
-```
 
+# For Uninstall and Disable OVN network
+$ make network r=delete s=ovn c=cluster
+$ make network r=uninstall s=ovn c=cluster
+```
 
 
 ## Progress

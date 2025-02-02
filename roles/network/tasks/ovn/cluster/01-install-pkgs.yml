@@ -1,13 +1,14 @@
 ---
 - name: Install Relevant OVN Packages
   package:
-    name: "{{ item }}"
-    state: present
+    name: "{{ item.pkg }}"
+    state: "{{ item.state }}"
   register: install_relevant_pkgs
   ignore_errors: true
   with_items:
-    - "ovn-central"
-    - "ovn-host"
+    - { pkg: "ovn-central", state: "present" }
+    - { pkg: "ovn-host", state: "present" }
+
 - debug: msg={{ install_relevant_pkgs }}
   when: print_debug == true
 
@@ -15,16 +16,16 @@
 - name: Enable OVN Service
   systemd:
     name: "{{ item.svc }}"
-    state: "{{ item.action }}"
-    enabled: true
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
     daemon_reload: true
   register: enable_ovn
   until: enable_ovn is succeeded
   retries: 3
   delay: 10
   with_items:
-    - { svc: "ovn-central", action: "stopped" }
-    - { svc: "ovn-host", action: "stopped" }
+    - { svc: "ovn-central", state: "stopped", action: "true" }
+    - { svc: "ovn-host", state: "stopped", action: "true" }
 - debug: msg={{ enable_ovn }}
   when: print_debug == true
 
