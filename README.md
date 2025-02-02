@@ -56,8 +56,8 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 ```
 
 
-## How to run this Ansible Playbook
-#### Configure Ansible Hosts
+## How to Run Incus Ansible Playbook
+#### 1) Configure Ansible Hosts
 ~~~!yaml
 $ vi ansible-hosts
 [all:vars]
@@ -66,10 +66,8 @@ remote_machine_username="jomoon"
 remote_machine_password="changeme"
 ansible_python_interpreter=/usr/bin/python3
 
-
 [iscsi_target]
 rk9-freeipa  ansible_ssh_host=192.168.1.90
-
 
 [control]
 ubt24-node01 ansible_ssh_host=192.168.1.81
@@ -81,44 +79,43 @@ ubt24-node03 ansible_ssh_host=192.168.1.83
 ubt24-node04 ansible_ssh_host=192.168.1.84
 ubt24-node05 ansible_ssh_host=192.168.1.85
 
-
 [cluster]
 ubt24-node04 ansible_ssh_host=192.168.1.84
 ubt24-node05 ansible_ssh_host=192.168.1.85
 ~~~
-#### Initialize/Uninstall Linux Hosts
+#### 2) Initialize/Uninstall Linux Hosts
 ~~~!yaml
 $ make hosts r=init(or uninit) s=all
 ~~~
-#### Enable/Disable Zabbly Repository
+#### 3) Enable/Disable Zabbly Repository
 ~~~!yaml
 $ make incus r=enable(or disable) s=repo
 ~~~
-##### Install/Uninstall Incus Packages
+##### 4) Install/Uninstall Incus Packages
 ~~~!yaml
 $ make incus r=install(or uninstall) s=pkgs
 ~~~
-##### Initialize Incus Cluster
+##### 5) Initialize Incus Cluster
 ~~~!yaml
 $ make incus r=init s=host
 ~~~
-##### Install/Uninstall Incus Web UI
+##### 6) Install/Uninstall Incus Web UI
 ~~~!yaml
 $ make incus r=install(or uninstall) s=ui
 ~~~
-##### Add/Remove Hosts to/at Incus Cluster
+##### 7) Add/Remove Hosts to/at Incus Cluster
 ~~~!yaml
 $ make incus r=add(or remove) s=host
 ~~~
-##### Deploy Incus Cluster at once
+##### 8) Deploy Incus Cluster at once
 ~~~!yaml
 $ make incus r=install s=all
 ~~~
-##### Deploy/Destroy Incus Cluster at once
+##### 9) Deploy/Destroy Incus Cluster at once
 ~~~!yaml
 $ make incus r=deploy(or destroy) s=all
 ~~~
-##### Force Destroy Incus Cluster
+##### 10) Force Destroy Incus Cluster
 ~~~!yaml
 $ make incus r=destroy s=force
 ~~~
@@ -164,12 +161,16 @@ $ make storage r=create s=zfs c=slice
 ```
 ##### 4) Ceph
 ```yaml
-# For Create Ceph Storage Pool
+# Enable and Disable Ceph Client for Incus Hosts
+$ make storage r=enable s=ceph c=client
+$ make storage r=disable s=ceph c=client
+
+# Create Ceph Storage Pool
 $ make storage r=create s=ceph c=rbd
 $ make storage r=create s=ceph c=fs
 $ make storage r=create s=ceph c=rgw
 
-# For Delete Ceph Storage Pool
+# Delete Ceph Storage Pool
 $ make storage r=delete s=ceph c=rgw
 $ make storage r=delete s=ceph c=fs
 $ make storage r=delete s=ceph c=rbd

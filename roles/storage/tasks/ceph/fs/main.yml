@@ -22,4 +22,3 @@
   tags: delete, uninstall
   when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
 
-
