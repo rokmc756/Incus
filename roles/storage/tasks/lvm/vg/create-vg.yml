@@ -1,12 +1,12 @@
 ---
-#- name: Install Parted
-#  package:
-#    name: parted
-#    state: present
-#  register: install_parted
-#  ignore_errors: true
-#- debug: msg={{ install_parted }}
-## command: cat /proc/partitions
+- name: Install Parted
+  package:
+    name: parted
+    state: present
+  register: install_parted
+  ignore_errors: true
+- debug: msg={{ install_parted }}
+# command: cat /proc/partitions
 
 
 - name: Clean Devices
@@ -33,13 +33,4 @@
     - "{{ pools.lvm.vg }}"
 - debug: msg={{ create_vg }}
 
-
-#- name: Uninstall Parted
-#  package:
-#    name: parted
-#    state: absent
-#  register: uninstall_parted
-#  ignore_errors: true
-#- debug: msg={{ uninstall_parted }}
-# command: cat /proc/partitions
 

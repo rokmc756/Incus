@@ -11,7 +11,7 @@
 
 - name: Configure iSCSI Target and Initiator
   import_tasks: iscsi/main.yml
-  when: iscsi is defined and iscsi == true
+  when: ( iscsi is defined and iscsi == true )
 
 
 - name: Import Directory Storage Pools

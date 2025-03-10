@@ -9,4 +9,3 @@
 - debug: msg={{ create_volumes }}
   when: print_debug == true and inventory_hostname in groups['control']
 
-

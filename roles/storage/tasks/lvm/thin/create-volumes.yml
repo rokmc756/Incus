@@ -11,6 +11,5 @@
 
 
 # incus storage volume create lvm-thin-pool05 lvm-thin-volume0
-
 # dmsetup -c info
 

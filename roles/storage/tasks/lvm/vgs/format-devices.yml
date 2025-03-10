@@ -17,8 +17,8 @@
 #  with_items:
 #    - "{{ pools.btrfs }}"
 #- debug: msg={{ add_partition }}
-#
-#
+
+
 #- name: Format the Partition
 #  filesystem:
 #    fstype: btrfs

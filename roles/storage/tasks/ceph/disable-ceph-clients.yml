@@ -1,5 +1,5 @@
 ---
-- name: Uninstall CephFS Client Packages
+- name: Uninstall Ceph Clients Packages
   package: name={{ item }} state=absent
   register: uninstall_ceph_clients
   until: uninstall_ceph_clients is succeeded

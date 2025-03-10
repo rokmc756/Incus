@@ -128,19 +128,19 @@ $ make incus r=destroy s=force
 ### Create and Delete Various Storage Pools
 ##### 1) Local Directory
 ```yaml
-$ make storage r=create s=lvm c=local
-$ make storage r=delete s=lvm c=local
+$ make storage r=create s=dir c=local
+$ make storage r=delete s=dir c=local
 
-$ make storage r=create s=lvm c=dirs
-$ make storage r=delete s=lvm c=dirs
+$ make storage r=create s=dir c=dirs
+$ make storage r=delete s=dir c=dirs
 ```
 ##### 2) Logical Volume Groups
 ```yaml
 $ make storage r=create s=lvm c=local
 $ make storage r=delete s=lvm c=local
 
-$ make storage r=create s=lvm c=block
-$ make storage r=delete s=lvm c=block
+$ make storage r=create s=lvm c=blk
+$ make storage r=delete s=lvm c=blk
 
 $ make storage r=create s=lvm c=vgs
 $ make storage r=delete s=lvm c=vgs
@@ -171,8 +171,8 @@ $ make storage r=delete s=btrfs c=local
 $ make storage r=create s=btrfs c=dirs
 $ make storage r=delete s=btrfs c=dirs
 
-$ make storage r=create s=btrfs c=block
-$ make storage r=delete s=btrfs c=block
+$ make storage r=create s=btrfs c=blk
+$ make storage r=delete s=btrfs c=blk
 ```
 ##### 3) ZFS
 ```yaml
@@ -182,8 +182,8 @@ $ make storage r=delete s=zfs c=local
 $ make storage r=create s=zfs c=loopback
 $ make storage r=delete s=zfs c=loopback
 
-$ make storage r=create s=zfs c=block
-$ make storage r=delete s=zfs c=block
+$ make storage r=create s=zfs c=blk
+$ make storage r=delete s=zfs c=blk
 
 $ make storage r=create s=zfs c=zpool
 $ make storage r=delete s=zfs c=zpool

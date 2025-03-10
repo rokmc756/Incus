@@ -1,7 +1,6 @@
 ---
 - name: Enable Ceph Clients
   import_tasks: ceph/enable-ceph-clients.yml
-  tags: enable
   when: ( client is defined and client == true )
 
 
