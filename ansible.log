@@ -1,4 +1,1 @@
 
-2025-03-11 06:08:41,164 p=18834 u=jomoon n=ansible | skipping: [ubt24-node05] => (item={'name': 'zfs-zpool-volume01', 'source': '/dev/sdb /dev/sdc ', 'pool': 'zfs-zpool-pool01'}) 
-2025-03-11 06:08:41,165 p=18834 u=jomoon n=ansible | skipping: [ubt24-node05]
-2025-03-11 06:08:41,173 p=18834 u=jomoon n=ansible | TASK [storage : debug] ************************************************************************************************************************************************************
