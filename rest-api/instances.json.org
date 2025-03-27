@@ -1,0 +1,35 @@
+[
+  {
+    "source": {
+      "alias": "hello-world",
+      "protocol": "oci",
+      "type": "image",
+      "server": "https://docker.io"
+    }
+  },
+  {
+    "architecture": "",
+    "config": {},
+    "devices": {},
+    "ephemeral": False,
+    "profiles": [
+      "default"
+    ],
+    "stateful": False,
+    "description": "",
+    "name": "ubuntu-container",
+    "source": {
+      "type": "image",
+      "certificate": "",
+      "alias": "ubuntu/22.04",
+      "server": "https://images.linuxcontainers.org",
+      "protocol": "simplestreams",
+      "mode": "pull",
+      "allow_inconsistent": False
+    },
+    "instance_type": "",
+    "type": "virtual-machine",
+    "start": True
+  }
+]
+
