@@ -1,0 +1,20 @@
+# To copy an image from one server to another, enter the following command:
+$ incus image copy [<source_remote>:]<image> <target_remote>:
+
+# [ Note ]
+# To copy the image to your local image store, specify local: as the target remote.
+# See incus image copy --help for a list of all available flags. The most relevant ones are:
+
+# --alias
+# Assign an alias to the copy of the image.
+#
+# --copy-aliases
+# Copy the aliases that the source image has.
+#
+# --auto-update
+# Keep the copy up-to-date with the original image.
+#
+# --vm
+# When copying from an alias, copy the image that can be used to create virtual machines.
+
+

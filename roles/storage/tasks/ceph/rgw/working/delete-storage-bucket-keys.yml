@@ -1,0 +1,12 @@
+# Edit or delete storage bucket keys
+
+- name: Use the following command to edit an existing bucket key:
+  shell: |
+    incus storage bucket key edit <pool_name> <bucket_name> <key_name>
+
+
+- name: Use the following command to delete an existing bucket key:
+  shell: |
+    incus storage bucket key delete <pool_name> <bucket_name> <key_name>
+
+

@@ -1,0 +1,10 @@
+---
+- name: Delete Directory Local Volumes
+  shell: |
+    incus storage volume delete {{ item.pool }} {{ item.name }}
+  register: delete_volumes
+  ignore_errors: true
+  with_items:
+    - "{{ volumes.dir.local }}"
+- debug: msg={{ delete_volumes }}
+

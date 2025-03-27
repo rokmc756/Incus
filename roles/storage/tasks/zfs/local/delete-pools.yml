@@ -1,0 +1,10 @@
+---
+- name: Delete ZFS Local Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.zfs.local }}"
+- debug: msg={{ delete_pools }}
+

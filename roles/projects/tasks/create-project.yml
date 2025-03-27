@@ -1,0 +1,20 @@
+# To create a project, use the incus project create command.
+#
+# For example, to create a project called my-project, enter the following command:
+$ incus project create my-project
+
+# You can specify configuration options by using the --config flag. See Project configuration for the available configuration options.
+#
+# For example, to create a project called my-project-shared-images that isolates instances but allows access to the default project’s images, enter the following command:
+$ incus project create my-project-shared-images --config features.images=false
+
+# To create a project called my-restricted-project that blocks access to security-sensitive features (for example, container nesting) but allows backups, enter the following command:
+$ incus project create my-restricted-project --config restricted=true --config restricted.backups=allow
+
+# [ Tip ]
+#
+# When you create a project without specifying configuration options, features.profiles is set to true, which means that profiles are isolated in the project.
+# Consequently, the new project does not have access to the default profile of the default project and 
+# therefore misses required configuration for creating instances (like the root disk).
+# To fix this, use the incus profile device add command to add a root disk device to the project’s default profile.
+#

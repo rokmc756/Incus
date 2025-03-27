@@ -1,0 +1,62 @@
+---
+- name: Check if APT Key Directory Already Exists
+  stat: path=/etc/apt/keyrings
+  register: apt_key_dir
+- debug: msg={{ apt_key_dir }}
+  when: print_debug == true
+
+
+- name: Create APT Key Directory
+  file: path=/etc/apt/keyrings  state=directory owner=root group=root
+  register: create_apt_key_dir
+  when: apt_key_dir.stat.exists != True
+- debug: msg={{ apt_key_dir }}
+  when: print_debug == true
+
+
+- name: Print APT Key
+  shell: |
+    curl -fsSL https://pkgs.zabbly.com/key.asc | gpg --show-keys --fingerprint
+  register: print_apt_key
+- debug: msg={{ apt_key_dir }}
+  when: print_debug == true
+
+
+- name: Download APT Key for Zabbly Repository
+  get_url:
+    url: "https://pkgs.zabbly.com/key.asc"
+    dest: "/etc/apt/keyrings/zabbly.asc"
+  register: download_zabbly_repo_key
+- debug: msg={{ download_zabbly_repo_key }}
+  when: print_debug == true
+
+
+# https://pkgs.zabbly.com/incus/stable
+- name: Copy Zabbly Repository Config
+  template:
+    src: zabbly-incus-stable.sources.j2
+    dest: /etc/apt/sources.list.d/zabbly-incus-{{ _incus.repo.zabbly.version }}.sources
+    owner: root
+    group: root
+    mode: 644
+    force: yes
+  register: copy_zabbly_repo_config
+- debug: msg={{ copy_zabbly_repo_config }}
+  when: print_debug == true
+
+
+- name: Apply New Repository Changes
+  systemd:
+    daemon_reload: true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+

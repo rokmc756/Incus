@@ -1,0 +1,13 @@
+# Project restrictions
+# To prevent the instances of a project from accessing security-sensitive features (such as container nesting or raw LXC configuration),
+# set the restricted configuration option to true. You can then use the various restricted.* options to pick individual features 
+# that would normally be blocked by restricted and allow them, so they can be used by the instances of the project.
+#
+# For example, to restrict a project and block all security-sensitive features, but allow container nesting, enter the following commands:
+$ incus project set <project_name> restricted=true
+$ incus project set <project_name> restricted.containers.nesting=allow
+
+# Each security-sensitive feature has an associated restricted.* project configuration option.
+# If you want to allow the usage of a feature, change the value of its restricted.* option. Most restricted.* configurations are binary 
+# switches that can be set to either block (the default) or allow. However, some options support other values for more fine-grained control.
+

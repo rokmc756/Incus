@@ -1,0 +1,26 @@
+# You can display a list of all available storage volumes in a storage pool and check their configuration.
+# To list all available storage volumes in a storage pool, use the following command:
+# $ incus storage volume list <pool_name>
+
+
+# To display the storage volumes for all projects (not only the default project), add the --all-projects flag.
+# The resulting table contains the storage volume type and the content type for each storage volume in the pool.
+#
+# [ Note ]
+# Custom storage volumes might use the same name as instance volumes
+# (for example, you might have a container named c1 with a container storage volume named c1 and a custom storage volume named c1).
+# Therefore, to distinguish between instance storage volumes and custom storage volumes,
+# all instance storage volumes must be referred to as <volume_type>/<volume_name> (for example, container/c1 or virtual-machine/vm) in commands.
+
+
+# To show detailed configuration information about a specific volume, use the following command:
+# $ incus storage volume show <pool_name> [<volume_type>/]<volume_name>
+
+
+# To show state information about a specific volume, use the following command:
+# $ incus storage volume info <pool_name> [<volume_type>/]<volume_name>
+
+
+# In both commands, the default storage volume type is custom, so you can leave out the <volume_type>/ when displaying information about a custom storage volume.
+
+

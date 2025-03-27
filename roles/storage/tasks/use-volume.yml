@@ -1,0 +1,11 @@
+# Use the volume for backups or images
+# Instead of attaching a custom volume to an instance as a disk device, you can also use it as a special kind of volume to store backups or images.
+#
+# To do so, you must set the corresponding server configuration:
+#
+# To use a custom volume to store the backup tarballs:
+# $ incus config set storage.backups_volume <pool_name>/<volume_name>
+
+# To use a custom volume to store the image tarballs:
+# $ incus config set storage.images_volume <pool_name>/<volume_name>
+

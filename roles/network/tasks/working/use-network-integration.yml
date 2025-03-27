@@ -1,0 +1,6 @@
+# Using a network integration
+# To make use of a network integration, one needs to peer with it.
+#
+# This is done through incus network peer create, for example:
+$ incus network peer create default region ovn-region --type=remote
+

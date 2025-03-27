@@ -1,0 +1,137 @@
+---
+- name: Stop and Disable Incus Services
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: yes
+    daemon-reload: yes
+  register: stop_incus
+  ignore_errors: true
+  with_items:
+    - "incus-user.socket"
+    - "incus-user"
+    - "incus.socket"
+    - "incus"
+    - "incus-startup"
+    - "incus-lxcfs"
+- debug: msg={{ stop_incus }}
+  when: print_debug
+
+
+- name: Uninstall Incus Software Packages
+  package: name={{ item }} state=absent
+  with_items:
+    - incus-client
+    - incus-tools
+    - incus
+  register: uninstall_incus_pkgs
+  ignore_errors: true
+- debug: msg={{ uninstall_incus_pkgs }}
+  when: print_debug == true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: update_apt_cache
+  ignore_errors: true
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+
+
+- name: Purge Broken Packages
+  package: name={{ item }} state=absent purge=true
+  with_items:
+    - incus-agent
+    - incus
+    - incus-base
+  register: purge_broken_pkgs
+  ignore_errors: true
+- debug: msg={{ purge_broken_pkgs }}
+  when: print_debug == true
+
+
+#- name: Kill Processes Hold On User Directory
+#  become: true
+#  shell: |
+#    nohup {{ item }}
+#  register: kill_user_processes
+#  ignore_errors: true
+#  until: kill_user_processes is succeeded
+#  retries: 3
+#  delay: 5
+#  with_items:
+#    - "pkill -U incus"
+#    - "fuser -k /var/lib/incus"
+#- debug: msg={{ kill_user_processes }}
+#  when: print_debug == true
+
+
+- name: Umount Remaining Tmpfs
+  become: true
+  shell: |
+    umount {{ item }}
+  register: umount_remaining_tmpfs
+  ignore_errors: true
+  until: kill_user_processes is succeeded
+  retries: 3
+  delay: 5
+  with_items:
+    - "/var/lib/incus/guestapi"
+    - "/var/lib/incus/shmounts"
+    - "/var/lib/lxcfs"
+- debug: msg={{ umount_remaining_tmpfs }}
+  when: print_debug == true
+
+
+- name: Delete Remaining TmpFS
+  file:
+    path: "{{ item }}"
+    state: absent
+  register: delete_remaining_tmpfs
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/guestapi"
+    - "/var/lib/incus/shmounts"
+    - "/var/lib/incus/storage-pools"
+    - "/var/lib/incus/database"
+    - "/var/lib/lxcfs"
+    - "/root/incus-ui.crt"
+- debug: msg={{ delete_remaining_tmpfs }}
+  when: print_debug == true
+
+
+- name: Uninstall LxCFS Software Packages
+  package: name={{ item }} state=absent
+  with_items:
+    - lxcfs
+  register: uninstall_lxcfs_pkgs
+  ignore_errors: true
+- debug: msg={{ uninstall_lxcfs_pkgs }}
+  when: print_debug == true
+
+
+- name: Reboot Required
+  shell: ( /bin/sleep 5 ; /sbin/shutdown -r now "Ansible updates triggered" ) &
+  async: 120
+  poll: 0
+  notify:
+    - Waiting for Server to Come Back After Reboot
+
+
+- meta: flush_handlers
+
+
+- name: Delete Remaining Storage Pools
+  file:
+    path: "{{ item }}"
+    state: absent
+  register: delete_remaining_storage_pools
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/storage-pools"
+- debug: msg={{ delete_remaining_storage_pools }}
+  when: print_debug == true
+

@@ -1,0 +1,88 @@
+---
+# dmsetup ls
+# lvm--cluster--vg06-IncusThinPool        (252:4)
+# lvm--cluster--vg06-IncusThinPool-tpool  (252:3)
+# lvm--cluster--vg06-IncusThinPool_tdata  (252:2)
+# lvm--cluster--vg06-IncusThinPool_tmeta  (252:1)
+# umount /dev/mapper/lvm--cluster--vg06-IncusThinPool_tmeta
+# umount: /dev/mapper/lvm--cluster--vg06-IncusThinPool_tmeta: not mounted.
+# cat /proc/partitions
+# major minor  #blocks  name
+#
+#   7        0    9437184 loop0
+#   8        0  209715200 sda
+#   8        1       1024 sda1
+#   8        2    2097152 sda2
+#   8        3  207614976 sda3
+#   8       32   16777216 sdc
+#   8       16   16777216 sdb
+# 259        0   16777216 nvme0n1
+# 259        1   16776175 nvme0n1p1
+# 259        2   16777216 nvme0n2
+# 259        3   16776175 nvme0n2p1
+# 252        0  103804928 dm-0
+#  11        0    1048575 sr0
+# 252        1      32768 dm-1
+# 252        2   33480704 dm-2
+# 252        3   33480704 dm-3
+# 252        4   33480704 dm-4
+
+
+- name: Delete Remaining VG and DM Info
+  file:
+    path: "/dev/{{ item.vg }}"
+    state: absent
+  register: delete_remaining_vg
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+- debug: msg={{ delete_remaining_vg }}
+
+
+# https://stackoverflow.com/questions/36563834/how-to-info-linux-to-reload-device-mapper-after-erase-a-disk-by-dd
+- name: Clean Devices
+  shell: |
+    for dn in `echo "{{ _iscsi_devices }}"`
+    do
+      dd if=/dev/zero of=$dn bs=8K count=1 oflag=direct
+    done
+  register: clean_devices
+  ignore_errors: true
+  when: inventory_hostname in groups['control']
+- debug: msg={{ clean_devices }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+
+- name: Remove DM Devices
+  shell: |
+    dn=$(echo {{ item.vg }} | sed -e s/-/--/g)
+    for i in `ls /dev/mapper/$dn*`; do dmsetup remove $i ; done
+  register: remove_dm_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+- debug: msg={{ remove_dm_devices }}
+
+
+- name: Wipe Devices
+  shell: |
+    for dn in `echo "{{ _iscsi_devices }}"`
+    do
+      wipefs -a $dn
+    done
+  register: wipe_devices
+  ignore_errors: true
+  when: inventory_hostname in groups['control']
+- debug: msg={{ wipe_devices }}
+  when: print_debug == true and inventory_hostname in groups['control']
+# dd if=/dev/zero of="{{ item.source }}1" seek=$(( $(blockdev --getsz "{{ item.source }}1") - ( ( 256 * 1024 * 2) / $(blockdev --getpbsz "{{ item.source}}1") ) ))
+
+
+- name: Uninstall Parted
+  package:
+    name: parted
+    state: absent
+  register: uninstall_parted
+  ignore_errors: true
+- debug: msg={{ uninstall_parted }}
+

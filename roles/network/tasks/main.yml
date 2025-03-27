@@ -1,0 +1,36 @@
+---
+- name: Check OS ( Incus Network )
+  fail: msg="Not a Debian or Ubuntu based system!"
+  when: inventory_hostname in groups['workers'] and ( ansible_os_family != 'Ubuntu' or ansible_os_family != 'Debian' )
+
+
+- name: Set Facts For Network and Packages Informations and other Versions
+  import_tasks: set-facts.yml
+  tags: install, enable, create, uninstall, disable, delete
+  when: inventory_hostname not in groups['iscsi_target']
+
+
+- name: Import OVN Network
+  import_tasks: ovn/main.yml
+  when: ( ovn is defined and ovn == true ) and inventory_hostname not in groups['iscsi_target']
+
+
+- name: Import Physical Network
+  import_tasks: phy/main.yml
+  when: ( phy is defined and phy == true ) and inventory_hostname not in groups['iscsi_target']
+
+
+- name: Import Bridge Network
+  import_tasks: br/main.yml
+  when: ( br is defined and br == true ) and inventory_hostname not in groups['iscsi_target']
+
+
+- name: Import MacVLAN Network
+  import_tasks: macvlan/main.yml
+  when: ( macvlan is defined and macvlan == true ) and inventory_hostname not in groups['iscsi_target']
+
+
+- name: Import SR-IOV Network
+  import_tasks: sriov/main.yml
+  when: ( sriov is defined and sriov == true ) and inventory_hostname not in groups['iscsi_target']
+

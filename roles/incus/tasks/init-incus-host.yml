@@ -1,0 +1,37 @@
+---
+- name: Copy Preseed Yaml
+  template:
+    src: init-incus-cluster.yaml.j2
+    dest: "{{ _incus.base_dir }}/init-incus-cluster.yaml"
+    owner: root
+    group: root
+    mode: 644
+    force: yes
+  register: copy_default_preseed_yaml
+- debug: msg={{ copy_default_preseed_yaml }}
+  when: print_debug == true
+
+
+- name: Initialize Incus
+  shell: |
+    cat {{ _incus.base_dir }}/init-incus-cluster.yaml | incus admin init --preseed
+  register: init_incus
+- debug: msg={{ init_incus }}
+  when: print_debug == true
+
+
+- name: Configure Incus
+  shell: |
+    incus config set core.https_address {{ _ipaddr }}:8443
+  register: config_incus
+- debug: msg={{ config_incus }}
+  when: print_debug == true
+
+
+- name: Initialize Incus
+  shell: |
+    incus cluster enable {{ _ipaddr }} {{ inventory_hostname }}
+  register: init_incus
+- debug: msg={{ init_incus }}
+  when: print_debug == true
+

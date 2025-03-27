@@ -1,0 +1,7 @@
+---
+- name: Disable Incus API Certificate
+  shell: |
+    incus config trust remove $(incus config trust list | grep incus-api | grep client | cut -d '|' -f 5 | xargs)
+  register: remove_incus_api_cert
+- debug: msg={{ remove_incus_api_cert }}
+

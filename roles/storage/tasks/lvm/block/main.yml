@@ -1,0 +1,30 @@
+---
+- name: Prepare LVM Block Devices
+  import_tasks: lvm/block/prepare-lvm-block.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Block Pools
+  import_tasks: lvm/block/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Block Volumes
+  import_tasks: lvm/block/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Block Volumes
+  import_tasks: lvm/block/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Block Pools
+  import_tasks: lvm/block/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

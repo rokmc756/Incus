@@ -1,0 +1,21 @@
+---
+- name: Prepare Btrfs Local Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} btrfs --target={{ inventory_hostname }}
+  register: prepare_cluster_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.btrfs.local }}"
+- debug: msg={{ prepare_cluster_pools }}
+
+
+- name: Create Btrfs Local Pools
+  shell: |
+    incus storage create {{ item.name }} btrfs
+  register: create_pools
+  with_items:
+    - "{{ pools.btrfs.local }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

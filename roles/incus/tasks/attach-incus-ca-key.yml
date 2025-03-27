@@ -1,0 +1,29 @@
+---
+- name: Check if Incus CA Key Exists
+  stat: path={{ _incus.base_dir }}/root/incus-ui.crt
+  register: incus_ca_key
+- debug: msg={{ incus_ca_key }}
+  when: print_debug == true
+
+
+- name: Copy Incus CA Key File Downloaded from Directory til Success
+  become_user: jomoon
+  shell: |
+    sshpass -p "changeme" scp -o StrictHostKeyChecking=no {{ _incus.local_download_dir }}/incus-ui.crt root@{{ ipaddr2 }}:/root/
+  register: scp_ca_key
+  until: scp_ca_key is succeeded
+  retries: 1000
+  delay: 10
+  delegate_to: localhost
+  failed_when: scp_ca_key.rc != 0
+- debug: msg={{ scp_ca_key }}
+  when: print_debug == true
+
+
+- name: Register Incus CA Key File Downloaded
+  shell: |
+    incus config trust add-certificate {{ _incus.base_dir }}/incus-ui.crt
+  register: scp_ca_key
+- debug: msg={{ scp_ca_key }}
+  when: print_debug == true
+

@@ -1,0 +1,24 @@
+---
+- name: Create LVM Local Pools
+  import_tasks: lvm/local/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Local Volumes
+  import_tasks: lvm/local/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Volumes
+  import_tasks: lvm/local/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Pools
+  import_tasks: lvm/local/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

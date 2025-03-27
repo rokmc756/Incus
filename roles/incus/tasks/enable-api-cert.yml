@@ -1,0 +1,72 @@
+---
+- name: Create SSL Directory
+  file:
+    path: "{{ _ssl.ssl_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  register: create_ssl_dir
+
+
+- name: Generate a Private Key
+  shell: openssl genrsa -out {{ _ssl.ssl_dir }}/incus-api.key 4096
+  register: gen_api_key
+
+
+- name: Generate a CSR ( Certificate Signing Request )
+  shell: |
+    openssl req -new -key {{ _ssl.ssl_dir }}/incus-api.key -out {{ _ssl.ssl_dir }}/incus-api.csr \
+    -subj "/C={{ _ssl.ssl_country }}/ST={{ _ssl.ssl_state }}/L={{ _ssl.ssl_location }}/O={{ _ssl.ssl_organization }}/OU={{ _ssl.ssl_organization_unit }}/CN={{ _ssl.ssl_common_name }}/emailAddress={{ _ssl.ssl_email }}"
+  register: gen_csr_key
+
+
+- name: Generate the CA Certificate
+  shell: |
+    openssl x509 -req -days 3650 -in {{ _ssl.ssl_dir }}/incus-api.csr \
+    -subj "/C={{ _ssl.ssl_country }}/ST={{ _ssl.ssl_state }}/L={{ _ssl.ssl_location }}/O={{ _ssl.ssl_organization }}/OU={{ _ssl.ssl_organization_unit }}/CN={{ _ssl.ssl_common_name }}/emailAddress={{ _ssl.ssl_email }}" \
+    -signkey {{ _ssl.ssl_dir }}/incus-api.key \
+    -out {{ _ssl.ssl_dir }}/incus-api.crt
+  register: gen_ca_cert
+
+
+- name: Change Permissions for Cert Files
+  file:
+    path: "{{ _ssl.ssl_dir }}/{{ item }}"
+    state: file
+    owner: root
+    group: root
+    mode: "0600"
+  register: certs_permission_changed
+  with_items:
+    - "incus-api.crt"
+    - "incus-api.csr"
+    - "incus-api.key"
+
+
+- name: Add API Key Trust
+  shell: |
+    incus config trust add {{ _ssl.ssl_dir }}/incus-api.crt
+  register: add_api_key_trust
+
+
+- name: Add Certificate Trust
+  shell: |
+    incus config trust add-certificate {{ _ssl.ssl_dir }}/incus-api.crt
+  register: add_cert_trust
+
+
+- name: Copy Incus API Certificates to Local
+  fetch:
+    src: "{{ _ssl.ssl_dir }}/incus-api.{{ item }}"
+    dest: "/home/jomoon/Incus/rest-api/incus-api.{{ item }}"
+    flat: yes
+  with_items:
+    - crt
+    - key
+    - csr
+
+
+# curl --cert {{ _ssl.ssl_dir }}/incus-api.crt --key {{ _ssl.ssl_dir }}/incus-api.key -k https://192.168.1.81:8443/1.0/instances/test/state?project=default
+
+

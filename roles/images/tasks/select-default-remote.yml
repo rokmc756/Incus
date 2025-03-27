@@ -1,0 +1,9 @@
+# Select a default remote
+# If you specify an image name without the name of the remote, the default image server is used.
+
+# To see which server is configured as the default image server, enter the following command:
+$ incus remote get-default
+
+# To select a different remote as the default image server, enter the following command:
+$ incus remote switch <remote_name>
+

@@ -1,0 +1,13 @@
+---
+- name: Setup Incus Cluster on OVN
+  import_tasks: ovn/cluster/main.yml
+  when: ( cluster is defined and cluster == true )
+
+
+# [ Note ]
+# https://documentation.ubuntu.com/lxd/en/latest/howto/network_ovn_setup/
+
+# https://developers.redhat.com/blog/2018/09/03/ovn-dynamic-ip-address-management#
+# https://github.com/lxc/incus/issues/709
+# https://github.com/lxc/incus/issues/936
+

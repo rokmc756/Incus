@@ -1,0 +1,45 @@
+---
+- name: Install Parted
+  package:
+    name: parted
+    state: present
+  register: install_parted
+  ignore_errors: true
+- debug: msg={{ install_parted }}
+
+
+- name: Clean Devices
+  shell: |
+    for dn in `echo "{{ item.device }}"`
+    do
+      dd if=/dev/zero of=$dn bs=1M count=1
+    done
+  register: clean_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vg }}"
+- debug: msg={{ clean_devices }}
+
+
+- name: Wipe Filesystem
+  shell: |
+    for dn in `echo "{{ item.device }}"`
+    do
+      wipefs -a $dn
+    done
+  register: wipe_fs
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vg }}"
+- debug: msg={{ wipe_fs }}
+
+
+- name: Create Volume Group
+  shell: |
+    vgcreate {{ item.source }} {{ item.device }}
+  register: create_vg
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vg }}"
+- debug: msg={{ create_vg }}
+

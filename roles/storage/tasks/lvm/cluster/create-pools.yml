@@ -1,0 +1,29 @@
+---
+- name: Prepare LVM Cluster Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} lvmcluster source={{ item.vg }} lvm.vg_name={{ item.vg }} --target={{ inventory_hostname }}
+  register: prepare_cluster_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+- debug: msg={{ prepare_cluster_pools }}
+
+
+- name: Create LVM Cluster Pools
+  shell: |
+    incus storage create {{ item.name }} lvmcluster
+  register: create_pools
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+
+- name: Print LVM Cluster Volumes
+  shell: |
+    pvs
+  register: print_pvs
+- debug: msg={{ print_pvs }}
+  when: print_debug == true
+

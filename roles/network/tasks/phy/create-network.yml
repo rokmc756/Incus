@@ -1,0 +1,30 @@
+---
+- name: Configure Physical Network
+  shell: |
+    incus network create {{ item.name }} --type={{ item.type }} parent={{ item.parent }} --target={{ inventory_hostname }}
+  register: config_physical_network
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ _phy }}"
+- debug: msg={{ config_physical_network }}
+
+
+- name: Create Physical Network
+  shell: |
+    incus network create {{ item.name }} --type={{ item.type }} \
+    ipv4.gateway={{ item.gateway }} \
+    ipv4.ovn.ranges={{ item.ovn_range_start }}-{{ item.ovn_range_end }} \
+    ipv4.routes={{ item.routes }} \
+    dns.nameservers={{ item.dns }}
+  register: create_physical_network
+  with_items:
+    - "{{ _phy }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_physical_network }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+
+#* Above is added in incus network pannel. but it overwrite exsiting network adapter
+#  When it's deleted previous ens256 appeared again
+
+

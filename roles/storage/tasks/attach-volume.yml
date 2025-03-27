@@ -1,0 +1,33 @@
+# [ Attach the volume to an instance ]
+#
+# After creating a custom storage volume, you can add it to one or more instances as a disk device.
+# The following restrictions apply:
+#
+# Custom storage volumes of content type block or iso cannot be attached to containers, but only to virtual machines.
+# To avoid data corruption, storage volumes of content type block should never be attached to more than one virtual machine at a time.
+# Storage volumes of content type iso are always read-only, and can therefore be attached to more than one virtual machine at a time without corrupting data.
+# File system storage volumes can’t be attached to virtual machines while they’re running.
+#
+
+# For custom storage volumes with the content type filesystem, use the following command,
+# where <location> is the path for accessing the storage volume inside the instance (for example, /data):
+$ incus storage volume attach <pool_name> <filesystem_volume_name> <instance_name> <location>
+
+
+# Custom storage volumes with the content type block do not take a location:
+#
+# incus storage volume attach <pool_name> <block_volume_name> <instance_name>
+# By default, the custom storage volume is added to the instance with the volume name as the device name.
+# If you want to use a different device name, you can add it to the command:
+$ incus storage volume attach <pool_name> <filesystem_volume_name> <instance_name> <device_name> <location>
+$ incus storage volume attach <pool_name> <block_volume_name> <instance_name> <device_name>
+
+
+# [ Attach the volume as a device ]
+# The incus storage volume attach command is a shortcut for adding a disk device to an instance. Alternatively, you can add a disk device for the storage volume in the usual way:
+$ incus config device add <instance_name> <device_name> disk pool=<pool_name> source=<volume_name> [path=<location>]
+
+
+# When using this way, you can add further configuration to the command if needed. See disk device for all available device options.
+
+

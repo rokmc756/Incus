@@ -1,0 +1,11 @@
+---
+- name: Create LVM Cluster Shared Volume Group
+  shell: |
+    vgcreate --shared {{ item.vg }} {{ _iscsi_devices }}
+  register: create_vg
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.cluster }}"
+- debug: msg={{ create_vg }}
+  when: print_debug == true
+

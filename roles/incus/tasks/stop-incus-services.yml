@@ -1,0 +1,51 @@
+---
+- name: Start Incus Services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  register: start_incus
+  until: start_incus is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - "incus"
+- debug: msg={{ start_incus }}
+  when: print_debug == true
+
+
+- name: Stop Incus Services
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: yes
+  register: stop_incus
+  ignore_errors: true
+  until: stop_incus is succeeded
+  retries: 5
+  delay: 20
+  with_items:
+    - "incus-user.socket"
+    - "incus-user"
+    - "incus.socket"
+    - "incus"
+    - "incus-startup"
+    - "incus-lxcfs"
+- debug: msg={{ stop_incus }}
+  when: print_debug == true
+
+
+- name: Resart Incus Services
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  register: restart_incus
+  until: restart_incus is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - "incus"
+- debug: msg={{ restart_incus }}
+  when: print_debug == true
+

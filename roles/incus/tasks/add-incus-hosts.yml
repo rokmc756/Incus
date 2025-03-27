@@ -1,0 +1,76 @@
+---
+- name: Get Token to Join Cluster
+  shell: |
+    incus cluster add {{ inventory_hostname }} {{ _incus.debug_opt }}
+  async: 360
+  poll: 5
+  register: get_token
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  delegate_facts: True
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ get_token }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+
+
+- name: Set Fact for Token CA Certificate
+  set_fact:
+    join_token: "{{ get_token.stdout_lines[-1:][0] }}"
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ get_token }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+
+
+- name: Copy Preseed Yaml to Add Hosts
+  template:
+    src: preseed.yaml.j2
+    dest: "{{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml"
+    owner: root
+    group: root
+    mode: 644
+    force: yes
+  register: copy_preseed_yaml
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ copy_preseed_yaml }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+
+
+- name: Transfer Preseed Yaml to Control Node
+  synchronize:
+    mode: pull
+    src: "{{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml"
+    dest: "{{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml"
+    set_remote_user: false
+    rsync_opts:
+      - "-e ssh"                         # "-e ssh -i ~/.ssh/id_rsa.pub"
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  delegate_facts: true
+  register: transfer_preseed_yaml
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ transfer_preseed_yaml }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+
+
+- name: Print the Content of Preseed Yaml
+  shell: |
+    cat {{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml
+  register: print_preseed_yaml_config
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  delegate_facts: True
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ print_preseed_yaml_config }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+
+
+- name: Add Hosts to Cluster
+  shell: |
+    cat {{ _incus.base_dir }}/{{ inventory_hostname }}-preseed.yaml | incus admin init --preseed {{ _incus.debug_opt }}
+  register: add_hosts
+  async: 180
+  poll: 10
+  notify:
+    - Sync Incus DB
+    - Restart Incus
+  when: inventory_hostname in groups['cluster']
+- debug: msg={{ add_hosts }}
+  when: print_debug == true and inventory_hostname in groups['cluster']
+

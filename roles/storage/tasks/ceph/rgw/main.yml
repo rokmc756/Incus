@@ -1,0 +1,36 @@
+---
+- name: Enable RadosGW Clients
+  import_tasks: ceph/rgw/enable-rgw-clients.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Create RadosGW Pools
+  import_tasks: ceph/rgw/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Ceph RadosGW Buckets
+  import_tasks: ceph/rgw/create-buckets.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Ceph RadosGW Buckets
+  import_tasks: ceph/rgw/delete-buckets.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Ceph RaodsGW Pools
+  import_tasks: ceph/rgw/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Disable RadosGW Clients
+  import_tasks: ceph/rgw/disable-rgw-clients.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

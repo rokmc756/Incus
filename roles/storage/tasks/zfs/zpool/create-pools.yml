@@ -1,0 +1,21 @@
+---
+- name: Prepare ZFS ZPool Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} zfs source={{ item.zpool }} --target={{ inventory_hostname }}
+  register: prepare_cluster_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.zfs.zpool }}"
+- debug: msg={{ prepare_cluster_pools }}
+
+
+- name: Create ZFS ZPool Pools
+  shell: |
+    incus storage create {{ item.name }} zfs
+  register: create_pools
+  with_items:
+    - "{{ pools.zfs.zpool }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

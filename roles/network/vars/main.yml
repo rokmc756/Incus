@@ -1,0 +1,16 @@
+
+_phy:
+  - { name: "ens193", type: "physical", parent: "ens193", gateway: "192.168.2.1/24", ovn_range_start: "192.168.2.221", ovn_range_end: "192.168.2.250", routes: "198.52.100.0/24", dns: "192.168.0.90" }
+
+_br:
+  - { name: "brnet01", type: "bridge", parent: "ens193" }
+
+_macvlan:
+  - { name: "ens193", type: "macvlan", parent: "ens193" }
+
+_sriov:
+  - { name: "ens193", type: "sriov", parent: "ens193" }
+
+_ovn:
+  - { name: "ens256", type: "physical", parent: "ens256", gateway: "192.168.2.1/24", ovn_start_range: "192.168.2.221", ovn_end_range: "192.168.2.250", dns: "192.168.0.90" }
+

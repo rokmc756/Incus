@@ -1,0 +1,8 @@
+# Delete an image
+# To delete a local copy of an image, enter the following command:
+$ incus image delete <image_ID>
+
+# Deleting an image won’t affect running instances that are already using it, but it will remove the image locally.
+# After deletion, if the image was downloaded from a remote server, it will be removed from local cache and downloaded again on next use.
+# However, if the image was manually created (not cached), the image will be deleted.
+

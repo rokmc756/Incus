@@ -1,0 +1,73 @@
+---
+- name: Generate RadosGW Auth Key
+  shell: |
+    /usr/bin/sshpass -p {{ _incus.ceph.passwd }} ssh -o StrictHostKeyChecking=no root@{{ _incus.ceph.radosgw_ip_addr }} \
+    "ceph-authtool -C -n client.radosgw.gateway --gen-key /etc/ceph/keyring.radosgw.gateway"
+  register: generate_radosgw_auth_key
+- debug: msg={{ generate_radosgw_auth_key }}
+  when: print_debug == true
+
+
+#- name: Copy RadosGW Auth Key
+#  synchronize:
+#    mode: push
+#    src: "/etc/ceph/keyring.radosgw.gateway"
+#    dest: "/etc/ceph/keyring.radosgw.gateway"
+#    set_remote_user: true
+#    rsync_opts:
+#      - "-e ssh"          # "-e ssh -i ~/.ssh/id_rsa.pub"
+#    ssh_args:
+#      - "-p {{ _incus.ceph.passwd }} -o StrictHostKeyChecking=no"
+#  delegate_to: "{{ _incus.ceph.radosgw_ip_addr }}"
+#  delegate_facts: true
+#  register: copy_radosgw_auth_key
+#- debug: msg={{ copy_radosgw_auth_key }}
+#  when: print_debug == true
+
+
+- name: Copy RadosGW Auth Key
+  shell: |
+    rsync -a --rsh='/usr/bin/sshpass -p {{ _incus.ceph.passwd }} ssh -o StrictHostKeyChecking=no' \
+    {{ _incus.ceph.radosgw_ip_addr }}:/etc/ceph/keyring.radosgw.gateway /etc/ceph/keyring.radosgw.gateway
+  register: copy_radosgw_auth_key
+- debug: msg={{ copy_radosgw_auth_key }}
+  when: print_debug == true
+
+
+- name: Add RadosGW Auth Key
+  shell: |
+    ceph -k /etc/ceph/ceph.client.admin.keyring auth add client.radosgw.gateway -i /etc/ceph/keyring.radosgw.gateway
+  register: add_radosgw_auth_key
+- debug: msg={{ add_radosgw_auth_key }}
+  when: print_debug == true
+
+
+- name: Restart Incus Service to Apply Changes
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  register: restart_incus
+  until: restart_incus is succeeded
+  retries: 10
+  delay: 5
+  with_items:
+    - incus
+- debug: msg={{ restart_incus }}
+  when: print_debug == true
+
+
+- name: Print RadosGW Zone List
+  shell: |
+    radosgw-admin zone list
+  register: print_radosgw_zone_list
+- debug: msg={{ print_radosgw_zone_list }}
+  when: print_debug == true
+
+
+- name: Print RadosGW Bucket List
+  shell: |
+    radosgw-admin bucket list
+  register: print_radosgw_bucket_list
+- debug: msg={{ print_radosgw_bucket_list }}
+  when: print_debug == true
+

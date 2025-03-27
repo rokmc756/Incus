@@ -1,0 +1,19 @@
+
+# incus admin sql local "SELECT name FROM sqlite_master WHERE type='table'"
++-----------------+
+|      NAME       |
++-----------------+
+| schema          |
++-----------------+
+| sqlite_sequence |
++-----------------+
+| certificates    |
++-----------------+
+| config          |
++-----------------+
+| patches         |
++-----------------+
+| raft_nodes      |
++-----------------+
+
+

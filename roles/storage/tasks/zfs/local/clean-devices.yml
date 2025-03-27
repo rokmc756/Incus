@@ -1,0 +1,45 @@
+---
+#- name: Delete Partition
+#  parted:
+#    device: "{{ item.source }}"
+#    number: "1"
+#    state: absent
+#  register: delete_partition
+#  ignore_errors: true
+#  with_items:
+#    - "{{ pools.btrfs.block }}"
+#- debug: msg={{ delete_partition }}
+
+
+#- name: Clean Devices
+#  shell: |
+#    dd if=/dev/zero of={{ item.source }} bs=1M count=1
+#  register: clean_devices
+#  ignore_errors: true
+#  with_items:
+#    - "{{ pools.btrfs.block }}"
+#- debug: msg={{ clean_devices }}
+
+
+#- name: Run Partprobe
+#  shell: |
+#    partprobe {{ item.source }}
+#  register: run_partprobe
+#  ignore_errors: true
+#  with_items:
+#    - "{{ pools.btrfs.block }}"
+#- debug: msg={{ run_partprobe }}
+
+
+- name: Uninstall Relevant Packages for ZFS Storage Pools
+  package:
+    name: "{{ item }}"
+    state: absent
+  register: uninstall_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "zfsutils-linux"
+    - "parted"
+- debug: msg={{ uninstall_relevant_pkgs }}
+# command: cat /proc/partitions
+

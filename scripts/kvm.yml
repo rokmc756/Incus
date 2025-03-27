@@ -1,0 +1,5 @@
+
+# With incus user
+$ kvm_stat
+Please make sure that CONFIG_KVM is enabled in your kernel and that the modules are loaded.
+

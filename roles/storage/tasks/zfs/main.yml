@@ -1,0 +1,25 @@
+---
+- name: Import ZFS Local Storage Pools
+  import_tasks: zfs/local/main.yml
+  when: ( local is defined and local == true )
+
+
+- name: Import ZFS LoopBack Storage Pools
+  import_tasks: zfs/loopback/main.yml
+  when: ( loopback is defined and loopback == true )
+
+
+- name: Import ZFS Zpool Storage Pools
+  import_tasks: zfs/zpool/main.yml
+  when: ( zpool is defined and zpool == true )
+
+
+- name: Import ZFS Zpool Slice Storage Pools
+  import_tasks: zfs/slice/main.yml
+  when: ( slice is defined and slice == true )
+
+
+- name: Import ZFS Block Storage Pools
+  import_tasks: zfs/block/main.yml
+  when: ( blk is defined and blk == true )
+

@@ -1,0 +1,81 @@
+---
+- name: Remove Root Privileges
+  lineinfile:
+    dest: "{{ item.path }}"
+    line: "{{ item.line }}"
+    state: absent
+  register: remove_root_privileges
+  with_items:
+    - { path: "/etc/subuid", line: "root:1000000:1000000000" }
+    - { path: "/etc/subgid", line: "root:1000000:1000000000" }
+- debug: msg={{ remove_root_privileges }}
+  when: print_debug == true
+
+
+- name: Stop and Disable Incus Services
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: yes
+    daemon-reload: yes
+  register: stop_incus
+  ignore_errors: true
+  until: stop_incus is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - "incus-user.socket"
+    - "incus-user"
+    - "incus.socket"
+    - "incus"
+    - "incus-startup"
+    - "incus-lxcfs"
+- debug: msg={{ stop_incus }}
+  when: print_debug
+
+
+- name: Uninstall Incus Software Packages
+  package: name={{ item }} state=absent
+  with_items:
+    - incus-client
+    - incus-tools
+    - incus
+  register: uninstall_incus_pkgs
+  ignore_errors: true
+- debug: msg={{ uninstall_incus_pkgs }}
+  when: print_debug == true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: update_apt_cache
+  ignore_errors: true
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+
+
+- name: Purge Broken Packages
+  package: name={{ item }} state=absent purge=true
+  with_items:
+    - incus-agent
+    - incus
+    - incus-base
+  register: purge_broken_pkgs
+  ignore_errors: true
+- debug: msg={{ purge_broken_pkgs }}
+  when: print_debug == true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400
+  register: update_apt_cache
+  ignore_errors: true
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+

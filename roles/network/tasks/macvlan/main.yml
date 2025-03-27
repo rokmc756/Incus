@@ -1,0 +1,15 @@
+---
+- name: Create MacVLAN Network
+  import_tasks: macvlan/create-network.yml
+  tags: enable, create, install
+  when: ( macvlan is defined and macvlan == true )
+
+
+- name: Delete MacVLAN Network
+  import_tasks: macvlan/delete-network.yml
+  tags: disable, delete, uninstall
+  when: ( macvlan is defined and macvlan == true )
+
+
+# https://linuxcontainers.org/incus/docs/main/howto/network_ovn_setup/
+

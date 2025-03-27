@@ -1,0 +1,70 @@
+---
+#- name: Uninstall Unattended Upgrade Packages
+#  package:
+#    name: "{{ item.pkg }}"
+#    state: "{{ item.state }}"
+#  register: uninstall_unattended_upgrads_pkgs
+#  with_items:
+#    - { pkg: "unattended-upgrades", state: "absent" }
+#- debug: msg={{ uninstall_unattended_upgrads_pkgs }}
+#  when: print_debug == true
+#
+#
+#- name: Stop PackageKit
+#  systemd:
+#    name: "{{ item.svc }}"
+#    state: "{{ item.state }}"
+#    enabled: "{{ item.action }}"
+#    daemon_reload: true
+#  register: stop_packagekit
+#  until: stop_packagekit is succeeded
+#  retries: 3
+#  delay: 10
+#  with_items:
+#    - { svc: "packagekit", state: "stopped", action: "false" }
+#- debug: msg={{ stop_packagekit }}
+#  when: print_debug == true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 10
+  delay: 10
+  # upgrade: yes
+
+
+- name: Install Relevant OVN Packages
+  package:
+    name: "{{ item.pkg }}"
+    state: "{{ item.state }}"
+  register: install_relevant_pkgs
+  until: install_relevant_pkgs is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - { pkg: "ovn-central", state: "present" }
+    - { pkg: "ovn-host", state: "present" }
+- debug: msg={{ install_relevant_pkgs }}
+  when: print_debug == true
+
+
+- name: Enable OVN Service
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: enable_ovn
+  until: enable_ovn is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-central", state: "stopped", action: "true" }
+    - { svc: "ovn-host", state: "stopped", action: "true" }
+- debug: msg={{ enable_ovn }}
+  when: print_debug == true
+

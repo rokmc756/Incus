@@ -1,0 +1,16 @@
+
+# incus storage volume import local fedora-coreos-41.20241109.3.0-live.x86_64.iso fedora-core-41 --type=iso
+# incus storage volume import rbd-pool01 fedora-coreos-41.20241109.3.0-live.x86_64.iso fedora-core-41 --type=iso
+
+
+# curl -X POST \
+#     --unix-socket /var/lib/incus/unix.socket \
+#     -H "Content-Type: application/octet-stream" \
+#     --data-binary @/path/to/your.iso \
+#     "http://localhost/1.0/files?path=/var/lib/incus/isos/your.iso"
+#
+
+
+# incus storage volume delete rbd-pool01 fedora-core-41
+# Storage volume fedora-core-41 deleted
+

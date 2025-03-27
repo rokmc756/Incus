@@ -1,0 +1,23 @@
+---
+- name: Configure OVN Network
+  shell: |
+    incus network create {{ item.name }} --type={{ item.type }} parent={{ item.parent }} --target={{ inventory_hostname }}
+  register: config_uplink_network
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items: "{{ _ovn }}"
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ config_uplink_network }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Create OVN Network
+  shell: |
+    incus network create {{ item.name }} --type={{ item.type }} \
+    ipv4.ovn.ranges={{ item.ovn_start_range }}-{{ item.ovn_end_range }} \
+    ipv4.gateway={{ item.gateway }} dns.nameservers={{ item.dns }}
+  register: create_uplink_network
+  with_items: "{{ _ovn }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_uplink_network }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

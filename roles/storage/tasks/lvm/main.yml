@@ -1,0 +1,30 @@
+---
+- name: Import LVM Local Storage Pools
+  import_tasks: lvm/local/main.yml
+  when: ( local is defined and local == true )
+
+
+- name: Import LVM Block Storage Pools
+  import_tasks: lvm/block/main.yml
+  when: ( blk is defined and blk == true )
+
+
+- name: Import LVM VGs Storage Pools
+  import_tasks: lvm/vgs/main.yml
+  when: ( vgs is defined and vgs == true )
+
+
+- name: Import LVM VG Storage Pools
+  import_tasks: lvm/vg/main.yml
+  when: ( vg is defined and vg == true )
+
+
+- name: Import LVM Thin Storage Pools
+  import_tasks: lvm/thin/main.yml
+  when: ( thin is defined and thin == true )
+
+
+- name: Import LVM Cluster LVM Storage Pools
+  import_tasks: lvm/cluster/main.yml
+  when: ( cluster is defined and cluster == true )
+

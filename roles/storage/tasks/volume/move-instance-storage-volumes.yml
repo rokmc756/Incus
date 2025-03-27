@@ -1,0 +1,4 @@
+# To move an instance storage volume to another storage pool, make sure the instance is stopped.
+# Then use the following command to move the instance to a different pool:
+# $ incus move <instance_name> --storage <target_pool_name>
+

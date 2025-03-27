@@ -1,0 +1,10 @@
+---
+- name: Import LVM Local Storage Pools
+  import_tasks: dir/local/main.yml
+  when: ( local is defined and local == true )
+
+
+- name: Import LVM Directory Storage Pools
+  import_tasks: dir/dirs/main.yml
+  when: ( dirs is defined and dirs == true )
+

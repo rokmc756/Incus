@@ -1,0 +1,11 @@
+# Edit image properties
+# To set a specific image property that is located under the properties key, enter the following command:
+#
+$ incus image set-property <image_ID> <key>
+
+# [ Note ]
+# These properties can be used to convey information about the image. They do not configure Incus’ behavior in any way.
+#
+# To edit the full image properties, including the top-level properties, enter the following command:
+$ incus image edit <image_ID>
+

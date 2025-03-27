@@ -1,0 +1,10 @@
+# View storage bucket keys
+- name: Use the following command to see the keys defined for an existing bucket:
+  shell: |
+    incus storage bucket key list <pool_name> <bucket_name>
+
+
+- name: Use the following command to see a specific bucket key:
+  shell: |
+    incus storage bucket key show <pool_name> <bucket_name> <key_name>
+

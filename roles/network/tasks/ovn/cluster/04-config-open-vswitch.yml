@@ -1,0 +1,29 @@
+---
+- name: Restart Open VSwitch
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: restart_openvswitch
+  until: restart_openvswitch is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovsdb-server", state: "restarted", action: "true" }
+    - { svc: "openvswitch-switch", state: "restarted", action: "true" }
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ restart_openvswitch }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Configure Open vSwitch
+  command: |
+    ovs-vsctl set open_vswitch . external_ids:ovn-remote={{ all_ovn_sb_tcp_ipaddrs }} external_ids:ovn-encap-type=geneve external_ids:ovn-encap-ip={{ _ipaddr2 }}
+  register: config_open_vswitch
+  async: 180
+  poll: 10
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ config_open_vswitch }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+

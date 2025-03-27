@@ -1,0 +1,15 @@
+---
+- name: Import Btrfs Local Storage Pools
+  import_tasks: btrfs/local/main.yml
+  when: ( local is defined and local == true )
+
+
+- name: Import Btrfs Directory Storage Pools
+  import_tasks: btrfs/dirs/main.yml
+  when: ( dirs is defined and dirs == true )
+
+
+- name: Import Btrfs Block Storage Pools
+  import_tasks: btrfs/block/main.yml
+  when: ( blk is defined and blk == true )
+

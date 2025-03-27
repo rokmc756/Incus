@@ -1,0 +1,27 @@
+---
+incus_ulmit_parameters:
+  - { state: "present",  domain : "*",     type: "soft",  item: "nofile",  value: "1048576" }
+  - { state: "present",  domain : "*",     type: "hard",  item: "nofile",  value: "1048576" }
+  - { state: "present",  domain : "root",  type: "soft",  item: "nofile",  value: "1048576" }
+  - { state: "present",  domain : "root",  type: "hard",  item: "nofile",  value: "1048576" }
+  - { state: "present",  domain : "*",     type: "soft",  item: "memlock", value: "unlimited" }
+  - { state: "present",  domain : "*",     type: "hard",  item: "memlock", value: "unlimited" }
+  - { state: "present",  domain : "root",  type: "soft",  item: "memlock", value: "unlimited" }
+  - { state: "present",  domain : "root",  type: "hard",  item: "memlock", value: "unlimited" }
+
+
+incus_kernel_parameters:
+  - { state: "present",  param" : "fs.aio-max-nr",                      "value" : "524288"  }
+  - { state: "present",  param" : "fs.inotify.max_queued_events",       "value" : "1048576" }
+  - { state: "present",  param" : "fs.inotify.max_user_instances",      "value" : "1048576" }
+  - { state: "present",  param" : "fs.inotify.max_user_watches",        "value" : "1048576" }
+  - { state: "present",  param" : "kernel.dmesg_restrict",              "value" : "1" }
+  - { state: "present",  param" : "kernel.keys.maxbytes",               "value" : "2000000" }
+  - { state: "present",  param" : "kernel.keys.maxkeys",                "value" : "2000" }
+  - { state: "present",  param" : "net.core.bpf_jit_limit",             "value" : "1000000000" }
+  - { state: "present",  param" : "net.ipv4.neigh.default.gc_thresh3",  "value" : "8192" }
+  - { state: "present",  param" : "net.ipv6.neigh.default.gc_thresh3",  "value" : "8192" }
+  - { state: "present",  param" : "vm.max_map_count",                   "value" : "262144" }
+
+# https://linuxcontainers.org/incus/docs/main/reference/server_settings/
+

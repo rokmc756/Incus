@@ -1,0 +1,10 @@
+OVN_CTL_OPTS=" \
+     --db-nb-addr={{ _ipaddr2 }} \
+     --db-nb-create-insecure-remote=yes \
+     --db-sb-addr={{ _ipaddr2 }} \
+     --db-sb-create-insecure-remote=yes \
+     --db-nb-cluster-local-addr={{ _ipaddr2 }} \
+     --db-sb-cluster-local-addr={{ _ipaddr2 }} \
+     --ovn-northd-nb-db={{ all_ovn_nb_tcp_ipaddrs }} \
+     --ovn-northd-sb-db={{ all_ovn_sb_tcp_ipaddrs }}"
+

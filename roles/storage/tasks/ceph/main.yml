@@ -1,0 +1,27 @@
+---
+- name: Enable Ceph Clients
+  import_tasks: ceph/enable-ceph-clients.yml
+  tags: enable
+  when: ( client is defined and client == true )
+
+
+- name: Import Ceph RBD Storage Pools
+  import_tasks: ceph/rbd/main.yml
+  when: ( rbd is defined and rbd == true )
+
+
+- name: Import Ceph Filesystem Storage Pools
+  import_tasks: ceph/fs/main.yml
+  when: ( fs is defined and fs == true )
+
+
+- name: Import Ceph RadosGW Storage Pools
+  import_tasks: ceph/rgw/main.yml
+  when: ( rgw is defined and rgw == true )
+
+
+- name: Disable Ceph Clients
+  import_tasks: ceph/disable-ceph-clients.yml
+  tags: disable
+  when: ( client is defined and client == true )
+

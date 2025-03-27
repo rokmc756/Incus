@@ -1,0 +1,116 @@
+---
+- name: Get Network Interface Name Filted by Prefix of IP Addresses Provided
+  set_fact:
+    netdev0: "{{ ansible_interfaces | map('regex_replace', '^', 'ansible_') | map('extract', vars) | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'match', _incus.net.ipaddr0 ) | map(attribute='device') | first }}"
+    netdev1: "{{ ansible_interfaces | map('regex_replace', '^', 'ansible_') | map('extract', vars) | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'match', _incus.net.ipaddr1 ) | map(attribute='device') | first }}"
+    netdev2: "{{ ansible_interfaces | map('regex_replace', '^', 'ansible_') | map('extract', vars) | selectattr('ipv4', 'defined') | selectattr('ipv4.address', 'match', _incus.net.ipaddr2 ) | map(attribute='device') | first }}"
+
+
+- name: Get IP Address Filtered by Network Device Name Provided
+  set_fact:
+    ipaddr0: "{{ hostvars[inventory_hostname]['ansible_'~netdev0].ipv4.address }}"
+    ipaddr1: "{{ hostvars[inventory_hostname]['ansible_'~netdev1].ipv4.address }}"
+    ipaddr2: "{{ hostvars[inventory_hostname]['ansible_'~netdev2].ipv4.address }}"
+
+
+- name: Set Default Network Device and Address
+  set_fact:
+    _netdev: "{{ 'ansible_'~ netdev1 }}"
+    _netdev0: "{{ 'ansible_'~ netdev0 }}"
+    _netdev1: "{{ 'ansible_'~ netdev1 }}"
+    _netdev2: "{{ 'ansible_'~ netdev2 }}"
+    _ipaddr: "{{ ipaddr1 }}"
+    _ipaddr0: "{{ ipaddr0 }}"
+    _ipaddr1: "{{ ipaddr1 }}"
+    _ipaddr2: "{{ ipaddr2 }}"
+    _h: "{{ inventory_hostname }}"
+
+
+
+- name: Set OVN Server IP Address
+  set_fact:
+    ovn_server_ipaddr: "{{ ipaddr2 }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: True
+  with_items: "{{ groups['workers'] }}"
+  when: inventory_hostname in groups['control']
+  # when: inventory_hostname in groups['cluster'][0]
+
+
+- name: Set All OVN NB TCP Addresses
+  set_fact:
+    all_ovn_nb_tcp_ipaddrs: |
+      {%- for h in groups['workers'] %}
+      {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6641{% if not loop.last %},{% endif %}
+      {% endfor %}
+
+
+- name: Set All OVN SB TCP Addresses
+  set_fact:
+    all_ovn_sb_tcp_ipaddrs: |
+      {%- for h in groups['workers'] %}
+      {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6642{% if not loop.last %},{% endif %}
+      {% endfor %}
+
+
+- name: Set Remaining OVN NB TCP Addresses
+  set_fact:
+    second_ovn_nb_tcp_ipaddrs: |
+      {%- for h in groups['workers'] %}
+      {% if _h not in h %}
+      {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6641{% if not loop.last %},{% endif %}
+      {% endif %}
+      {% endfor %}
+
+
+- name: Set Remaining OVN SB TCP Addresses
+  set_fact:
+    second_ovn_sb_tcp_ipaddrs: |
+      {%- for h in groups['workers'] %}
+      {% if _h not in h %}
+      {{ 'tcp:' + hostvars[h][_netdev2]['ipv4']['address'] }}:6642{% if not loop.last %},{% endif %}
+      {% endif %}
+      {% endfor %}
+
+
+- debug: msg={{ all_ovn_nb_tcp_ipaddrs }}
+- debug: msg={{ all_ovn_sb_tcp_ipaddrs }}
+- debug: msg={{ second_ovn_nb_tcp_ipaddrs }}
+- debug: msg={{ second_ovn_sb_tcp_ipaddrs }}
+- debug: msg={{ ovn_server_ipaddr }}
+# - meta: end_play
+
+
+- name: Get Netmask From Provided Network Device Names
+  set_fact:
+    netmask0: "{{ ( hostvars[inventory_hostname][_netdev0]['ipv4']['address'] + '/' + hostvars[inventory_hostname][_netdev0]['ipv4']['netmask'] ) | ansible.utils.ipaddr('prefix') }}"
+    netmask1: "{{ ( hostvars[inventory_hostname][_netdev1]['ipv4']['address'] + '/' + hostvars[inventory_hostname][_netdev1]['ipv4']['netmask'] ) | ansible.utils.ipaddr('prefix') }}"
+    netmask2: "{{ ( hostvars[inventory_hostname][_netdev2]['ipv4']['address'] + '/' + hostvars[inventory_hostname][_netdev2]['ipv4']['netmask'] ) | ansible.utils.ipaddr('prefix') }}"
+
+
+- name: Set Default Network Device and Address
+  set_fact:
+    control_ipaddr: "{{ ipaddr1 }}"
+  delegate_to: "{{ item }}"
+  delegate_facts: True
+  with_items: "{{ groups['workers'] }}"
+  when: inventory_hostname in groups['control']
+
+
+- name: Get VERSION CODENAME
+  shell: . /etc/os-release && echo ${VERSION_CODENAME}
+  register: get_version_codename
+- debug: msg="{{ get_version_codename }}"
+
+
+- name: Get Architecture
+  shell: dpkg --print-architecture
+  register: get_architecture
+- debug: msg="{{ get_architecture }}"
+
+
+- name: Set Version CodeName and Architecture
+  set_fact:
+    _version_codename: "{{ get_version_codename.stdout }}"
+    _architecture: "{{ get_architecture.stdout }}"
+

@@ -1,0 +1,28 @@
+---
+- name: Copy First Central Config
+  template:
+    src: first-ovn-central.j2
+    dest: "/etc/default/ovn-central"
+    owner: root
+    group: root
+    mode: 644
+    force: yes
+  register: copy_first_central_config
+  when: inventory_hostname in groups['workers'][0]
+- debug: msg={{ copy_first_central_config }}
+  when: print_debug == true and inventory_hostname in groups['workers'][0]
+
+
+- name: Copy Second Central Config
+  template:
+    src: second-ovn-central.j2
+    dest: "/etc/default/ovn-central"
+    owner: root
+    group: root
+    mode: 644
+    force: yes
+  register: copy_second_central_config
+  when: inventory_hostname not in groups['workers'][0]
+- debug: msg={{ copy_second_central_config }}
+  when: print_debug == true and inventory_hostname not in groups['workers'][0]
+

@@ -1,0 +1,30 @@
+---
+- name: Create Volume Group
+  import_tasks: lvm/vg/create-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM VG Pools
+  import_tasks: lvm/vg/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM VG Volumes
+  import_tasks: lvm/vg/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM VG Volumes
+  import_tasks: lvm/vg/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM VG Pools
+  import_tasks: lvm/vg/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

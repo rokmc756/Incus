@@ -1,0 +1,24 @@
+---
+- name: Create Btrfs Local Pools
+  import_tasks: btrfs/local/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Local Volumes
+  import_tasks: btrfs/local/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Local Volumes
+  import_tasks: btrfs/local/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Local Pools
+  import_tasks: btrfs/local/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

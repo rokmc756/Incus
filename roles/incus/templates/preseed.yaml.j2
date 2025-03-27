@@ -1,0 +1,18 @@
+cluster:
+  enabled: true
+  server_address: {{ ipaddr1 }}:8443
+  cluster_token: {{ join_token }}
+  member_config:
+  - entity: storage-pool
+    name: default
+    key: source
+    value: ""
+  - entity: storage-pool
+    name: my-pool
+    key: source
+    value: ""
+  - entity: storage-pool
+    name: my-pool
+    key: driver
+    value: "btrfs"
+

@@ -1,0 +1,36 @@
+---
+- name: Disable OVN Host Service
+  systemd:
+    name: "{{ item.svc }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: disable_ovn_central
+  ignore_errors: true
+  until: disable_ovn_central is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-host", state: "", action: "false" }
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ disable_ovn_central }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Stop OVN Central Service
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: stop_ovn_central
+  ignore_errors: true
+  until: stop_ovn_central is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-central", state: "stopped", action: "false" }
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ stop_ovn_central }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+

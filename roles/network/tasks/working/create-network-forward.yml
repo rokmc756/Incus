@@ -1,0 +1,22 @@
+# Network forwards allow an external IP address (or specific ports on it) to be forwarded
+# to an internal IP address (or specific ports on it) in the network that the forward belongs to.
+#
+# This feature can be useful if you have limited external IP addresses and want to share a single external address between multiple instances.
+# There are two different ways how you can use network forwards in this case:
+#
+# Forward all traffic from the external address to the internal address of one instance.
+# This method makes it easy to move the traffic destined for the external address to another instance by simply reconfiguring the network forward.
+# 
+# Forward traffic from different port numbers of the external address to different instances (and optionally different ports on those instances).
+# This method allows to “share” your external IP address and expose more than one instance at a time.
+
+# Create a network forward
+# Use the following command to create a network forward:
+$ incus network forward create <network_name> <listen_address> [configuration_options...]
+
+# Each forward is assigned to a network. It requires a single external listen address 
+# (see Requirements for listen addresses for more information about which addresses can be forwarded, depending on the network that you are using).
+#
+# You can specify an optional default target address by adding the target_address=<IP_address> configuration option.
+# If you do, any traffic that does not match a port specification is forwarded to this address.
+# Note that this target address must be within the same subnet as the network that the forward is associated to.

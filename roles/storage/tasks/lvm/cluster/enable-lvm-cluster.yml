@@ -1,0 +1,31 @@
+---
+- name: Enable LVM Cluster Lock
+  replace:
+    path: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.line }}"
+  register: enable_lvm_cluster_lock
+  with_items:
+    - { regexp: "# use_lvmlockd = 0",   line: "use_lvmlockd = 1",          dest: "/etc/lvm/lvm.conf",       state: present }
+    - { regexp: "# host_id = 0",        line: "host_id = {{ host_id }}",   dest: "/etc/lvm/lvmlocal.conf",  state: present }
+- debug: msg={{ enable_lvm_cluster_lock }}
+  when: print_debug == true
+
+
+- name: Start Cluster LVM
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  register: start_cluster_lvm
+  ignore_errors: true
+  until: start_cluster_lvm is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - sanlock
+    - lvmlockd
+- debug: msg={{ start_cluster_lvm }}
+  when: print_debug == true
+

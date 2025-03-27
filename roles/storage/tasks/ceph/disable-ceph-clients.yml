@@ -1,0 +1,21 @@
+---
+- name: Uninstall Ceph Clients Packages
+  package: name={{ item }} state=absent
+  register: uninstall_ceph_clients
+  until: uninstall_ceph_clients is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - "ceph-common"
+- debug: msg={{ uninstall_ceph_clients }}
+  when: print_debug == true
+
+
+- name: Delete Ceph Configuration in CephFS Clients
+  file:
+    path:  "/etc/ceph"
+    state: absent
+  register: delete_ceph_config
+- debug: msg={{ delete_ceph_config }}
+  when: print_debug == true
+

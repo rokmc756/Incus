@@ -1,0 +1,30 @@
+---
+- name: Create Directory Pools
+  import_tasks: dir/dirs/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Directory Volumes
+  import_tasks: dir/dirs/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Directory Volumes
+  import_tasks: dir/dirs/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Directory Pools
+  import_tasks: dir/dirs/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Directory
+  import_tasks: dir/dirs/delete-directory.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+

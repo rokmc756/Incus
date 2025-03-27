@@ -1,0 +1,9 @@
+# Use the following command to copy a custom storage volume:
+# $ incus storage volume copy <source_pool_name>/<source_volume_name> <target_pool_name>/<target_volume_name>
+#
+# Add the --volume-only flag to copy only the volume and skip any snapshots that the volume might have.
+# If the volume already exists in the target location, use the --refresh flag to update the copy.
+# Specify the same pool as the source and target pool to copy the volume within the same storage pool.
+# You must specify different volume names for source and target in this case.
+# When copying from one storage pool to another, you can either use the same name for both volumes or rename the new volume.
+

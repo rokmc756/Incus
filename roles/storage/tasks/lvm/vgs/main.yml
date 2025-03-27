@@ -1,0 +1,36 @@
+---
+- name: Prepare LVM VGs Devices
+  import_tasks: lvm/vgs/prepare-lvm-vgs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Volume Groups
+  import_tasks: lvm/vgs/create-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM VGs Pools
+  import_tasks: lvm/vgs/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM VGs Volumes
+  import_tasks: lvm/vgs/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM VGs Volumes
+  import_tasks: lvm/vgs/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM VGs Pools
+  import_tasks: lvm/vgs/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

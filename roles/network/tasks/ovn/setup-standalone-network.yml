@@ -1,0 +1,51 @@
+---
+- name: Install the OVN tools
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_ovn_tools
+  with_items:
+    - ovn-host
+    - ovn-central
+- debug: msg={{ install_ovn_tools }}
+
+
+# systemctl restart ovsdb-server
+
+
+- name: Configure the OVN integration bridge
+  shell: |
+    ovs-vsctl set open_vswitch . \
+    external_ids:ovn-remote=unix:/var/run/ovn/ovnsb_db.sock \
+    external_ids:ovn-encap-type=geneve \
+    external_ids:ovn-encap-ip=127.0.0.1
+  register: config_ovn_integration_bridge
+- debug: msg={{ config_ovn_integration_bridge }}
+
+
+- name: Create an OVN network
+  shell: |
+    incus network set <parent_network> ipv4.dhcp.ranges=<IP_range> ipv4.ovn.ranges=<IP_range>
+    incus network create ovntest --type=ovn network=<parent_network>
+  register: create_ovn_network
+- debug: msg={{ create_ovn_network }}
+
+
+- name: Create an instance that uses the ovntest network
+  shell: |
+    incus init ubuntu:24.04 c1
+    incus config device override c1 eth0 network=ovntest
+    incus start c1
+  register: create_instance_with_ovn_network
+- debug: msg={{ create_instance_with_ovn_network }}
+
+
+- name: Run Incus list to show the instance information
+  shell: |
+    incus list
+  register: list_incus_instances
+
+
+# https://documentation.ubuntu.com/lxd/en/latest/howto/network_ovn_setup/
+
+

@@ -1,0 +1,68 @@
+---
+- name: Install Parted
+  package:
+    name: parted
+    state: present
+  register: install_parted
+- debug: msg={{ install_parted }}
+
+
+- name: Clean Devices
+  shell: |
+    for dn in `echo "{{ item.device }}"`
+    do
+      dd if=/dev/zero of=$dn bs=1M count=1
+    done
+  register: clean_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ clean_devices }}
+
+
+- name: Wipe Filesystem
+  shell: |
+    for dn in `echo "{{ item.device }}"`
+    do
+      wipefs -a $dn
+    done
+  register: wipe_fs
+  ignore_errors: true
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ wipe_fs }}
+
+
+- name: "Add new partition"
+  parted:
+    device: "{{ item.device }}"
+    number: 1
+    flags: [ lvm ]
+    state: present
+  register: add_partition
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ add_partition }}
+
+
+- name: Format the Partition
+  filesystem:
+    fstype: btrfs
+    dev: "{{ item.device }}1"
+  register: format_partition
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ format_partition }}
+
+
+- name: Mount Btrfs Directory
+  mount:
+    src: "{{ item.device }}1"
+    path: "{{ item.source }}"
+    fstype: btrfs
+    state: mounted
+  register: mount_dir
+  with_items:
+    - "{{ pools.btrfs.dirs }}"
+- debug: msg={{ mount_dir }}
+

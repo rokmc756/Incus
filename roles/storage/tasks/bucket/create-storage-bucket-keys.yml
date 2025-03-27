@@ -1,0 +1,8 @@
+# Use the following command to create a set of credentials for a storage bucket:
+# $ incus storage bucket key create <pool_name> <bucket_name> <key_name> [configuration_options...]
+#
+# Use the following command to create a set of credentials for a storage bucket with a specific role:
+# $ incus storage bucket key create <pool_name> <bucket_name> <key_name> --role=admin [configuration_options...]
+#
+# These commands will generate and display a random set of credential keys.
+

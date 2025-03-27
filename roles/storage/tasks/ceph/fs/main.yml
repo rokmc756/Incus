@@ -1,0 +1,24 @@
+---
+- name: Create Ceph Filesystem Pools
+  import_tasks: ceph/fs/create-pools.yml
+  tags: create, install
+  when: ( fs is defined and fs == true ) and inventory_hostname in groups['workers']
+
+
+- name: Create Ceph Filesystem Volumes
+  import_tasks: ceph/fs/create-volumes.yml
+  tags: create, install
+  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Filesystem Volumes
+  import_tasks: ceph/fs/delete-volumes.yml
+  tags: delete, uninstall
+  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Filesystem Pools
+  import_tasks: ceph/fs/delete-pools.yml
+  tags: delete, uninstall
+  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+

@@ -1,0 +1,77 @@
+---
+- name: Get iSCSI Devices
+  shell: |
+    iscsiadm -m session -P 3 | grep 'Target\|disk' | grep Attached | awk '{print $4}' | sed -e 's/^/\/dev\//g' | tr '\n' ' ' | sed -e 's/ $//g'
+  register: get_iscsi_devices
+  tags: create, install, delete, uninstall
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ get_iscsi_devices }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Set iSCSI Devices
+  set_fact:
+    _iscsi_devices: "{{ get_iscsi_devices.stdout }}"
+  tags: create, install, delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Install LVM Cluster Packages
+  import_tasks: lvm/cluster/install-pkgs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Enable LVM Cluster Environment
+  import_tasks: lvm/cluster/enable-lvm-cluster.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Shared Cluster Volume Groups
+  import_tasks: lvm/cluster/create-shared-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Create LVM Cluster VGs Pools
+  import_tasks: lvm/cluster/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Cluster VGs Volumes
+  import_tasks: lvm/cluster/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Cluster VGs Volumes
+  import_tasks: lvm/cluster/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Cluster VGs Pools
+  import_tasks: lvm/cluster/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Disable LVM Cluster Environment
+  import_tasks: lvm/cluster/disable-lvm-cluster.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Uninstall LVM Cluster Packages
+  import_tasks: lvm/cluster/uninstall-pkgs.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Clean Devices
+  import_tasks: lvm/cluster/clean-devices.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+

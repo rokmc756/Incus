@@ -1,0 +1,12 @@
+---
+- name: Create Directory Volumes
+  shell: |
+    incus storage volume create {{ item.pool }} {{ item.name }}
+  register: create_volumes
+  with_items:
+    - "{{ volumes.dir.dirs }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_volumes }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+

@@ -1,0 +1,19 @@
+# [ Create the volume ]
+# Use the following command to create a custom storage volume of type block or filesystem in a storage pool:
+# $ incus storage volume create <pool_name> <volume_name> [configuration_options...]
+
+
+# See the Storage drivers documentation for a list of available storage volume configuration options for each driver.
+# By default, custom storage volumes use the filesystem content type. To create a custom storage volume with the content type block, add the --type flag:
+# $ incus storage volume create <pool_name> <volume_name> --type=block [configuration_options...]
+
+
+# To add a custom storage volume on a cluster member, add the --target flag:
+# $ incus storage volume create <pool_name> <volume_name> --target=<cluster_member> [configuration_options...]
+
+# [ Note ]
+# For most storage drivers, custom storage volumes are not replicated across the cluster and exist only on the member for which they were created. This behavior is different for Ceph-based storage pools (ceph and cephfs) and clustered LVM (lvmcluster), where volumes are available from any cluster member.
+# To create a custom storage volume of type iso, use the import command instead of the create command:
+# $ incus storage volume import <pool_name> <iso_path> <volume_name> --type=iso
+
+

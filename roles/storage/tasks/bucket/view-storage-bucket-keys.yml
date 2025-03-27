@@ -1,0 +1,6 @@
+# Use the following command to see the keys defined for an existing bucket:
+# $ incus storage bucket key list <pool_name> <bucket_name>
+#
+# Use the following command to see a specific bucket key:
+# $ incus storage bucket key show <pool_name> <bucket_name> <key_name>
+

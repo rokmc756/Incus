@@ -1,0 +1,4 @@
+# Delete a network forward
+# Use the following command to delete a network forward:
+$ incus network forward delete <network_name> <listen_address>
+

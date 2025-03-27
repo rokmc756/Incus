@@ -1,0 +1,41 @@
+---
+#- name: Remove OVS Port
+#  shell: |
+#    ovs-vsctl remove port $(ovs-vsctl list port | grep name | awk '{print $3}' | xargs)
+#  register: remove_ovs_port
+#  when: inventory_hostname in groups['workers']
+#- debug: msg={{ remove_ovs_port }}
+#  when: print_debug == true and inventory_hostname in groups['workers']
+# ovs-vsctl set port $(ovs-vsctl list port | grep name | awk '{print $3}' | xargs)
+# ovs-vsctl set port vnet0 tag=100
+# ovs-vsctl remove port vnet0 tag 100
+
+
+- name: Stop Open VSwitch
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: stop_openvswitch
+  ignore_errors: true
+  until: stop_openvswitch is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - { svc: "ovsdb-server", state: "stopped", action: "true" }
+    - { svc: "openvswitch-switch", state: "stopped", action: "true" }
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ stop_openvswitch }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+
+
+- name: Killall OVSDB Server
+  shell: |
+    killall ovsdb-server
+  register: killall_ovsdb_server
+  ignore_errors: true
+  when: inventory_hostname in groups['workers']
+- debug: msg={{ killall_ovsdb_server }}
+  when: print_debug == true and inventory_hostname in groups['workers']
+

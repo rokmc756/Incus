@@ -1,0 +1,25 @@
+---
+- name: Reboot Required
+  shell: ( /bin/sleep 5 ; /sbin/shutdown -r now "Ansible updates triggered" ) &
+  register: reboot_required
+  async: 120
+  poll: 0
+  notify:
+    - Waiting for Server to Come Back After Reboot
+- debug: msg={{ reboot_required }}
+
+
+- meta: flush_handlers
+
+
+- name: Delete Remaining TmpFS
+  file:
+    path: "/var/lib/incus/{{ item }}"
+    state: absent
+  register: delete_remaining_tmpfs
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/storage-pools"
+- debug: msg={{ delete_remaining_tmpfs }}
+  when: print_debug == true
+

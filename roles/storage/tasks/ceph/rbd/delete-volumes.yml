@@ -1,0 +1,9 @@
+---
+- name: Delete Ceph RBD Volumes
+  shell: |
+    incus storage volume delete {{ item.pool }} {{ item.name }}
+  register: delete_ceph_rbd_volumes
+  ignore_errors: true
+  with_items:
+    - "{{ volumes.ceph.rbd }}"
+- debug: msg={{ delete_ceph_rbd_volumes }}

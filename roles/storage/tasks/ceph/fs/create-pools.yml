@@ -1,0 +1,21 @@
+---
+- name: Prepare Ceph Filesystem Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} cephfs source={{ item.source }} --target={{ inventory_hostname }}
+  register: prepare_cluster_ceph_fs_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.ceph.fs }}"
+- debug: msg={{ prepare_cluster_ceph_fs_pools }}
+
+
+- name: Create Ceph Filesystem Pools
+  shell: |
+    incus storage create {{ item.name }} cephfs
+  register: create_ceph_fs_pools
+  with_items:
+    - "{{ pools.ceph.fs }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_ceph_fs_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

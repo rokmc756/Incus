@@ -1,0 +1,12 @@
+# Move or rename custom storage volumes
+# Before you can move or rename a custom storage volume, all instances that use it must be stopped.
+#
+# Use the following command to move or rename a storage volume:
+# $ incus storage volume move <source_pool_name>/<source_volume_name> <target_pool_name>/<target_volume_name>
+#
+# Specify the same pool as the source and target pool to rename the volume while keeping it in the same storage pool.
+# You must specify different volume names for source and target in this case.
+#
+# When moving from one storage pool to another, you can either use the same name for both volumes or rename the new volume.
+
+

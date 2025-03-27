@@ -1,0 +1,89 @@
+---
+- name: Check OS ( Incus )
+  fail: msg="Not a Debian or Ubuntu based system!"
+  when: inventory_hostname in groups['workers'] and ( ansible_os_family != 'Ubuntu' or ansible_os_family != 'Debian' )
+
+
+- name: Set Facts For Network and Packages Informations and other Versions
+  import_tasks: set-facts.yml
+  tags: init,uninit,reinit,prepare,clean,enable,disable,install,uninstall,add,remove,upgrade,downgrade,deploy,destroy
+  when: inventory_hostname in groups['workers']
+
+
+- name: Enable Zabbly Package Repository
+  import_tasks: enable-incus-repo.yml
+  tags: enable, deploy
+  when: (( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Install Incus Packages
+  import_tasks: install-incus-pkgs.yml
+  tags: install, deploy
+  when: (( pkgs is defined and pkgs == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Initialize Incus Host and Enable Cluster
+  import_tasks: init-incus-host.yml
+  tags: init, deploy
+  when: (( host is defined and host == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Install Web UI
+  import_tasks: install-incus-ui.yml
+  tags: install
+  when: (( ui is defined and ui == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Attach and Enable Incus CA Key
+  import_tasks: attach-incus-ca-key.yml
+  tags: enable, deploy
+  when: (( key is defined and key == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Add Incus Hosts into Cluster
+  import_tasks: add-incus-hosts.yml
+  tags: add, deploy
+  when: (( host is defined and host == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
+
+
+- name: Remove Incus Hosts at Cluster
+  import_tasks: remove-incus-hosts.yml
+  tags: remove, destroy
+  when: (( host is defined and host == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['control']
+
+
+- name: Uninstall Incus Web UI
+  import_tasks: uninstall-incus-ui.yml
+  tags: uninstall, destroy
+  when: (( ui is defined and ui == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Uninstall Incus Packages
+  import_tasks: uninstall-incus-pkgs.yml
+  tags: uninstall, destroy
+  when: (( pkgs is defined and pkgs == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Cleanup Remaining Gabages
+  import_tasks: cleanup-remaining-garbages.yml
+  tags: clean, destroy
+  when: (( garbage is defined and garbage == true ) and ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Disable Zabbly Package Repository
+  import_tasks: disable-incus-repo.yml
+  tags: disable, destroy
+  when: ( repo is defined and repo == true ) ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
+
+
+- name: Force Clean Incus Control
+  import_tasks: force-cleanup-incus.yml
+  tags: clean, destroy
+  when: ( force is defined and force == true ) and inventory_hostname in groups['workers']
+
+
+- name: Reboot Incus Hosts
+  import_tasks: reboot-incus-hosts.yml
+  tags: clean, uninstall, destroy
+  when: ( reboot is defined and reboot == true ) ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['cluster']
+

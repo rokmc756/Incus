@@ -1,0 +1,42 @@
+---
+- name: Prepare LVM Thin VGs Devices
+  import_tasks: lvm/thin/prepare-lvm-vgs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Thin VGs Volume Groups
+  import_tasks: lvm/thin/create-vg.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Thin VGs Pools
+  import_tasks: lvm/thin/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create LVM Thin VGs Volumes
+  import_tasks: lvm/thin/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Thin VGs Volumes
+  import_tasks: lvm/thin/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete LVM Thin VGs Pools
+  import_tasks: lvm/thin/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Clean LVM ThinPool Devices
+  import_tasks: lvm/thin/clean-devices.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+

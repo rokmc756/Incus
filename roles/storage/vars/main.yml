@@ -1,0 +1,130 @@
+---
+_iscsi:
+  target:
+    iqn: "iqn.2022-12.io.futurfusion.jtest"
+    user: "iscsiadm"
+    password: "changeme"
+    os_version: "rk9"
+    disks:
+      - { name: "jtest-vdisk01", base_dir: "/data/iscsi01", size: "30G" }
+      - { name: "jtest-vdisk02", base_dir: "/data/iscsi02", size: "30G" }
+      - { name: "jtest-vdisk03", base_dir: "/data/iscsi03", size: "30G" }
+
+
+pools:
+  dir:
+    local:
+      - { name: "dir-local-pool01", source: "/mnt/dir-pool01" }
+    dirs:
+      - { name: "dir-dirs-pool01", source: "/mnt/dir-pool02" }
+  btrfs:
+    local:
+      - { name: "btrfs-local-pool01" }
+    dirs:
+      - { name: "btrfs-dirs-pool02", source: "/mnt/btrfs-dir-pool02", device: "/dev/sdc" }
+    block:
+      - { name: "btrfs-block-pool03", source: "/dev/sdc" }
+  zfs:
+    local:
+      - { name: "zfs-local-pool01" }
+    loopback:
+      - { name: "zfs-loopback-pool02", zpool: "zfs-loopback-zpool02" }
+    zpool:
+      - { name: "zfs-zpool-pool01", source: "/dev/sdb /dev/sdc ", zpool: "zfs-zpool01" }
+    slice:
+      - { name: "zfs-zpool-pool01", source: "/dev/sdb /dev/sdc ", zpool: "zfs-zpool01", slice: "custom" }
+    block:
+      - { name: "zfs-block-pool01", source: "/dev/sdc", zpool: "zfs-block-zpool01" }
+    pool:
+      - { name: "zfs-pool02", pool: "zfs-pool01" }
+  ceph:
+    rbd:
+      - { name: "rbd-pool01" }
+    fs:
+      - { name: "fs-pool01", source: "cephfs-p01-fs01" }
+    rgw:
+      - { name: "rgw-remote-pool01", source: "", endpoint: "http://rk9-node03.jtest.futurfusion.io:7480" }
+  lvm:
+    local:
+      - { name: "lvm-local-pool01" }
+    block:
+      - { name: "lvm-block-pool01", source: "/dev/sdc", vg: "lvm-block-vg01" }
+    vgs:
+      - { name: "lvm-vgs-pool01", source: "/dev/sdb /dev/sdc", vg: "lvm-vgs-vg01" }
+    vg:
+      - { name: "lvm-vg-pool01", device: "/dev/sdc", source: "lvm-vgs-vg001" }
+    thin:
+      - { name: "lvm-thin-pool05", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-thin-vg03", thinpool: "lvm-thin-vg-pool03" }
+    cluster:
+      - { name: "lvm-cluster-pool06", source: "", size: "5G", vg: "lvm-cluster-vg06", thinpool: "lvm-cluster-vg-pool06" }
+
+
+volumes:
+  dir:
+    local:
+      - { name: "dir-local-volume01", size: "1GiB", pool: "dir-local-pool01" }
+    dirs:
+      - { name: "dir-dirs-volume01", size: "1GiB", pool: "dir-dirs-pool01" }
+  btrfs:
+    local:
+      - { name: "btrfs-local-volume01", pool: "btrfs-local-pool01" }
+    dirs:
+      - { name: "btrfs-dirs-volume02", source: "/mnt/btrfs-dir-pool02", pool: "btrfs-dirs-pool02" }
+    block:
+      - { name: "btrfs-block-volume03", size: "1GiB", pool: "btrfs-block-pool03" }
+  zfs:
+    local:
+      - { name: "zfs-local-volume01", pool: "zfs-local-pool01" }
+    loopback:
+      - { name: "zfs-loopback-volume01", pool: "zfs-loopback-pool02" }
+    zpool:
+      - { name: "zfs-zpool-volume01", source: "/dev/sdb /dev/sdc ", pool: "zfs-zpool-pool01" }
+    slice:
+      - { name: "zfs-zpool-volume01", source: "/dev/sdb /dev/sdc ", pool: "zfs-zpool-pool01", slice: "custom" }
+    pool:
+      - { name: "zfs-pool02", pool: "zfs-pool01" }
+    block:
+      - { name: "zfs-block-volume01", source: "/dev/sdc", pool: "zfs-block-pool01", zpool: "zfs-block-zpool01" }
+  ceph:
+    rbd:
+      - { name: "rbd-volume01", size: "1GiB", pool: "rbd-pool01" }
+    fs:
+      - { name: "fs-volume01", size: "1GiB", pool: "fs-pool01" }
+    rgw:
+      - { name: "rgw-remote-volume01", source: "", pool: "rgw-remote-pool01", buckets: "incus-test01 incus-test02 incus-test03" }
+  lvm:
+    local:
+      - { name: "lvm-local-volume01", size: "1GiB", pool: "lvm-local-pool01" }
+    block:
+      - { name: "lvm-block-volume01", source: "/dev/sdc", pool: "lvm-block-pool01" }
+    vgs:
+      - { name: "lvm-vgs-volume01", size: "1GiB", pool: "lvm-vgs-pool01" }
+    vg:
+      - { name: "lvm-vg-volume01", size: "1GiB", pool: "lvm-vg-pool01", vg: "lvm-vgs-vg001" }
+    thin:
+      - { name: "lvm-thin-volume01", size: "5GiB", pool: "lvm-thin-pool05" }
+    cluster:
+      - { name: "lvm-cluster-volume01", size: "5G", pool: "lvm-cluster-pool06" }
+
+
+# source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }
+
+# https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319/6
+# I succeeded once long ago [1] by following the clusters from scratch guide. In the end though, I decided that the configuration was too complex.
+# These days I use AoE (vblade) to share out my storage and I use ZFS to manage the redundancy. What works better will vary depending on what
+# resources you have and what you are trying to do. There is no one correct way.
+#
+# P.S. Just in case anyone comes across this and decides they want to try running ZFS on AoE storage, one gotcha that took me a while to figure out
+# is that you need to increase the net buffers if you are running AoE over 10G ethernet: [2]
+#
+# cat /etc/sysctl.d/99-net_buffers.conf
+# net.core.wmem_max = 16777216
+# net.core.rmem_max = 16777216
+# net.core.rmem_default = 131072
+# net.ipv4.tcp_rmem = 4096 131072 16777216
+# net.ipv4.tcp_wmem = 4096 131072 16777216
+#
+# The above has been working on my hardware and OS for many years. I didn’t land on those numbers scientifically though,
+# I just increased them until things started working reliably. This problem was mentioned in another forum discussion somewhere long ago,
+# but I doubt I’d ever be able to find that again.
+

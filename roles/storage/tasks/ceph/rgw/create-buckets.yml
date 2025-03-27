@@ -1,0 +1,21 @@
+---
+- name: Create Ceph RadosGW Buckets
+  shell: |
+    for bucket in `echo "{{ item.buckets }}"`
+    do
+      incus storage bucket create {{ item.pool }} $bucket
+    done
+  register: create_buckets
+  with_items:
+    - "{{ volumes.ceph.rgw }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_buckets }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+
+# root@ubt24-node01:~/radosgw-auth# incus storage bucket create rgw-remote-pool01 incus-rgw-test01
+# Storage bucket "incus-rgw-test01" created
+# Admin access key: 7W7VNFVCA69UGJ2LLIZ2
+# Admin secret key: 2puovNqGeXzz0QekFAWSLqjm5RgEk7G0NcjD7J7d
+
+

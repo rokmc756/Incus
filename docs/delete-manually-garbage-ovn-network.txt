@@ -1,0 +1,81 @@
+[ Issues ]
+The following error appears when removing incus host got failed
+
+
+Error: Failed to run: ovn-nbctl --db unix:/var/run/ovn/ovnnb_db.sock ha-chassis-group-add ovn-test01:
+ovn-nbctl: unix:/var/run/ovn/ovnnb_db.sock: database connection failed (No such file or directory)
+error: failed loading network: failed to connect to ovn: failed to connect to : failed to open connection: unknown network protocol
+
+
+[ Resolution ]
+Dump the scheme by incus admin sql global .schema > schema.sql and search for what you were looking for.
+In this case it was in network table.
+
+Find the table name and then used incus admin sql global 'DELETE FROM networks where ID={ id of the network}.
+Which delete the network and then It was able to delete the network and re-create it.
+
+
+[ Actions Items ]
+* Stop All Virtual Network Services and Disable OVN
+$ systemctl stop ovndb-server ovn-central ovn-host
+$ systemctl disable ovn-central ovn-host
+
+* Backup Internal Database
+$ incus admin sql local .dump > local.sql
+$ incus admin sql global .dump > global.sql
+
+* Delete Garbage OVN Info in Incus Internal Database ( cowsql - distributed/replicated sqlite )
+
+$ incus admin sql global 'SELECT * FROM networks_peers'
++----+------------+------+-------------+------------------------+---------------------+-------------------+------+-------------------------------+
+| ID | NETWORK ID | NAME | DESCRIPTION | TARGET NETWORK PROJECT | TARGET NETWORK NAME | TARGET NETWORK ID | TYPE | TARGET NETWORK INTEGRATION ID |
++----+------------+------+-------------+------------------------+---------------------+-------------------+------+-------------------------------+
+
+$ incus admin sql global 'SELECT * FROM networks'
++----+------------+------------+-------------+-------+------+
+| ID | PROJECT ID |    NAME    | DESCRIPTION | STATE | TYPE |
++----+------------+------------+-------------+-------+------+
+| 1  | 1          | ovn-test01 |             | 0     | 3    |
++----+------------+------------+-------------+-------+------+
+| 5  | 1          | ovnet01    |             | 0     | 3    |
++----+------------+------------+-------------+-------+------+
+| 35 | 1          | ens193     |             | 1     | 4    |
++----+------------+------------+-------------+-------+------+
+
+$ incus admin sql global 'DELETE FROM networks where ID=1'
+Rows affected: 1
+
+$ incus admin sql global 'SELECT * FROM networks'
++----+------------+---------+-------------+-------+------+
+| ID | PROJECT ID |  NAME   | DESCRIPTION | STATE | TYPE |
++----+------------+---------+-------------+-------+------+
+| 5  | 1          | ovnet01 |             | 0     | 3    |
++----+------------+---------+-------------+-------+------+
+| 35 | 1          | ens193  |             | 1     | 4    |
++----+------------+---------+-------------+-------+------+
+
+$ incus admin sql global 'DELETE FROM networks where ID=5'
+Rows affected: 1
+
+$ incus admin sql global 'SELECT * FROM networks'
++----+------------+--------+-------------+-------+------+
+| ID | PROJECT ID |  NAME  | DESCRIPTION | STATE | TYPE |
++----+------------+--------+-------------+-------+------+
+| 35 | 1          | ens193 |             | 1     | 4    |
++----+------------+--------+-------------+-------+------+
+
+
+
+$ incus admin sql global .sync
+
+# Remove Hosts works normally by ansible
+$ make incus r=remove s=host
+
+
+[ Additional ]
+
+* Run the below commands in all incus nodes to remove ovs-system unknown in the output of incus network list
+$ systemctl stop ovsdb-server
+$ apt remove -y openvswitch-common
+$ reboot
+

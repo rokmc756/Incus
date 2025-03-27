@@ -1,0 +1,74 @@
+---
+- name: Disable OVN Service
+  systemd:
+    name: "{{ item.svc }}"
+    state: "{{ item.state }}"
+    enabled: "{{ item.action }}"
+    daemon_reload: true
+  register: disable_ovn
+  ignore_errors: true
+  until: disable_ovn is succeeded
+  retries: 3
+  delay: 10
+  with_items:
+    - { svc: "ovn-host", state: "stopped", action: "false" }
+    - { svc: "ovn-central", state: "stopped", action: "false" }
+- debug: msg={{ disable_ovn }}
+  when: print_debug == true
+
+
+#- name: Uninstall Unattended Upgrade Packages
+#  package:
+#    name: "{{ item.pkg }}"
+#    state: "{{ item.state }}"
+#  register: uninstall_unattended_upgrads_pkgs
+#  ignore_errors: true
+#  with_items:
+#    - { pkg: "unattended-upgrades", state: "absent" }
+#- debug: msg={{ uninstall_unattended_upgrads_pkgs }}
+#  when: print_debug == true
+#
+#
+#- name: Stop PackageKit
+#  systemd:
+#    name: "{{ item.svc }}"
+#    state: "{{ item.state }}"
+#    enabled: "{{ item.action }}"
+#    daemon_reload: true
+#  register: stop_packagekit
+#  ignore_errors: true
+#  until: stop_packagekit is succeeded
+#  retries: 3
+#  delay: 10
+#  with_items:
+#    - { svc: "packagekit", state: "stopped", action: "false" }
+#- debug: msg={{ stop_packagekit }}
+#  when: print_debug == true
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 10
+  delay: 10
+  # upgrade: yes
+
+
+- name: Uninstall Relevant OVN Packages
+  package:
+    name: "{{ item.pkg }}"
+    state: "{{ item.state }}"
+  register: uninstall_relevant_pkgs
+  until: uninstall_relevant_pkgs is succeeded
+  retries: 5
+  delay: 10
+  ignore_errors: true
+  with_items:
+    - { pkg: "ovn-host", state: "absent" }
+    - { pkg: "ovn-central", state: "absent" }
+- debug: msg={{ uninstall_relevant_pkgs }}
+  when: print_debug == true
+

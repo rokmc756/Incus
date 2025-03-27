@@ -1,0 +1,35 @@
+---
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+
+
+- name: Install Incus UI Software Packages
+  package: name={{ item }} state=present
+  with_items:
+    - incus-ui-canonical
+
+
+- name: Activate Incus Web UI
+  become_user: incus
+  shell: |
+    incus config set core.https_address {{ _ipaddr }}:8443
+  register: activate_web_ui
+- debug: msg={{ activate_web_ui }}
+  when: print_debug == true
+
+
+- name: Verify Incus Web UI
+  become_user: incus
+  shell: |
+    incus config show
+  register: verify_incus_ui
+- debug: msg={{ verify_incus_ui }}
+  when: print_debug == true
+

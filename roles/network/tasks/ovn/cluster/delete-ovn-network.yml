@@ -1,0 +1,9 @@
+---
+- name: Delete Uplink Network
+  shell: |
+    incus network delete UPLINK --type=physical
+  register: delete_uplink_network
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_delete_network }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

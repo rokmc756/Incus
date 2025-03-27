@@ -1,0 +1,16 @@
+---
+- name: Delete Ceph RadosGW Buckets
+  shell: |
+    for bucket in `echo "{{ item.buckets }}"`
+    do
+      incus storage bucket delete {{ item.pool }} $bucket
+    done
+  register: delete_buckets
+  ignore_errors: true
+  with_items:
+    - "{{ volumes.ceph.rgw }}"
+- debug: msg={{ delete_buckets }}
+
+# incus storage bucket delete rgw-remote-pool01 incus-rgw-test01
+# Storage bucket "incus-rgw-test01" deleted
+

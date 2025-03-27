@@ -1,0 +1,36 @@
+---
+- name: Delete Btrfs Devices
+  import_tasks: btrfs/block/clean-devices.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Pools
+  import_tasks: btrfs/block/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Volumes
+  import_tasks: btrfs/block/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Volumes
+  import_tasks: btrfs/block/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Pools
+  import_tasks: btrfs/block/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Devices
+  import_tasks: btrfs/block/clean-devices.yml
+  tags: clean, delete, uninstall
+  when: inventory_hostname in groups['workers']
+

@@ -1,0 +1,21 @@
+---
+- name: Prepare Ceph RadosGW Pools with Cluster Mode
+  shell: |
+    incus storage create {{ item.name }} cephobject --target={{ inventory_hostname }}
+  register: prepare_cluster_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - "{{ pools.ceph.rgw }}"
+- debug: msg={{ prepare_cluster_pools }}
+
+
+- name: Create Ceph RadosGW Pools
+  shell: |
+    incus storage create {{ item.name }} cephobject cephobject.radosgw.endpoint={{ item.endpoint }}
+  register: create_pools
+  with_items:
+    - "{{ pools.ceph.rgw }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

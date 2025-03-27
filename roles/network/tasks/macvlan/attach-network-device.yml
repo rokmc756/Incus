@@ -1,0 +1,11 @@
+# Attach the network as a device
+# The incus network attach command is a shortcut for adding a NIC device to an instance.
+
+
+- name: Add a NIC device based on the network configuration in the usual way:
+  shell: |
+    incus config device add <instance_name> <device_name> nic network=<network_name>
+
+# When using this way, you can add further configuration to the command to override the default settings for the network if needed.
+# See NIC device for all available device options.
+

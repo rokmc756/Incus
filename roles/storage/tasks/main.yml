@@ -1,0 +1,40 @@
+---
+- name: Check OS ( Incus Storage Pools )
+  fail: msg="Not a Debian or Ubuntu based system!"
+  when: inventory_hostname in groups['workers'] and ( ansible_os_family != 'Ubuntu' or ansible_os_family != 'Debian' )
+
+
+- name: Set Facts For Network and Packages Informations and other Versions
+  import_tasks: set-facts.yml
+  when: inventory_hostname in groups['workers']
+
+
+- name: Configure iSCSI Target and Initiator
+  import_tasks: iscsi/main.yml
+  when: ( iscsi is defined and iscsi == true )
+
+
+- name: Import Directory Storage Pools
+  import_tasks: dir/main.yml
+  when: ( dir is defined and dir == true )
+
+
+- name: Import LVM Storage Pools
+  import_tasks: lvm/main.yml
+  when: ( lvm is defined and lvm == true )
+
+
+- name: Import Btrfs Storage Pools
+  import_tasks: btrfs/main.yml
+  when: ( btrfs is defined and btrfs == true )
+
+
+- name: Import ZFS Storage Pools
+  import_tasks: zfs/main.yml
+  when: ( zfs is defined and zfs == true )
+
+
+- name: Import Ceph Storage Pools
+  import_tasks: ceph/main.yml
+  when: ( ceph is defined and ceph == true )
+

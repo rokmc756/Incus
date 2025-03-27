@@ -1,0 +1,30 @@
+---
+- name: Install Relevant Packages for ZFS Storage Pools
+  package:
+    name: "{{ item }}"
+    state: present
+  register: install_relevant_pkgs
+  ignore_errors: true
+  with_items:
+    - "parted"
+- debug: msg={{ install_relevant_pkgs }}
+
+
+- name: Clean Devices
+  shell: |
+    dd if=/dev/zero of={{ item.source }} bs=1M count=100
+  register: clean_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.block }}"
+# dd if=/dev/zero of="{{ item.source }}1" seek=$(( $(blockdev --getsz "{{ item.source }}1") - ( ( 256 * 1024 * 2) / $(blockdev --getpbsz "{{ item.source}}1") ) ))
+
+
+- name: Wipe Filesystem
+  shell: |
+    wipefs -a {{ item.source }}
+  register: wipe_fs
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.block }}"
+

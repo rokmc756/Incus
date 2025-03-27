@@ -1,0 +1,11 @@
+---
+- name: Create Ceph Filesystem Volumes
+  shell: |
+    incus storage volume create {{ item.pool }} {{ item.name }}
+  register: create_ceph_fs_volumes
+  with_items:
+    - "{{ volumes.ceph.fs }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_ceph_fs_volumes }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

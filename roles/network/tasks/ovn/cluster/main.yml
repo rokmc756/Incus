@@ -1,0 +1,53 @@
+---
+- name: Install OVN Packages
+  import_tasks: ovn/cluster/01-install-pkgs.yml
+  tags: enable, install
+
+
+- name: Config OVN Service
+  import_tasks: ovn/cluster/02-config-service.yml
+  tags: enable, config, install
+
+
+- name: Start OVN Service
+  import_tasks: ovn/cluster/03-start-services.yml
+  tags: start, install, enable
+
+
+- name: Configure Open Vsiwtch
+  import_tasks: ovn/cluster/04-config-open-vswitch.yml
+  tags: config, install, enable
+
+
+- name: Create OVN Network
+  import_tasks: ovn/cluster/05-create-network.yml
+  tags: create
+
+
+- name: Delete OVN Network
+  import_tasks: ovn/cluster/06-delete-network.yml
+  tags: delete
+
+
+- name: Remove Disable Open VSwitch
+  import_tasks: ovn/cluster/07-disable-open-vswitch.yml
+  tags: disable, uninstall
+
+
+- name: Disable OVN Service
+  import_tasks: ovn/cluster/08-disable-service.yml
+  tags: disable, uninstall
+
+
+- name: Delete OVN Config
+  import_tasks: ovn/cluster/09-delete-config.yml
+  tags: disable, uninstall
+
+
+- name: Uninstall OVN Packages
+  import_tasks: ovn/cluster/10-uninstall-pkgs.yml
+  tags: disable, uninstall
+
+
+# https://linuxcontainers.org/incus/docs/main/howto/network_ovn_setup/
+

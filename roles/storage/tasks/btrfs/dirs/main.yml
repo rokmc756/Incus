@@ -1,0 +1,42 @@
+---
+- name: Add Partition and Format Btrfs Filesystem
+  import_tasks: btrfs/dirs/format-devices.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Directory Pools
+  import_tasks: btrfs/dirs/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Btrfs Directory Volumes
+  import_tasks: btrfs/dirs/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Directory Volumes
+  import_tasks: btrfs/dirs/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Btrfs Directory Pools
+  import_tasks: btrfs/dirs/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Remove Partition and Clean Devices
+  import_tasks: btrfs/dirs/clean-devices.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+
+
+- name: Delete Btrfs Directory
+  import_tasks: btrfs/dirs/delete-directory.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['workers']
+

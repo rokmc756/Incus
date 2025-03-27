@@ -1,0 +1,67 @@
+- name: Kill Processes Hold On User Directory
+  become: true
+  shell: |
+    nohup {{ item }}
+  register: kill_user_processes
+  ignore_errors: true
+  with_items:
+    - "pkill -U incus"
+    - "fuser -k /var/lib/incus"
+- debug: msg={{ kill_user_processes }}
+  when: print_debug == true
+
+
+- name: Umount Remaining Tmpfs
+  become: true
+  shell: |
+    umount {{ item }}
+  register: umount_remaining_tmpfs
+  ignore_errors: true
+  until: kill_user_processes is succeeded
+  retries: 3
+  delay: 5
+  with_items:
+    - "/var/lib/incus/guestapi"
+    - "/var/lib/incus/shmounts"
+    - "/var/lib/lxcfs"
+- debug: msg={{ umount_remaining_tmpfs }}
+  when: print_debug == true
+
+
+- name: Delete Remaining TmpFS
+  file:
+    path: "/var/lib/incus/{{ item }}"
+    state: absent
+  register: delete_remaining_tmpfs
+  ignore_errors: true
+  with_items:
+    - "/var/lib/incus/guestapi"
+    - "/var/lib/incus/shmounts"
+    - "/var/lib/incus/storage-pools"
+    - "/var/lib/incus/database"
+    - "/var/lib/lxcfs"
+    - "/root/incus-ui.crt"
+- debug: msg={{ delete_remaining_tmpfs }}
+  when: print_debug == true
+
+
+- name: Uninstall lxcfs  Package
+  package: name={{ item }} state=absent
+  with_items:
+    - lxcfs
+  register: uninstall_lxcfs_pkg
+  ignore_errors: true
+- debug: msg={{ uninstall_lxcfs_pkg }}
+  when: print_debug == true
+
+
+- name: Remove Incus CA Key File Downloaded from Directory
+  become_user: jomoon
+  shell: |
+    rm -f {{ _incus.local_download_dir }}/incus-ui.*
+  register: rm_ca_key
+  delegate_to: localhost
+  failed_when: rm_ca_key.rc != 0
+- debug: msg={{ rm_ca_key }}
+  when: print_debug == true
+

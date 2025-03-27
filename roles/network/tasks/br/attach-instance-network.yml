@@ -1,0 +1,15 @@
+# Attach a network to an instance
+# After creating a managed network, you can attach it to an instance as a NIC device.
+#
+
+- name: To do so, use the following command
+  shell: |
+    incus network attach <network_name> <instance_name> [<device_name>] [<interface_name>]
+
+
+# The device name and the interface name are optional, but we recommend specifying at least the device name. If not specified, Incus uses the network name as the device name, which might be confusing and cause problems. For example, Incus images perform IP auto-configuration on the eth0 interface, which does not work if the interface is called differently.
+- name: For example, to attach the network my-network to the instance my-instance as eth0 device, enter the following command:
+  shell: |
+    incus network attach my-network my-instance eth0
+
+

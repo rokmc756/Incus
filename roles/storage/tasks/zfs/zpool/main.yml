@@ -1,0 +1,36 @@
+---
+- name: Prepare ZFS ZPool Storage Pools
+  import_tasks: zfs/zpool/prepare-zfs.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS ZPool Storage Pools
+  import_tasks: zfs/zpool/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create ZFS ZPool Storage Volumes
+  import_tasks: zfs/zpool/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS ZPool Storage Volumes
+  import_tasks: zfs/zpool/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS ZPool Storage Pools
+  import_tasks: zfs/zpool/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete ZFS Storage Devices
+  import_tasks: zfs/zpool/clean-devices.yml
+  tags: clean, delete, uninstall
+  when: inventory_hostname in groups['workers']
+

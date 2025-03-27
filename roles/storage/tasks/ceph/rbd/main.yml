@@ -1,0 +1,24 @@
+---
+- name: Create Pools
+  import_tasks: ceph/rbd/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Ceph Volumes
+  import_tasks: ceph/rbd/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Volumes
+  import_tasks: ceph/rbd/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Ceph Pools
+  import_tasks: ceph/rbd/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

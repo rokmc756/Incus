@@ -1,0 +1,57 @@
+---
+#- name: Install Parted
+#  package:
+#    name: parted
+#    state: present
+#  register: install_parted
+#  ignore_errors: true
+#- debug: msg={{ install_parted }}
+## command: cat /proc/partitions
+
+
+- name: Clean Devices
+  shell: |
+    for dn in `echo "{{ item.source }}"`
+    do
+      dd if=/dev/zero of=$dn bs=1M count=1
+    done
+  register: clean_devices
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vgs }}"
+- debug: msg={{ clean_devices }}
+
+
+- name: Run Partprobe
+  shell: |
+    for dn in `echo "{{ item.source }}"`
+    do
+      partprobe $dn
+    done
+  register: run_partprobe
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vgs }}"
+- debug: msg={{ run_partprobe }}
+
+
+- name: Create Volume Group
+  shell: |
+    vgcreate {{ item.vg }} {{ item.source }}
+  register: create_vg
+  ignore_errors: true
+  with_items:
+    - "{{ pools.lvm.vgs }}"
+- debug: msg={{ create_vg }}
+
+
+#- name: Uninstall Parted
+#  package:
+#    name: parted
+#    state: absent
+#  register: uninstall_parted
+#  ignore_errors: true
+#- debug: msg={{ uninstall_parted }}
+# command: cat /proc/partitions
+
+

@@ -1,0 +1,10 @@
+---
+- name: Delete Ceph Filesystem Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_ceph_fs_pools
+  ignore_errors: true
+  with_items:
+    - "{{ pools.ceph.fs }}"
+- debug: msg={{ delete_ceph_fs_pools }}
+

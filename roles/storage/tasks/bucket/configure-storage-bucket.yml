@@ -1,0 +1,15 @@
+# Configure storage bucket settings
+# See the Storage drivers documentation for the available configuration options for each storage driver that supports object storage.
+#
+# Use the following command to set configuration options for a storage bucket:
+# $ incus storage bucket set <pool_name> <bucket_name> <key> <value>
+#
+# For example, to set the quota size of a bucket, use the following command:
+# $ incus storage bucket set my-pool my-bucket size 1MiB
+#
+# You can also edit the storage bucket configuration by using the following command:
+# $ incus storage bucket edit <pool_name> <bucket_name>
+#
+# Use the following command to delete a storage bucket and its keys:
+# $ incus storage bucket delete <pool_name> <bucket_name>
+
