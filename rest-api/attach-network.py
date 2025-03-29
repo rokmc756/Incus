@@ -4,54 +4,54 @@ import json
 import requests
 import urllib3
 import logging
+import sys,getopt
 
+from incus_vars import *
 
-clientCrt = "./incus-api.crt"
-clientKey = "./incus-api.key"
-url = "https://192.168.1.81:8443/1.0/instances/ubuntu-container"
-certServer = "./incus-api.pem"
-headers = {'content-type': 'application/json'}
-
-payload = {
-
-  #"architecture": "x86_64",
-  #"config": {
-  #  "image.architecture": "amd64",
-  #  "image.description": "Ubuntu jammy amd64 (20250326_07:42)",
-  #  "image.os": "Ubuntu",
-  #  "image.release": "jammy",
-  #  "image.serial": "20250326_07:42",
-  #  "image.type": "disk-kvm.img",
-  #  "image.variant": "default",
-  #  "volatile.base_image": "b9f7ddfa399cc02736f2d71c5657e2b6c16e34454c68501826fc993272973070",
-  #  "volatile.cloud-init.instance-id": "60f75014-8c10-4f28-9a97-93a5aed953c0",
-  #  "volatile.last_state.power": "RUNNING",
-  #  "volatile.uuid": "2ace1bfa-7318-4e53-aad2-df7f72603bb9",
-  #  "volatile.uuid.generation": "2ace1bfa-7318-4e53-aad2-df7f72603bb9",
-  #  "volatile.vsock_id": "2042328067"
-  #},
-  "devices": {
-    "eth1": {
-      "network": "jbr01",
-      "type": "nic"
-    }
-  },
-  "ephemeral": False,
-  "profiles": [
-    "default"
-  ],
-  "stateful": False,
-  "description": ""
-
-}
-
+f = open('./instances.json')
+vdata = json.load(f)
 
 urllib3.disable_warnings()
 logging.captureWarnings(True)
 
-# verify=certServer
-r = requests.post(url, data=json.dumps(payload), verify=False, headers=headers, cert=(clientCrt, clientKey))
 
-print(r.status_code)
-print(r.json())
+class Networks:
+
+  def __init__(self):
+    self.r = ""
+
+  def attach(self, instance):
+    self.r = requests.post(url+"/instances/"+instance, data=json.dumps(attach_network), verify=False, headers=headers, cert=(clientCrt, clientKey))
+    return self.r
+
+
+def usage():
+  print("./attach-network.py -a create|start|stop|delete")
+  sys.exit(1)
+
+
+def main():
+
+  try:
+    option, arguments = getopt.getopt(sys.argv[1:],"ha:n",["help","attach=","number"])
+  except getopt.GetoptError as error:
+    print(error)
+    sys.exit()
+
+  for opt, arg in option:
+    if opt in ("-h", "--help"):
+      usage()
+    elif opt in ('-a', '--attach'):
+        r = ins.create(arg)
+    else:
+      usage()
+      sys.exit()
+
+  print(r.status_code)
+  print(r.json())
+
+
+if __name__ == '__main__':
+    ins = Networks()
+    main()
 

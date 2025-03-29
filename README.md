@@ -245,4 +245,5 @@ $ make network r=uninstall s=ovn c=cluster
 - https://www.suse.com/ko-kr/support/kb/doc/?id=000018894
 - https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
 - https://github.com/PenningLabs/lxconsole.git
+- https://svolence.github.io/DRBD/README/       # Ubuntu PPA for DRBD
 

@@ -26,6 +26,7 @@ payload = {
 urllib3.disable_warnings()
 logging.captureWarnings(True)
 
+
 for h in hosts:
     url = url_prefix + h
     r = requests.post(url, data=json.dumps(payload), verify=False, headers=headers, cert=(clientCrt, clientKey))

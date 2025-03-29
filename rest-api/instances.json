@@ -1,24 +1,109 @@
 [
 {
-  "source": {
-    "name": "docker01",
-    "alias": "hello-world",
-    "protocol": "oci",
-    "type": "image",
-    "server": "https://docker.io"
-  }
-},
-{
   "architecture": "",
   "config": {},
-  "devices": {},
+  "devices": {
+    "eth0": {
+      "name": "eth0",
+      "network": "jbr01",
+      "type": "nic"
+    }
+  },
   "ephemeral": false,
   "profiles": [
     "default"
   ],
   "stateful": false,
   "description": "",
-  "name": "ubuntu01",
+  "name": "docker-helloworld",
+  "source": {
+    "type": "image",
+    "certificate": "",
+    "alias": "hello-world",
+    "server": "https://docker.io",
+    "protocol": "oci",
+    "mode": "pull",
+    "allow_inconsistent": false
+  },
+  "instance_type": "",
+  "type": "container",
+  "start": true
+},
+{
+  "architecture": "",
+  "config": {},
+  "devices": {
+    "eth0": {
+      "name": "eth0",
+      "network": "jbr01",
+      "type": "nic"
+    }
+  },
+  "ephemeral": false,
+  "profiles": null,
+  "stateful": false,
+  "description": "",
+  "name": "fedora",
+  "source": {
+    "type": "image",
+    "certificate": "",
+    "alias": "fedora",
+    "server": "https://docker.io",
+    "protocol": "oci",
+    "mode": "pull",
+    "allow_inconsistent": false
+  },
+  "instance_type": "",
+  "type": "container",
+  "start": true
+},
+{
+  "architecture": "",
+  "config": {},
+  "devices": {
+    "eth0": {
+      "name": "eth0",
+      "network": "jbr01",
+      "type": "nic"
+    }
+  },
+  "ephemeral": false,
+  "profiles": [
+    "default"
+  ],
+  "stateful": false,
+  "description": "",
+  "name": "ubuntu-syscon",
+  "source": {
+    "type": "image",
+    "certificate": "",
+    "alias": "ubuntu/22.04",
+    "server": "https://images.linuxcontainers.org",
+    "protocol": "simplestreams",
+    "mode": "pull",
+    "allow_inconsistent": false
+  },
+  "instance_type": "",
+  "type": "container",
+  "start": true
+},
+{
+  "architecture": "",
+  "config": {},
+  "devices": {
+    "eth0": {
+      "name": "eth0",
+      "network": "jbr01",
+      "type": "nic"
+    }
+  },
+  "ephemeral": false,
+  "profiles": [
+    "default"
+  ],
+  "stateful": false,
+  "description": "",
+  "name": "ubuntu-vm",
   "source": {
     "type": "image",
     "certificate": "",

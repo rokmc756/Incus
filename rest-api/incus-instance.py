@@ -36,13 +36,12 @@ class Instances:
     return self.r
 
   def delete(self, instance):
-    self.r = requests.delete(url+"/instances/"+instance, data=json.dumps(payload), verify=False, headers=headers, cert=(clientCrt, clientKey))
+    self.r = requests.delete(url+"/instances/"+instance, data=json.dumps(delete_instance), verify=False, headers=headers, cert=(clientCrt, clientKey))
     return self.r
 
 
 def usage():
   print("./incus-instance.py -r create|start|stop|delete")
-  return
   sys.exit(1)
 
 
@@ -53,7 +52,6 @@ def main():
   except getopt.GetoptError as error:
     print(error)
     sys.exit()
-
 
   for opt, arg in option:
     if opt in ("-h", "--help"):
@@ -77,4 +75,8 @@ def main():
 if __name__ == '__main__':
     ins = Instances()
     main()
+
+# OCI Container
+# https://github.com/lxc/incus/issues/908
+# https://hub.docker.com/search?page=2
 

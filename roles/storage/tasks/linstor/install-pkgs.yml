@@ -1,0 +1,18 @@
+
+add-apt-repository ppa:linbit/linbit-drbd9-stack
+
+apt-get update
+
+apt-get install lvm2 drbd-dkms drbd-utils linstor-satellite
+
+systemctl enable --now linstor-satellite
+
+
+incus storage create rk9-node01 linstor --target ubt24-node01
+incus storage create rk9-node01 linstor --target ubt24-node02
+incus storage create rk9-node01 linstor --target ubt24-node03
+incus storage create rk9-node01 linstor --target ubt24-node04
+incus storage create rk9-node01 linstor --target ubt24-node05
+
+incus storage create rk9-node01 linstor linstor.resource_group.storage_pool=lvm-thin
+

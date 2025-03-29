@@ -1,13 +1,4 @@
 ---
-- name: Install YUM or DNF Config Manager and EPEL
-  package: name={{ item }} state=present
-  with_items:
-    - "dnf-utils"
-    - "epel-release"
-  ignore_errors: true
-  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
-
-
 - name: Enable Incus Package Repositories
   shell: |
     dnf copr enable neil/incus -y
@@ -20,6 +11,15 @@
   with_items:
     - "devel"
     - "crb"
+  when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
+
+
+- name: Install YUM or DNF Config Manager and EPEL
+  package: name={{ item }} state=present
+  with_items:
+    - "dnf-utils"
+    - "epel-release"
+  ignore_errors: true
   when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS" or ansible_distribution == "Rocky"
 
 
