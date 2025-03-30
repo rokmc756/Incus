@@ -1,0 +1,46 @@
+---
+- name: Remove DRBD Module
+  modprobe:
+    name: drbd
+    state: absent
+
+
+- name: Delete DRBD Kernel Module Parameters
+  file:
+    path: "/etc/modules-load.d/{{ item }}.conf"
+    state: absent
+  with_items:
+    - drbd
+
+
+- name: Uninstall Linstor DRBD Packages
+  package: name={{ item }} state=absent
+  register: uninstall_linstor_drbd_clients
+  until: uninstall_linstor_drbd_clients is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - "linstor-client"
+    - "linstor-satellite"
+    - "drbd-dkms"
+    - "drbd-utils"
+- debug: msg={{ uninstall_linstor_drbd_clients }}
+  when: print_debug == true
+
+
+- name: Remove the LINBIT PPA
+  shell: |
+    add-apt-repository --remove ppa:linbit/linbit-drbd9-stack -y
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+
+

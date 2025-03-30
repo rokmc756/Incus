@@ -1,0 +1,22 @@
+---
+- name: Prepare Linstor LVM Thin Pools
+  shell: |
+    incus storage create {{ item.name }} linstor --target={{ inventory_hostname }}
+  register: prepare_cluster_linstor_lvm_thin_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items:
+    - { name: "rk9-node01", pool: "lvm-thin" }
+- debug: msg={{ prepare_cluster_linstor_lvm_thin_pools }}
+
+
+- name: Create Linstor LVM Thin Pools
+  shell: |
+    incus storage create {{ item.name }} linstor linstor.resource_group.storage_pool={{ item.pool }}
+  register: create_linstor_lvm_pools
+  with_items:
+    - { name: "rk9-node01", pool: "lvm-thin" }
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_linstor_lvm_thin_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+
+

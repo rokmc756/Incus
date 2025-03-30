@@ -38,3 +38,9 @@
   import_tasks: ceph/main.yml
   when: ( ceph is defined and ceph == true )
 
+
+- name: Import Linstor Storage Pools
+  import_tasks: linstor/main.yml
+  when: ( linstor is defined and linstor == true )
+
+

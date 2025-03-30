@@ -1,0 +1,24 @@
+---
+- name: Create Linstor LVM Pools
+  import_tasks: linstor/lvm/create-pools.yml
+  tags: create, install
+  when: inventory_hostname in groups['workers']
+
+
+- name: Create Linstor LVM Volumes
+  import_tasks: linstor/lvm/create-volumes.yml
+  tags: create, install
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Linstor LVM Volumes
+  import_tasks: linstor/lvm/delete-volumes.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+
+
+- name: Delete Linstor LVM Pools
+  import_tasks: linstor/lvm/delete-pools.yml
+  tags: delete, uninstall
+  when: inventory_hostname in groups['control']
+

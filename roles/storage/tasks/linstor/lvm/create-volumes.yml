@@ -1,0 +1,11 @@
+---
+- name: Create Linstor LVM Thin Volumes
+  shell: |
+    incus storage volume create {{ item.pool }} {{ item.name }}
+  register: create_linstor_lvm_thin_volumes
+  with_items:
+    - { pool: "rk9-node01", name: "linstor-test-thin-vol01" }
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_linstor_lvm_thin_volumes }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

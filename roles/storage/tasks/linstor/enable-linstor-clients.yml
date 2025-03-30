@@ -1,0 +1,47 @@
+---
+- name: Add the LINBIT PPA
+  shell: |
+    add-apt-repository ppa:linbit/linbit-drbd9-stack -y
+
+
+- name: Update Caches for APT Packages
+  apt:
+    update_cache: yes
+    cache_valid_time: 86400   # One day
+  register: update_apt_cache
+  until: update_apt_cache is succeeded
+  retries: 20
+  delay: 20
+  # upgrade: yes
+
+
+- name: Install Linstor DRBD Packages
+  package: name={{ item }} state=present
+  register: install_linstor_drbd_clients
+  until: install_linstor_drbd_clients is succeeded
+  retries: 5
+  delay: 10
+  with_items:
+    - "lvm2"
+    - "drbd-dkms"
+    - "drbd-utils"
+    - "linstor-satellite"
+    - "linstor-client"
+- debug: msg={{ install_linstor_drbd_clients }}
+  when: print_debug == true
+
+
+- name: Add DRBD Module
+  modprobe:
+    name: drbd
+    state: present
+
+
+- name: Save DRBD Kernel Module Parameters
+  template:
+    src: drbd.conf.j2
+    dest: "/etc/modules-load.d/{{ item }}.conf"
+    mode: 0644
+  with_items:
+    - drbd
+

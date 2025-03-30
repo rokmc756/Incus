@@ -212,6 +212,22 @@ $ make storage r=create s=ceph c=rgw
 $ make storage r=delete s=ceph c=rgw
 ```
 
+##### 4) Linstor
+```yaml
+# Enable and Disable Linstor Client for Incus Hosts
+$ make storage r=enable s=linstor c=client
+$ make storage r=disable s=linstor c=client
+
+# Create and Delete Linstor Storage Pool
+$ make storage r=create s=linstor c=lvm
+$ make storage r=delete s=linstor c=lvm
+
+$ make storage r=create s=linstor c=file
+$ make storage r=delete s=linstor c=file
+```
+
+
+
 ### Create Network
 ##### 1) OVN
 ```yaml

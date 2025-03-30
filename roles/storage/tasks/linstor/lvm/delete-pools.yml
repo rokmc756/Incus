@@ -1,0 +1,10 @@
+---
+- name: Delete Linstor LVM Thin Storage Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_linstor_lvm_thin_storge_pools
+  ignore_errors: true
+  with_items:
+    - { name: "rk9-node01", pool: "lvm-thin" }
+- debug: msg={{ delete_linstor_lvm_thin_storge_pools }}
+
