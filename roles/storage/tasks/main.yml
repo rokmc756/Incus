@@ -41,6 +41,5 @@
 
 - name: Import Linstor Storage Pools
   import_tasks: linstor/main.yml
-  when: ( linstor is defined and linstor == true )
-
+  when: ( linstor is defined and linstor == true ) and inventory_hostname not in groups['iscsi_target']
 

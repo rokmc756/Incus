@@ -5,6 +5,6 @@
   register: delete_linstor_lvm_thin_storge_pools
   ignore_errors: true
   with_items:
-    - { name: "rk9-node01", pool: "lvm-thin" }
+    - { name: "linstor-lvmthin-pool01", pool: "lvm-thin" }
 - debug: msg={{ delete_linstor_lvm_thin_storge_pools }}
 

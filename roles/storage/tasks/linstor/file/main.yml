@@ -1,24 +1,24 @@
 ---
-- name: Create Ceph Filesystem Pools
-  import_tasks: ceph/fs/create-pools.yml
+- name: Create Linstor File Thin Pools
+  import_tasks: linstor/file/create-pools.yml
   tags: create, install
-  when: ( fs is defined and fs == true ) and inventory_hostname in groups['workers']
+  when: inventory_hostname in groups['workers']
 
 
-- name: Create Ceph Filesystem Volumes
-  import_tasks: ceph/fs/create-volumes.yml
+- name: Create Linstor File Thin Volumes
+  import_tasks: linstor/file/create-volumes.yml
   tags: create, install
-  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+  when: inventory_hostname in groups['control']
 
 
-- name: Delete Ceph Filesystem Volumes
-  import_tasks: ceph/fs/delete-volumes.yml
+- name: Delete Linstor File Thin Volumes
+  import_tasks: linstor/file/delete-volumes.yml
   tags: delete, uninstall
-  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+  when: inventory_hostname in groups['control']
 
 
-- name: Delete Ceph Filesystem Pools
-  import_tasks: ceph/fs/delete-pools.yml
+- name: Delete Linstor File Thin Pools
+  import_tasks: linstor/file/delete-pools.yml
   tags: delete, uninstall
-  when: ( fs is defined and fs == true ) and inventory_hostname in groups['control']
+  when: inventory_hostname in groups['control']
 

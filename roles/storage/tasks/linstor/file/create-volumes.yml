@@ -1,11 +1,11 @@
 ---
-- name: Create Ceph Filesystem Volumes
+- name: Create Linstor File Thin Volumes
   shell: |
     incus storage volume create {{ item.pool }} {{ item.name }}
-  register: create_ceph_fs_volumes
+  register: create_linstor_file_thin_volumes
   with_items:
-    - "{{ volumes.ceph.fs }}"
+    - { pool: "linstor-filethin-pool01", name: "linstor-test-thin-vol01" }
   when: inventory_hostname in groups['control']
-- debug: msg={{ create_ceph_fs_volumes }}
+- debug: msg={{ create_linstor_file_thin_volumes }}
   when: print_debug == true and inventory_hostname in groups['control']
 
