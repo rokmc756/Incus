@@ -11,7 +11,7 @@
   register: prepare_cluster_linstor_lvm_thin_pools
   delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
   with_items:
-    - { name: "nvme_pool", pool: "lvm-thin" }
+    - { name: "linstor-lvmthin-pool01", pool: "lvm-thin" }
 - debug: msg={{ prepare_cluster_linstor_lvm_thin_pools }}
 
 

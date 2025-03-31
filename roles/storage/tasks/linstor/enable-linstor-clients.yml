@@ -27,8 +27,14 @@
     - "drbd-utils"
     - "linstor-satellite"
     - "linstor-client"
+    - "nvme-cli"
 - debug: msg={{ install_linstor_drbd_clients }}
   when: print_debug == true
+
+
+- name: Enable the LINSTOR satellite service to ensure it is always started with the machine
+  shell: |
+    systemctl enable --now linstor-satellite
 
 
 - name: Add DRBD Module
@@ -44,4 +50,7 @@
     mode: 0644
   with_items:
     - drbd
+
+
+# https://brian-candler.medium.com/linstor-networked-storage-without-the-complexity-c3178960ce6b
 

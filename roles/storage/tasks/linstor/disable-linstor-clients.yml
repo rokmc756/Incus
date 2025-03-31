@@ -20,6 +20,7 @@
   retries: 5
   delay: 10
   with_items:
+    - "nvme-cli"
     - "linstor-client"
     - "linstor-satellite"
     - "drbd-dkms"

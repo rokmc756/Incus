@@ -39,7 +39,7 @@ _incus:
       ipaddr1: "192.168.1.8"
       ipaddr2: "192.168.2.8"
   linstor:
-    control_ip_addr: "192.168.1.171"
+    control_ip_addr: "192.168.1.86"
     user: "root"
     passwd: "changeme"
     net:
