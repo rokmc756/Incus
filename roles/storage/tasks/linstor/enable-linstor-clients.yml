@@ -52,5 +52,11 @@
     - drbd
 
 
+- name: Join Incus Nodes to LINSTOR Cluster as Satellite Node
+  shell: |
+    linstor node create {{ inventory_hostname }} {{ _ipaddr }} --node-type satellite
+  delegate_to: "{{ _incus.linstor.control_ip_addr }}"
+
+
 # https://brian-candler.medium.com/linstor-networked-storage-without-the-complexity-c3178960ce6b
 

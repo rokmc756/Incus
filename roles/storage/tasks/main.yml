@@ -6,6 +6,7 @@
 
 - name: Set Facts For Network and Packages Informations and other Versions
   import_tasks: set-facts.yml
+  tags: enable, create, install, disable, delete, uninstall
   when: inventory_hostname in groups['workers']
 
 

@@ -195,7 +195,7 @@ $ make storage r=delete s=zfs c=zpool    # Need to fix errors
 $ make storage r=create s=zfs c=slice    # Need to fix errors
 $ make storage r=delete s=zfs c=slice    # Need to fix errors
 ```
-##### 4) Ceph
+##### 4) Ceph Storage Pool
 ```yaml
 # Enable and Disable Ceph Client for Incus Hosts
 $ make storage r=enable s=ceph c=client
@@ -212,18 +212,15 @@ $ make storage r=create s=ceph c=rgw
 $ make storage r=delete s=ceph c=rgw
 ```
 
-##### 4) Linstor
+##### 4) Linstor Storage Pool
 ```yaml
 # Enable and Disable Linstor Client for Incus Hosts
 $ make storage r=enable s=linstor c=client
 $ make storage r=disable s=linstor c=client
 
 # Create and Delete Linstor Storage Pool
-$ make storage r=create s=linstor c=lvm
-$ make storage r=delete s=linstor c=lvm
-
-$ make storage r=create s=linstor c=file
-$ make storage r=delete s=linstor c=file
+$ make storage r=create s=linstor c=pool
+$ make storage r=delete s=linstor c=pool
 ```
 
 

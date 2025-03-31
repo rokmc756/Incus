@@ -1,4 +1,10 @@
 ---
+- name: Remove Incus Nodes from LINSTOR Cluster as Satellite Node
+  shell: |
+    linstor node delete {{ inventory_hostname }}
+  delegate_to: "{{ _incus.linstor.control_ip_addr }}"
+
+
 - name: Remove DRBD Module
   modprobe:
     name: drbd
@@ -43,5 +49,4 @@
   retries: 20
   delay: 20
   # upgrade: yes
-
 

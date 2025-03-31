@@ -5,14 +5,19 @@
   when: ( client is defined and client == true )
 
 
-- name: Import Linstor LVM Storage Pools
-  import_tasks: linstor/lvm/main.yml
-  when: ( lvm is defined and lvm == true )
+#- name: Import Linstor LVM Storage Pools
+#  import_tasks: linstor/lvm/main.yml
+#  when: ( lvm is defined and lvm == true )
 
 
-- name: Import File Storage Pools
-  import_tasks: linstor/file/main.yml
-  when: ( file is defined and file == true )
+#- name: Import File Storage Pools
+#  import_tasks: linstor/file/main.yml
+#  when: ( file is defined and file == true )
+
+
+- name: Import Linstor Storage Pools
+  import_tasks: linstor/pool/main.yml
+  when: ( pool is defined and pool == true )
 
 
 - name: Disable Linstor Clients
