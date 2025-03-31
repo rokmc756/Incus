@@ -1,4 +1,12 @@
 ---
+- name: Disable the LINSTOR satellite service to ensure it is always started with the machine
+  shell: |
+    systemctl disable --now {{ item }}
+  with_items:
+    - linstor-satellite
+    - linstor-controller
+
+
 - name: Remove Incus Nodes from LINSTOR Cluster as Satellite Node
   shell: |
     linstor node delete {{ inventory_hostname }}
@@ -7,8 +15,11 @@
 
 - name: Remove DRBD Module
   modprobe:
-    name: drbd
+    name: "{{ item }}"
     state: absent
+  with_items:
+    - drbd_transport_tcp
+    - drbd
 
 
 - name: Delete DRBD Kernel Module Parameters
