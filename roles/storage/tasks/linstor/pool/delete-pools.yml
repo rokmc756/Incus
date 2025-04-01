@@ -1,9 +1,0 @@
----
-- name: Delete Linstor Storage Pools
-  shell: |
-    incus storage delete {{ item.incus_pool_name }}
-  register: delete_linstor_storge_pools
-  ignore_errors: true
-  with_items: "{{ _incus.linstor.storage }}"
-- debug: msg={{ delete_linstor_storge_pools }}
-

@@ -63,21 +63,17 @@ remote_machine_username="jomoon"
 remote_machine_password="changeme"
 ansible_python_interpreter=/usr/bin/python3
 
-
 [iscsi_target]
 rk9-node06   ansible_ssh_host=192.168.1.176
 
-
 [control]
 ubt24-node01  ansible_ssh_host=192.168.1.81  host_id=1
-
 
 [cluster]
 ubt24-node02  ansible_ssh_host=192.168.1.82  host_id=2
 ubt24-node03  ansible_ssh_host=192.168.1.83  host_id=3
 ubt24-node04  ansible_ssh_host=192.168.1.84  host_id=4
 ubt24-node05  ansible_ssh_host=192.168.1.85  host_id=5
-
 
 [workers:children]
 control
