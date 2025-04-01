@@ -1,0 +1,25 @@
+---
+- name: Configure Incus to be able to communicate with the LINSTOR controller
+  shell: |
+    incus config set storage.linstor.controller_connection=http://{{ _incus.linstor.control_ip_addr }}:3370
+  when: inventory_hostname in groups['control']
+
+
+- name: Prepare Linstor Storage Pools
+  shell: |
+    incus storage create {{ item.name }} linstor --target={{ inventory_hostname }}
+  register: prepare_cluster_linstor_storage_pools
+  delegate_to: "{{ hostvars[groups['control'][0]]['ansible_hostname'] }}"
+  with_items: "{{ pools.linstor.lvmthin }}"
+- debug: msg={{ prepare_cluster_linstor_storage_pools }}
+
+
+- name: Create Linstor Storage Pools
+  shell: |
+    incus storage create {{ item.name }} linstor linstor.resource_group.storage_pool={{ item.storage_pool }}
+  register: create_linstor_storage_pools
+  with_items: "{{ pools.linstor.lvmthin }}"
+  when: inventory_hostname in groups['control']
+- debug: msg={{ create_linstor_storage_pools }}
+  when: print_debug == true and inventory_hostname in groups['control']
+

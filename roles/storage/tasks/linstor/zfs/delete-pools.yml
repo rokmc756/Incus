@@ -1,0 +1,9 @@
+---
+- name: Delete Linstor Storage Pools
+  shell: |
+    incus storage delete {{ item.name }}
+  register: delete_linstor_storge_pools
+  ignore_errors: true
+  with_items: "{{ pools.linstor.zfs }}"
+- debug: msg={{ delete_linstor_storge_pools }}
+

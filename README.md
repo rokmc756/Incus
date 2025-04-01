@@ -47,7 +47,7 @@ Root User should have Password ans Allow access with Password login via SSH
 
 ## Prepare ansible host to run this playbook
 * MacOS
-```!yaml
+```!sh
 $ xcode-select --install
 $ brew install ansible
 $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
@@ -57,81 +57,83 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 ## How to Run Incus Ansible Playbook
 ### 1) Configure Ansible Hosts
 ~~~!yaml
-$ vi ansible-hosts
 [all:vars]
 ssh_key_filename="id_rsa"
 remote_machine_username="jomoon"
 remote_machine_password="changeme"
 ansible_python_interpreter=/usr/bin/python3
 
+
 [iscsi_target]
-rk9-freeipa  ansible_ssh_host=192.168.1.90
+rk9-node06   ansible_ssh_host=192.168.1.176
+
 
 [control]
-ubt24-node01 ansible_ssh_host=192.168.1.81
+ubt24-node01  ansible_ssh_host=192.168.1.81  host_id=1
 
-[workers]
-ubt24-node01 ansible_ssh_host=192.168.1.81
-ubt24-node02 ansible_ssh_host=192.168.1.82
-ubt24-node03 ansible_ssh_host=192.168.1.83
-ubt24-node04 ansible_ssh_host=192.168.1.84
-ubt24-node05 ansible_ssh_host=192.168.1.85
 
 [cluster]
-ubt24-node04 ansible_ssh_host=192.168.1.84
-ubt24-node05 ansible_ssh_host=192.168.1.85
+ubt24-node02  ansible_ssh_host=192.168.1.82  host_id=2
+ubt24-node03  ansible_ssh_host=192.168.1.83  host_id=3
+ubt24-node04  ansible_ssh_host=192.168.1.84  host_id=4
+ubt24-node05  ansible_ssh_host=192.168.1.85  host_id=5
+
+
+[workers:children]
+control
+cluster
 ~~~
 #### 2) Initialize/Uninstall Linux Hosts
-~~~!yaml
+~~~!sh
 $ make hosts r=init s=all
 $ make hosts r=uninit s=all
 ~~~
 #### 3) Enable/Disable Zabbly Repository
-~~~!yaml
+~~~!sh
 $ make incus r=enable s=repo
 $ make incus r=disable s=repo
 ~~~
 ##### 4) Install/Uninstall Incus Packages
-~~~!yaml
+~~~!sh
 $ make incus r=install s=pkgs
 $ make incus r=uninstall s=pkgs
 ~~~
 ##### 5) Initialize Incus Cluster
-~~~!yaml
+~~~!sh
 $ make incus r=init s=host
 ~~~
 ##### 6) Install/Uninstall Incus Web UI
-~~~!yaml
+~~~!sh
 $ make incus r=install s=ui
 $ make incus r=uninstall s=ui
 ~~~
 ##### 7) Add/Remove Hosts to/at Incus Cluster
-~~~!yaml
+~~~!sh
 $ make incus r=add s=host
 $ make incus r=remove s=host
 ~~~
 ##### 8) Deploy Incus Cluster at once
-~~~!yaml
+~~~!sh
 $ make incus r=install s=all
 ~~~
 ##### 9) Enable Incus API Certificate
-~~~!yaml
+~~~!sh
 $ make incus r=install s=api c=cert
 ~~~
 ##### 10) Deploy/Destroy Incus Cluster at once
-~~~!yaml
+~~~!sh
 $ make incus r=deploy s=all
 $ make incus r=destroy s=all
 ~~~
 ##### 11) Force Destroy Incus Cluster
-~~~!yaml
+~~~!sh
 $ make incus r=destroy s=force
 ~~~
 
 
 ### Create and Delete Various Storage Pools
 ##### 1) Local Directory
-```yaml
+```!sh
 $ make storage r=create s=dir c=local
 $ make storage r=delete s=dir c=local
 
@@ -139,7 +141,7 @@ $ make storage r=create s=dir c=dirs
 $ make storage r=delete s=dir c=dirs
 ```
 ##### 2) Logical Volume Groups
-```yaml
+```!sh
 $ make storage r=create s=lvm c=local
 $ make storage r=delete s=lvm c=local
 
@@ -165,10 +167,9 @@ $ make storage r=uninstall s=iscsi c=initiator
 
 $ make storage r=create s=lvm c=cluster
 $ make storage r=delete s=lvm c=cluster
-
 ```
 ##### 3) Btrfs
-```yaml
+```!sh
 $ make storage r=create s=btrfs c=local
 $ make storage r=delete s=btrfs c=local
 
@@ -179,7 +180,7 @@ $ make storage r=create s=btrfs c=blk
 $ make storage r=delete s=btrfs c=blk
 ```
 ##### 3) ZFS
-```yaml
+```!sh
 $ make storage r=create s=zfs c=local
 $ make storage r=delete s=zfs c=local
 
@@ -196,7 +197,7 @@ $ make storage r=create s=zfs c=slice    # Need to fix errors
 $ make storage r=delete s=zfs c=slice    # Need to fix errors
 ```
 ##### 4) Ceph Storage Pool
-```yaml
+```!sh
 # Enable and Disable Ceph Client for Incus Hosts
 $ make storage r=enable s=ceph c=client
 $ make storage r=disable s=ceph c=client
@@ -213,21 +214,32 @@ $ make storage r=delete s=ceph c=rgw
 ```
 
 ##### 4) Linstor Storage Pool
-```yaml
+```!sh
 # Enable and Disable Linstor Client for Incus Hosts
 $ make storage r=enable s=linstor c=client
 $ make storage r=disable s=linstor c=client
 
 # Create and Delete Linstor Storage Pool
-$ make storage r=create s=linstor c=pool
-$ make storage r=delete s=linstor c=pool
-```
+$ make storage r=create s=linstor c=lvmthin
+$ make storage r=delete s=linstor c=lvmthin
 
+$ make storage r=create s=linstor c=zfsthin
+$ make storage r=delete s=linstor c=zfsthin
+
+$ make storage r=create s=linstor c=lvm
+$ make storage r=delete s=linstor c=lvm
+
+$ make storage r=create s=linstor c=zfs
+$ make storage r=delete s=linstor c=zfs
+
+$ make storage r=create s=linstor c=filethin
+$ make storage r=delete s=linstor c=filethin
+```
 
 
 ### Create Network
 ##### 1) OVN
-```yaml
+```!sh
 # For Configure and Install OVN Network
 $ make network r=install s=ovn c=cluster
 $ make network r=create s=ovn c=cluster

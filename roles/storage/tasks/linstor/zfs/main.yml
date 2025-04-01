@@ -1,0 +1,24 @@
+---
+- name: Create Linstor ZFS Storage Pools
+  import_tasks: linstor/zfs/create-pools.yml
+  tags: create, install
+  when: ( zfs is defined and zfs == true ) and inventory_hostname in groups['workers']
+
+
+- name: Create Linstor ZFS Storage Volumes
+  import_tasks: linstor/zfs/create-volumes.yml
+  tags: create, install
+  when: ( zfs is defined and zfs == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor ZFS Storage Volumes
+  import_tasks: linstor/zfs/delete-volumes.yml
+  tags: delete, uninstall
+  when: ( zfs is defined and zfs == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor ZFS Storage Pools
+  import_tasks: linstor/zfs/delete-pools.yml
+  tags: delete, uninstall
+  when: ( zfs is defined and zfs == true ) and inventory_hostname in groups['control']
+

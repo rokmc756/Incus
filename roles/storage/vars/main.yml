@@ -57,6 +57,19 @@ pools:
       - { name: "lvm-thin-pool05", source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-thin-vg03", thinpool: "lvm-thin-vg-pool03" }
     cluster:
       - { name: "lvm-cluster-pool06", source: "", size: "5G", vg: "lvm-cluster-vg06", thinpool: "lvm-cluster-vg-pool06" }
+  linstor:
+    lvmthin:
+      - { name: "linstor_lvmthin_pool01",  storage_pool: 'lvmthin_pool01',  pool_name: 'lvmthin_pool01',  storage_dev: '/dev/nvme0n1', type: 'lvmthin' }
+    zfsthin:
+      - { name: "linstor_zfsthin_pool02",  storage_pool: 'zfsthin_pool02',  pool_name: 'zfsthin_pool02',  storage_dev: '/dev/nvme0n2', type: 'zfsthin' }
+    lvm:
+      - { name: "linstor_lvm_pool01",      storage_pool: 'lvm_pool01',      pool_name: 'lvm_pool01',      storage_dev: '/dev/sdb',     type: 'lvm' }
+    zfs:
+      - { name: "linstor_zfs_pool02",      storage_pool: 'zfs_pool02',      pool_name: 'zfs_pool02',      storage_dev: '/dev/sdc',     type: 'zfs' }
+    filethin:
+      - { name: "linstor_filethin_pool01", storage_pool: 'filethin_pool01', pool_name: 'filethin_pool01', storage_dev: '/var/lib/linstor/file-thin-storage-pool01', type: 'filethin', mode: '0755' }
+      - { name: "linstor_filethin_pool02", storage_pool: 'filethin_pool02', pool_name: 'filethin_pool02', storage_dev: '/var/lib/linstor/file-thin-storage-pool02', type: 'filethin', mode: '0755' }
+      - { name: "linstor_filethin_pool03", storage_pool: 'filethin_pool03', pool_name: 'filethin_pool03', storage_dev: '/var/lib/linstor/file-thin-storage-pool03', type: 'filethin', mode: '0755' }
 
 
 volumes:
@@ -105,6 +118,19 @@ volumes:
       - { name: "lvm-thin-volume01", size: "5GiB", pool: "lvm-thin-pool05" }
     cluster:
       - { name: "lvm-cluster-volume01", size: "5G", pool: "lvm-cluster-pool06" }
+  linstor:
+    lvmthin:
+      - { name: "linstor_lvmthin_vol01", size: "5GiB", pool: "linstor_lvmthin_pool01" }
+    zfsthin:
+      - { name: "linstor_zfsthin_vol01", size: "5GiB", pool: "linstor_zfsthin_pool02" }
+    lvm:
+      - { name: "linstor_lvm_vol01",     size: "5GiB", pool: "linstor_lvm_pool01" }
+    zfs:
+      - { name: "linstor_zfs_vol02",     size: "5GiB", pool: "linstor_zfs_pool02" }
+    filethin:
+      - { name: 'linstor_filethin_vol01', size: '5GiB', pool: 'linstor_filethin_pool01' }
+      - { name: 'linstor_filethin_vol02', size: '5GiB', pool: 'linstor_filethin_pool02' }
+      - { name: 'linstor_filethin_vol03', size: '5GiB', pool: 'linstor_filethin_pool03' }
 
 
 # source: "/dev/sdb /dev/sdc", size: "5G", vg: "lvm-vg01", vg_pool: "lvm-vg-pool01" }

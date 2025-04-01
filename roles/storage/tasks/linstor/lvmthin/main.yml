@@ -1,0 +1,24 @@
+---
+- name: Create Linstor LVM-Thin Storage Pools
+  import_tasks: linstor/lvmthin/create-pools.yml
+  tags: create, install
+  when: ( lvmthin is defined and lvmthin == true ) and inventory_hostname in groups['workers']
+
+
+- name: Create Linstor LVM-Thin Storage Volumes
+  import_tasks: linstor/lvmthin/create-volumes.yml
+  tags: create, install
+  when: ( lvmthin is defined and lvmthin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor LVM-Thin Storage Volumes
+  import_tasks: linstor/lvmthin/delete-volumes.yml
+  tags: delete, uninstall
+  when: ( lvmthin is defined and lvmthin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor LVM-Thin Storage Pools
+  import_tasks: linstor/lvmthin/delete-pools.yml
+  tags: delete, uninstall
+  when: ( lvmthin is defined and lvmthin == true ) and inventory_hostname in groups['control']
+

@@ -5,9 +5,34 @@
   when: ( client is defined and client == true )
 
 
-- name: Import Linstor Storage Pools
-  import_tasks: linstor/pool/main.yml
-  when: ( pool is defined and pool == true )
+#- name: Import Linstor Storage Pools
+#  import_tasks: linstor/pool/main.yml
+#  when: ( pool is defined and pool == true )
+
+
+- name: Import Linstor LVM-Thin Storage Pools
+  import_tasks: linstor/lvmthin/main.yml
+  when: ( lvmthin is defined and lvmthin == true )
+
+
+- name: Import Linstor ZFS-Thin Storage Pools
+  import_tasks: linstor/zfsthin/main.yml
+  when: ( zfsthin is defined and zfsthin == true )
+
+
+- name: Import Linstor LVM Storage Pools
+  import_tasks: linstor/lvm/main.yml
+  when: ( lvm is defined and lvm == true )
+
+
+- name: Import Linstor ZFS Storage Pools
+  import_tasks: linstor/zfs/main.yml
+  when: ( zfs is defined and zfs == true )
+
+
+- name: Import Linstor File-Thin Storage Pools
+  import_tasks: linstor/filethin/main.yml
+  when: ( filethin is defined and filethin == true )
 
 
 - name: Disable Linstor Clients

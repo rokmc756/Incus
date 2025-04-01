@@ -1,0 +1,24 @@
+---
+- name: Create Linstor File-Thin Storage Pools
+  import_tasks: linstor/filethin/create-pools.yml
+  tags: create, install
+  when: ( filethin is defined and filethin == true ) and inventory_hostname in groups['workers']
+
+
+- name: Create Linstor File-Thin Storage Volumes
+  import_tasks: linstor/filethin/create-volumes.yml
+  tags: create, install
+  when: ( filethin is defined and filethin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor File-Thin Storage Volumes
+  import_tasks: linstor/filethin/delete-volumes.yml
+  tags: delete, uninstall
+  when: ( filethin is defined and filethin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor File-Thin Storage Pools
+  import_tasks: linstor/filethin/delete-pools.yml
+  tags: delete, uninstall
+  when: ( filethin is defined and filethin == true ) and inventory_hostname in groups['control']
+

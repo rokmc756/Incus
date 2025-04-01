@@ -1,0 +1,24 @@
+---
+- name: Create Linstor ZFS-Thin Storage Pools
+  import_tasks: linstor/zfsthin/create-pools.yml
+  tags: create, install
+  when: ( zfsthin is defined and zfsthin == true ) and inventory_hostname in groups['workers']
+
+
+- name: Create Linstor ZFS-Thin Storage Volumes
+  import_tasks: linstor/zfsthin/create-volumes.yml
+  tags: create, install
+  when: ( zfsthin is defined and zfsthin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor ZFS-Thin Storage Volumes
+  import_tasks: linstor/zfsthin/delete-volumes.yml
+  tags: delete, uninstall
+  when: ( zfsthin is defined and zfsthin == true ) and inventory_hostname in groups['control']
+
+
+- name: Delete Linstor ZFS-Thin Storage Pools
+  import_tasks: linstor/zfsthin/delete-pools.yml
+  tags: delete, uninstall
+  when: ( zfsthin is defined and zfsthin == true ) and inventory_hostname in groups['control']
+
