@@ -1,6 +1,6 @@
 ---
 - name: Check if Incus CA Key Exists
-  stat: path={{ _incus.base_dir }}/root/incus-ui.crt
+  stat: path={{ _incus.base_dir }}/incus-ui.crt
   register: incus_ca_key
 - debug: msg={{ incus_ca_key }}
   when: print_debug == true

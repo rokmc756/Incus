@@ -148,16 +148,20 @@ $ make incus r=remove s=host
 ```bash
 $ make incus r=install s=all
 ```
-#### 10) Enable Incus API Certificate
+#### 10) Attach and Enable Incus CA Key
+```bash
+$ make incus r=enable s=key
+```
+#### 11) Enable Incus API Certificate
 ```bash
 $ make incus r=install s=api c=cert
 ```
-#### 11) Deploy/Destroy Incus Cluster at once
+#### 12) Deploy/Destroy Incus Cluster at once
 ```bash
 $ make incus r=deploy s=all
 $ make incus r=destroy s=all
 ```
-#### 12) Force Destroy Incus Cluster
+#### 13) Force Destroy Incus Cluster
 ```bash
 $ make incus r=destroy s=force
 ```
