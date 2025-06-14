@@ -229,8 +229,8 @@ $ make storage r=delete s=zfs c=blk
 $ make storage r=create s=zfs c=zpool
 $ make storage r=delete s=zfs c=zpool
 
-$ make storage r=create s=zfs c=slice    # Need to fix errors
-$ make storage r=delete s=zfs c=slice    # Need to fix errors
+$ make storage r=create s=zfs c=slice
+$ make storage r=delete s=zfs c=slice
 ```
 #### 4) Ceph Storage Pool
 ```bash
