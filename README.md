@@ -47,7 +47,7 @@ Root User should have Password ans Allow access with Password login via SSH
 
 ## Prepare ansible host to run this playbook
 * MacOS
-```!sh
+```bash
 $ xcode-select --install
 $ brew install ansible
 $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
@@ -56,7 +56,7 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 
 ## How to Run Incus Ansible Playbook
 ### 1) Configure Ansible Hosts
-~~~!yaml
+```ini
 [all:vars]
 ssh_key_filename="id_rsa"
 remote_machine_username="jomoon"
@@ -78,58 +78,58 @@ ubt24-node05  ansible_ssh_host=192.168.1.85  host_id=5
 [workers:children]
 control
 cluster
-~~~
+```
 #### 2) Initialize/Uninstall Linux Hosts
-~~~!sh
+```bash
 $ make hosts r=init s=all
 $ make hosts r=uninit s=all
-~~~
+```
 #### 3) Enable/Disable Zabbly Repository
-~~~!sh
+```bash
 $ make incus r=enable s=repo
 $ make incus r=disable s=repo
-~~~
+```
 ##### 4) Install/Uninstall Incus Packages
-~~~!sh
+```bash
 $ make incus r=install s=pkgs
 $ make incus r=uninstall s=pkgs
-~~~
+```
 ##### 5) Initialize Incus Cluster
-~~~!sh
+```bash
 $ make incus r=init s=host
-~~~
+```
 ##### 6) Install/Uninstall Incus Web UI
-~~~!sh
+```bash
 $ make incus r=install s=ui
 $ make incus r=uninstall s=ui
-~~~
+```
 ##### 7) Add/Remove Hosts to/at Incus Cluster
-~~~!sh
+```bash
 $ make incus r=add s=host
 $ make incus r=remove s=host
-~~~
+```
 ##### 8) Deploy Incus Cluster at once
-~~~!sh
+```bash
 $ make incus r=install s=all
-~~~
+```
 ##### 9) Enable Incus API Certificate
-~~~!sh
+```bash
 $ make incus r=install s=api c=cert
-~~~
+```
 ##### 10) Deploy/Destroy Incus Cluster at once
-~~~!sh
+```bash
 $ make incus r=deploy s=all
 $ make incus r=destroy s=all
-~~~
+```
 ##### 11) Force Destroy Incus Cluster
-~~~!sh
+```bash
 $ make incus r=destroy s=force
-~~~
+```
 
 
 ### Create and Delete Various Storage Pools
 ##### 1) Local Directory
-```!sh
+```bash
 $ make storage r=create s=dir c=local
 $ make storage r=delete s=dir c=local
 
@@ -137,7 +137,7 @@ $ make storage r=create s=dir c=dirs
 $ make storage r=delete s=dir c=dirs
 ```
 ##### 2) Logical Volume Groups
-```!sh
+```bash
 $ make storage r=create s=lvm c=local
 $ make storage r=delete s=lvm c=local
 
@@ -165,7 +165,7 @@ $ make storage r=create s=lvm c=cluster
 $ make storage r=delete s=lvm c=cluster
 ```
 ##### 3) Btrfs
-```!sh
+```bash
 $ make storage r=create s=btrfs c=local
 $ make storage r=delete s=btrfs c=local
 
@@ -176,7 +176,7 @@ $ make storage r=create s=btrfs c=blk
 $ make storage r=delete s=btrfs c=blk
 ```
 ##### 3) ZFS
-```!sh
+```bash
 $ make storage r=create s=zfs c=local
 $ make storage r=delete s=zfs c=local
 
@@ -193,7 +193,7 @@ $ make storage r=create s=zfs c=slice    # Need to fix errors
 $ make storage r=delete s=zfs c=slice    # Need to fix errors
 ```
 ##### 4) Ceph Storage Pool
-```!sh
+```bash
 # Enable and Disable Ceph Client for Incus Hosts
 $ make storage r=enable s=ceph c=client
 $ make storage r=disable s=ceph c=client
@@ -210,7 +210,7 @@ $ make storage r=delete s=ceph c=rgw
 ```
 
 ##### 4) Linstor Storage Pool
-```!sh
+```bash
 # Enable and Disable Linstor Client for Incus Hosts
 $ make storage r=enable s=linstor c=client
 $ make storage r=disable s=linstor c=client
@@ -235,7 +235,7 @@ $ make storage r=delete s=linstor c=filethin
 
 ### Create Network
 ##### 1) OVN
-```!sh
+```bash
 # For Configure and Install OVN Network
 $ make network r=install s=ovn c=cluster
 $ make network r=create s=ovn c=cluster
