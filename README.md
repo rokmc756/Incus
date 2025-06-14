@@ -79,49 +79,85 @@ ubt24-node05  ansible_ssh_host=192.168.1.85  host_id=5
 control
 cluster
 ```
-#### 2) Initialize/Uninstall Linux Hosts
+#### 2) Configure Global Variables
+```yaml
+$ vi group_vars/all.yaml
+---
+ansible_ssh_pass: "changeme"
+ansible_become_pass: "changeme"
+
+_incus:
+  cluster_name: jack-kr-incus
+  domain: "jtest.futurfusion.io"
+  major_version: ""
+  minor_version: ""
+  patch_version: ""
+  build_version: ""
+  base_dir: "/root"
+  repo:
+    zabbly:
+      link: "https://pkgs.zabbly.com/incus"
+      version: "lts-6.0"
+  download_url: ""
+  download: false
+  local_download_dir: "/mnt/c/Users/USER/Downloads"
+  base_path: /root
+  host_num: "{{ groups['workers'] | length }}"
+  net:
+    ipaddr0: "192.168.0.8"
+    ipaddr1: "192.168.1.8"
+    ipaddr2: "192.168.2.8"
+  client:
+    net:
+      type: "virtual"              # Or Physical
+      cores: 1
+      ipaddr0: "192.168.0.8"
+      ipaddr1: "192.168.1.8"
+      ipaddr2: "192.168.2.8"
+```
+#### 3) Initialize/Uninstall Linux Hosts
 ```bash
 $ make hosts r=init s=all
 $ make hosts r=uninit s=all
 ```
-#### 3) Enable/Disable Zabbly Repository
+#### 4) Enable/Disable Zabbly Repository
 ```bash
 $ make incus r=enable s=repo
 $ make incus r=disable s=repo
 ```
-##### 4) Install/Uninstall Incus Packages
+##### 5) Install/Uninstall Incus Packages
 ```bash
 $ make incus r=install s=pkgs
 $ make incus r=uninstall s=pkgs
 ```
-##### 5) Initialize Incus Cluster
+##### 6) Initialize Incus Cluster
 ```bash
 $ make incus r=init s=host
 ```
-##### 6) Install/Uninstall Incus Web UI
+##### 7) Install/Uninstall Incus Web UI
 ```bash
 $ make incus r=install s=ui
 $ make incus r=uninstall s=ui
 ```
-##### 7) Add/Remove Hosts to/at Incus Cluster
+##### 8) Add/Remove Hosts to/at Incus Cluster
 ```bash
 $ make incus r=add s=host
 $ make incus r=remove s=host
 ```
-##### 8) Deploy Incus Cluster at once
+##### 9) Deploy Incus Cluster at once
 ```bash
 $ make incus r=install s=all
 ```
-##### 9) Enable Incus API Certificate
+##### 10) Enable Incus API Certificate
 ```bash
 $ make incus r=install s=api c=cert
 ```
-##### 10) Deploy/Destroy Incus Cluster at once
+##### 11) Deploy/Destroy Incus Cluster at once
 ```bash
 $ make incus r=deploy s=all
 $ make incus r=destroy s=all
 ```
-##### 11) Force Destroy Incus Cluster
+##### 12) Force Destroy Incus Cluster
 ```bash
 $ make incus r=destroy s=force
 ```
