@@ -11,7 +11,7 @@
 # ovs-vsctl remove port vnet0 tag 100
 
 
-- name: Stop Open VSwitch
+- name: Stop Open vSwitch
   systemd:
     name: "{{ item.svc }}"
     state: "{{ item.state }}"

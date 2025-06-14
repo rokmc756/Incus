@@ -1,5 +1,5 @@
 ---
-- name: Restart Open VSwitch
+- name: Restart Open vSwitch
   systemd:
     name: "{{ item.svc }}"
     state: "{{ item.state }}"

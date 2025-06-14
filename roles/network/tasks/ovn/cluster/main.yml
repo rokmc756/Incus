@@ -29,7 +29,7 @@
   tags: delete
 
 
-- name: Remove Disable Open VSwitch
+- name: Remove Disable Open vSwitch
   import_tasks: ovn/cluster/07-disable-open-vswitch.yml
   tags: disable, uninstall
 
