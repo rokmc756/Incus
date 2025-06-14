@@ -11,7 +11,7 @@
 
 
 - name: Enable Zabbly Package Repository
-  import_tasks: enable-incus-repo.yml
+  import_tasks: enable-repo.yml
   tags: enable, deploy
   when: (( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 
@@ -83,7 +83,7 @@
 
 
 - name: Disable Zabbly Package Repository
-  import_tasks: disable-incus-repo.yml
+  import_tasks: disable-repo.yml
   tags: disable, destroy
   when: (( repo is defined and repo == true ) or ( incus_all is defined and incus_all == true )) and inventory_hostname in groups['workers']
 

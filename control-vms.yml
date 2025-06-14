@@ -9,11 +9,12 @@
         validate_certs: false
         name: "{{ item }}"
         state: "{{ power_state }}"
-      loop:
-        - ubt24-node01
-        - ubt24-node02
-        - ubt24-node03
-        - ubt24-node04
-        - ubt24-node05
-        - rk9-freeipa
+      loop: "{{ _incus.vms.ubt24 }}"
+      #loop:
+      #  - ubt24-node01
+      #  - ubt24-node02
+      #  - ubt24-node03
+      #  - ubt24-node04
+      #  - ubt24-node05
+      #  - rk9-freeipa
 
