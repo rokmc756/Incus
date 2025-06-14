@@ -1,4 +1,4 @@
-## What is Incus?
+### What is Incus?
 Incus is system container, application container, and virtual machine manager. It provides a user experience similar to that of a public or private cloud.
 It can easily mix and match both containers and virtual machines, sharing the same underlying storage and network.
 
@@ -7,7 +7,7 @@ Incus is image based and provides images for a wide number of Linux distribution
 When using Incus, you can manage your instances ( Containers and VMs) with a simple command line tool, directly through the REST API or by using third-party tools and integrations.
 Incus implements a single REST API for both local and remote access.
 
-## Containers and Virtual Machines
+### Containers and Virtual Machines
 Incus provides support for system containers, application containers, and virtual machines.
 
 When running a system container, Incus simulates a virtual version of a full operating system. To do this, it uses the functionality provided by the kernel running on the host system.
@@ -19,33 +19,33 @@ When running a virtual machine, Incus uses the hardware of the host system, but 
 
 Therefore, virtual machines can be used to run, for example, a different operating system.
 
-## Architecture
-### Internal
+### Architecture
+#### Internal
 ![alt text](https://github.com/rokmc756/Incus/blob/main/roles/incus/images/incus-architecture-example01.png)
 ### External
 ![alt text](https://raw.githubusercontent.com/rokmc756/Incus/refs/heads/main/roles/incus/images/incus-architecture-examples02.webp)
 
-## What is this Incus Github Repostory?
+### What is this Incus Github Repostory?
 It is ansible playbook to deploy Incus Cluster on Baremetal, Virtual Machines. The main purposes of this project are simple to deploy Incus Cluster quickly and learn knowleges about it.
 
-## Where is it originated?
+### Where is it originated?
 It's originated by Jack Moon.
 
-## Supported Incus Version
+### Supported Incus Version
 * Incus 6.x
 
-## Supported Platform and OS
+### Supported Platform and OS
 * Virtual Machines
 * Baremetal
 * Ubuntu 24.x
 
-## Prerequisite
+### Prerequisite
 MacOS or Linux should have installed ansible as ansible host.
 Supported OS for ansible target host should be prepared with package repository configured such as yum, dnf and apt
 At least a Normal User which has Sudo Privileges
 Root User should have Password ans Allow access with Password login via SSH
 
-## Prepare ansible host to run this playbook
+### Prepare ansible host to run this playbook
 * MacOS
 ```bash
 $ xcode-select --install
@@ -54,8 +54,8 @@ $ brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Libr
 ```
 
 
-## How to Run Incus Ansible Playbook
-### 1) Configure Ansible Hosts
+### How to Run Incus Ansible Playbook
+#### 1) Configure Ansible Hosts
 ```ini
 [all:vars]
 ssh_key_filename="id_rsa"
@@ -125,46 +125,46 @@ $ make hosts r=uninit s=all
 $ make incus r=enable s=repo
 $ make incus r=disable s=repo
 ```
-##### 5) Install/Uninstall Incus Packages
+#### 5) Install/Uninstall Incus Packages
 ```bash
 $ make incus r=install s=pkgs
 $ make incus r=uninstall s=pkgs
 ```
-##### 6) Initialize Incus Cluster
+#### 6) Initialize Incus Cluster
 ```bash
 $ make incus r=init s=host
 ```
-##### 7) Install/Uninstall Incus Web UI
+#### 7) Install/Uninstall Incus Web UI
 ```bash
 $ make incus r=install s=ui
 $ make incus r=uninstall s=ui
 ```
-##### 8) Add/Remove Hosts to/at Incus Cluster
+#### 8) Add/Remove Hosts to/at Incus Cluster
 ```bash
 $ make incus r=add s=host
 $ make incus r=remove s=host
 ```
-##### 9) Deploy Incus Cluster at once
+#### 9) Deploy Incus Cluster at once
 ```bash
 $ make incus r=install s=all
 ```
-##### 10) Enable Incus API Certificate
+#### 10) Enable Incus API Certificate
 ```bash
 $ make incus r=install s=api c=cert
 ```
-##### 11) Deploy/Destroy Incus Cluster at once
+#### 11) Deploy/Destroy Incus Cluster at once
 ```bash
 $ make incus r=deploy s=all
 $ make incus r=destroy s=all
 ```
-##### 12) Force Destroy Incus Cluster
+#### 12) Force Destroy Incus Cluster
 ```bash
 $ make incus r=destroy s=force
 ```
 
 
 ### Create and Delete Various Storage Pools
-##### 1) Local Directory
+#### 1) Local Directory
 ```bash
 $ make storage r=create s=dir c=local
 $ make storage r=delete s=dir c=local
@@ -172,7 +172,7 @@ $ make storage r=delete s=dir c=local
 $ make storage r=create s=dir c=dirs
 $ make storage r=delete s=dir c=dirs
 ```
-##### 2) Logical Volume Groups
+#### 2) Logical Volume Groups
 ```bash
 $ make storage r=create s=lvm c=local
 $ make storage r=delete s=lvm c=local
@@ -200,7 +200,7 @@ $ make storage r=uninstall s=iscsi c=initiator
 $ make storage r=create s=lvm c=cluster
 $ make storage r=delete s=lvm c=cluster
 ```
-##### 3) Btrfs
+#### 3) Btrfs
 ```bash
 $ make storage r=create s=btrfs c=local
 $ make storage r=delete s=btrfs c=local
@@ -211,7 +211,7 @@ $ make storage r=delete s=btrfs c=dirs
 $ make storage r=create s=btrfs c=blk
 $ make storage r=delete s=btrfs c=blk
 ```
-##### 3) ZFS
+#### 3) ZFS
 ```bash
 $ make storage r=create s=zfs c=local
 $ make storage r=delete s=zfs c=local
@@ -228,7 +228,7 @@ $ make storage r=delete s=zfs c=zpool    # Need to fix errors
 $ make storage r=create s=zfs c=slice    # Need to fix errors
 $ make storage r=delete s=zfs c=slice    # Need to fix errors
 ```
-##### 4) Ceph Storage Pool
+#### 4) Ceph Storage Pool
 ```bash
 # Enable and Disable Ceph Client for Incus Hosts
 $ make storage r=enable s=ceph c=client
@@ -245,7 +245,7 @@ $ make storage r=create s=ceph c=rgw
 $ make storage r=delete s=ceph c=rgw
 ```
 
-##### 4) Linstor Storage Pool
+#### 4) Linstor Storage Pool
 ```bash
 # Enable and Disable Linstor Client for Incus Hosts
 $ make storage r=enable s=linstor c=client
@@ -268,9 +268,8 @@ $ make storage r=create s=linstor c=filethin
 $ make storage r=delete s=linstor c=filethin
 ```
 
-
 ### Create Network
-##### 1) OVN
+#### 1) OVN
 ```bash
 # For Configure and Install OVN Network
 $ make network r=install s=ovn c=cluster
@@ -281,8 +280,7 @@ $ make network r=delete s=ovn c=cluster
 $ make network r=uninstall s=ovn c=cluster
 ```
 
-
-## Progress
+### Progress
 - [X] Initialize Ubuntu 24.x Hosts in order to Install Required Packages for Incus and Exchange SSH Keys
 - [X] Install/Configure and Uninstall Incus & Web UI Packages
 - [X] Add CA Key Partially Automated
@@ -298,7 +296,7 @@ $ make network r=uninstall s=ovn c=cluster
 - [X] Working LVM Cluster Storage Pool Setting with iSCSI
 - [ ] Network Settings - OVN and so on
 
-## References
+### References
 - https://www.suse.com/ko-kr/support/kb/doc/?id=000018894
 - https://discussion.fedoraproject.org/t/iscsi-shared-lvm/128319
 - https://github.com/PenningLabs/lxconsole.git
